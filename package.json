@@ -1,0 +1,35 @@
+{
+  "name": "ppm-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "browserify": "^11.0.0",
+    "gulp": "^3.9.0",
+    "react": "^0.13.3",
+    "react-async": "^2.1.0",
+    "react-router-component": "^0.26.0",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^11.0.0",
+    "react": "^0.13.3",
+    "react-router-component": "^0.26.0",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wojciech111/ppm-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wojciech111/ppm-app/issues"
+  },
+  "homepage": "https://github.com/wojciech111/ppm-app#readme"
+}
