@@ -1,12 +1,21 @@
 var React = require('react');
-var Header = require('./AppHeader/AppHeader.js');
+var AppHeader = require('./AppHeader/AppHeader.js');
+var AppMenu = require('./AppMenu/AppMenu.js');
+
 
 var Template = React.createClass({
     render:function(){
         return (
-            <div className="container">
-                <Header />
-                {this.props.children}
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-2">
+                        <AppMenu></AppMenu>
+                    </div>
+                    <div className="col-md-3">
+                        <AppHeader ></AppHeader>
+                        {this.props.children}
+                    </div>
+                </div>
             </div>
         );
     }
