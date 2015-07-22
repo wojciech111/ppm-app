@@ -11,7 +11,7 @@ var Template = React.createClass({
                     <div className="col-md-2">
                         <AppMenu></AppMenu>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-10">
                         <AppHeader ></AppHeader>
                         {this.props.children}
                     </div>

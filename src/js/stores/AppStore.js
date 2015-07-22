@@ -1,5 +1,5 @@
-var AppDispatcher = require('../dispatchers/app-dispatcher');
-var AppConstants = require('../constants/app-constants');
+var AppDispatcher = require('../dispatchers/AppDispatcher');
+var AppConstants = require('../constants/AppConstants');
 var assign = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
 
@@ -375,7 +375,7 @@ var _portfolio = {
     ],
     "scores": []
 };
-
+/*
 function _increaseItem(index){
     _cartItems[index].qty++;
 }
@@ -412,8 +412,8 @@ function _cartTotals(){
     });
     return {'qty': qty, 'total': total};
 }
-
-var PortfolioStore = assign(EventEmitter.prototype, {
+*/
+var AppStore = assign(EventEmitter.prototype, {
     emitChange: function(){
         this.emit(CHANGE_EVENT)
     },
@@ -430,6 +430,10 @@ var PortfolioStore = assign(EventEmitter.prototype, {
         return _portfolio
     },
 
+    getUser: function(){
+        return _user
+    },
+/*
     dispatcherIndex: AppDispatcher.register(function(payload){
         var action = payload.action; // this is our action from handleViewAction
         switch(action.actionType){
@@ -442,11 +446,11 @@ var PortfolioStore = assign(EventEmitter.prototype, {
                 break;
         }
 
-        PortfolioStore.emitChange();
+        AppStore.emitChange();
 
         return true;
     })
-
+*/
 });
 
-module.exports = PortfolioStore;
+module.exports = AppStore;

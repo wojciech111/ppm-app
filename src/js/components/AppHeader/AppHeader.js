@@ -1,13 +1,22 @@
 var React = require('react');
+var UserNameBar = require('./UserNameBar');
+var PortfolioChooser = require('./PortfolioChooser');
+var SaveUndoArea = require('./SaveUndoArea');
 
-var Header = React.createClass({
+var AppHeader = React.createClass({
     render:function(){
         return (
-            <div>
-                <div><h1>Portfolio Name</h1></div>
+            <div style={{backgroundColor:"#222222"}}>
+                <div className="row">
+                    <UserNameBar></UserNameBar>
+                </div>
+                <div className="row">
+                    <PortfolioChooser></PortfolioChooser>
+                    <SaveUndoArea></SaveUndoArea>
+                </div>
             </div>
         );
     }
 });
 
-module.exports = Header;
+module.exports = AppHeader;
