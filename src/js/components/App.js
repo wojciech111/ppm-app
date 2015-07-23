@@ -349,6 +349,7 @@ var App = React.createClass({
         }
     },
     render:function(){
+
         return (
             <AppTemplate>
                 <Locations>
@@ -359,5 +360,4 @@ var App = React.createClass({
         );
     }
 });
-
 module.exports = App;

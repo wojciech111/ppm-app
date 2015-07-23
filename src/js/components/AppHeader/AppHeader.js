@@ -6,13 +6,12 @@ var SaveUndoArea = require('./SaveUndoArea');
 var AppHeader = React.createClass({
     render:function(){
         return (
-            <div style={{backgroundColor:"#222222"}}>
-                <div className="row">
-                    <UserNameBar></UserNameBar>
-                </div>
-                <div className="row">
+            <div className="row" style={{backgroundColor:"#222222"}}>
+                <div className="col-xs-7 col-xs-offset-2">
                     <PortfolioChooser></PortfolioChooser>
-                    <SaveUndoArea></SaveUndoArea>
+                </div>
+                <div className="col-xs-3">
+                    <UserNameBar></UserNameBar>
                 </div>
             </div>
         );
