@@ -1,5 +1,5 @@
 var React = require('react');
-var AppRoutes = require('../../constants/AppRoutes');
+var AppRoutes = require('../../config/routes_names');
 var AppStore = require('../../stores/AppStore');
 var Link = require('react-router-component').Link;
 
