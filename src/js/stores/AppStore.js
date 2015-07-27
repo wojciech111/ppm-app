@@ -433,6 +433,32 @@ var AppStore = assign(EventEmitter.prototype, {
     getUser: function(){
         return _user
     },
+    _getComponentById:function(id, component){
+        var children = component.children;
+
+        for (var i = 0;children[i];i++) {
+            console.log(children[i].componentId.concat(" ").concat(children[i].componentType));
+            if(children[i].componentId === id){
+                return children[i];
+            }
+            if(children[i].componentType === "PROGRAM") {
+                var foundedComponent = this._getComponentById(id, children[i]);
+                console.log(foundedComponent);
+                if (foundedComponent !== null){
+                    return foundedComponent;
+                }
+            }
+        }
+        return null;
+    },
+    getProject: function(projectId){
+        var project=this._getComponentById(projectId, _portfolio);
+        if(project !== null && project.componentType === "PROJECT") {
+            return project;
+        }
+        return null;
+    },
+
 /*
     dispatcherIndex: AppDispatcher.register(function(payload){
         var action = payload.action; // this is our action from handleViewAction

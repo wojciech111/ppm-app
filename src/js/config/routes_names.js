@@ -8,4 +8,5 @@ module.exports = {
     ORGANIZATION_DETAILS: 'organization_details',
     USER_DETAILS: 'user_details',
 
+    PROJECT_DETAILS: 'project',
 };

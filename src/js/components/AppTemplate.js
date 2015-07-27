@@ -21,7 +21,7 @@ var AppContext = require('./AppContext/AppContext');
 
 
 
-var Template = React.createClass({
+var AppTemplate = React.createClass({
     mixins: [Router.Navigation],
 
     //Material-ui settings
@@ -106,7 +106,7 @@ var Template = React.createClass({
                 </MediaQuery>
                 <MediaQuery maxWidth={1224}>
                     <LeftNav ref = "menu"
-                             docked = {true}
+                             docked = {false}
                              menuItems = {menuItems}
                              header={<AppContext/>}
                              selectedIndex={this._getSelectedIndex()}
@@ -121,4 +121,4 @@ var Template = React.createClass({
     }
 });
 
-module.exports = Template;
+module.exports = AppTemplate;

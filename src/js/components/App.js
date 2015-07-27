@@ -4,7 +4,6 @@ var RouteHandler = require('react-router').RouteHandler;
 
 
 var AppTemplate = require('./AppTemplate');
-var ProjectMainPage = require('./Project/ProjectMainPage');
 
 
 var App = React.createClass({
