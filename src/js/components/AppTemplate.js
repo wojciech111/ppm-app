@@ -9,8 +9,7 @@ var MediaQuery = require('react-responsive');
 
 
 var mui = require('material-ui');
-var ThemeManager = new mui.Styles.ThemeManager();
-var Colors = mui.Styles.Colors;
+
 
 var LeftNav = mui.LeftNav;
 var MenuItem = mui.MenuItem;
@@ -24,21 +23,7 @@ var AppContext = require('./AppContext/AppContext');
 var AppTemplate = React.createClass({
     mixins: [Router.Navigation],
 
-    //Material-ui settings
-    childContextTypes: {
-        muiTheme: React.PropTypes.object
-    },
-    getChildContext() {
-        return {
-            muiTheme: ThemeManager.getCurrentTheme()
-        };
-    },
-    componentWillMount() {
-        ThemeManager.setPalette({
-            accent1Color: Colors.blue500
-        });
-    },
-    //End of Material-ui settings
+
     _handleHamburgerClick: function()
     {
         this.refs.menu.toggle();
