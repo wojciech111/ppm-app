@@ -7,6 +7,7 @@ var Tabs = mui.Tabs;
 var Tab = mui.Tab;
 
 var ProjectDetailsHeader = require('./ProjectDetails/ProjectDetailsHeader');
+var ProjectOverview = require('./ProjectDetails/ProjectOverview');
 
 
 var ProjectDetails = React.createClass({
@@ -16,21 +17,15 @@ var ProjectDetails = React.createClass({
         //var project= AppStore.getProject(projectId);
         return (
             <div>
-                <div>
+                <div className="container-fluid">
                     <ProjectDetailsHeader projectId={projectId}></ProjectDetailsHeader>
                 </div>
                 <Tabs>
-                    <Tab label="Overview" >
-                        <div>
-                            <h2 >Tab One Template Example</h2>
-                            <p>
-                                This is an example of a tab template!
-                            </p>
-                            <p>
-                                You can put any sort of HTML or react component in here.
-                            </p>
+                    <Tab label="Overview">
+                        <div className="container-fluid">
+                            <ProjectOverview projectId={projectId}></ProjectOverview>
                         </div>
-                    </Tab>
+                   </Tab>
                     <Tab label="Evaluation" >
                         <div>
                             <h2 >Tab Two Template Example</h2>

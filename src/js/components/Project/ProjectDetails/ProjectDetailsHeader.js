@@ -29,7 +29,7 @@ var ProjectDetailsHeader = React.createClass({
 
         var categories=[];
         project.categoryMemberships.map(function(categoryMembership) {
-            console.log(categoryMembership.category.name);
+            //console.log(categoryMembership.category.name);
             var avatar;
             if(categoryMembership.rankInCategory){
                 avatar=(<Avatar>#{categoryMembership.rankInCategory}</Avatar>);
