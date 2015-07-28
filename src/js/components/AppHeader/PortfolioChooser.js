@@ -1,6 +1,6 @@
 var React = require('react');
 var AppRoutes = require('../../config/routes_names');
-var AppStore = require('../../stores/AppStore');
+var AppStore = require('../../stores/PortfolioStore');
 var Link = require('react-router-component').Link;
 
 var PortfolioChooser = React.createClass({

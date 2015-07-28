@@ -1,6 +1,6 @@
 var React = require('react');
 
-var AppStore = require('../stores/AppStore');
+var AppStore = require('../stores/PortfolioStore');
 
 var Router = require('react-router');
 var routes_names = require('../config/routes_names');

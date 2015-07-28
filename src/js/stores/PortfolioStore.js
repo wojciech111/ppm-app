@@ -182,6 +182,30 @@ var _portfolio = {
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "percentageOfSupport": "55",
+                            "rankInCategory":"1",
+                            "category": {
+                                "categoryId": "4055",
+                                "code": "CA1     ",
+                                "name": "Kategoria druga",
+                                "description": "opis kategorii ktory jest niezwykle wyczerpujï¿½cy",
+                                "categoryEvaluations": [
+                                    {
+                                        "scoringCriterion": {
+                                            "scoringCriterionId": "3950",
+                                            "code": "ROI     ",
+                                            "name": "Return on investment",
+                                            "description": "Pi?kny opis tego czym ten wska?nik jest",
+                                            "question": null,
+                                            "bestIs": "MAX",
+                                            "minScore": null,
+                                            "maxScore": null
+                                        }
+                                    }
+                                ]
+                            }
                         }
                     ],
                     "children": [],
@@ -433,17 +457,18 @@ var AppStore = assign(EventEmitter.prototype, {
     getUser: function(){
         return _user
     },
-    _getComponentById:function(id, component){
-        var children = component.children;
+    _getComponentById:function(id, rootComponent){
+        var children = rootComponent.children;
+        //console.log("LOOKING FOR COMPONENT BY ID");
 
         for (var i = 0;children[i];i++) {
-            console.log(children[i].componentId.concat(" ").concat(children[i].componentType));
+            //console.log(children[i].componentId.concat(" ").concat(children[i].componentType));
             if(children[i].componentId === id){
                 return children[i];
             }
             if(children[i].componentType === "PROGRAM") {
                 var foundedComponent = this._getComponentById(id, children[i]);
-                console.log(foundedComponent);
+                //console.log(foundedComponent);
                 if (foundedComponent !== null){
                     return foundedComponent;
                 }
@@ -458,6 +483,38 @@ var AppStore = assign(EventEmitter.prototype, {
         }
         return null;
     },
+    _getParentComponent: function(id, rootComponent) {
+        var children = rootComponent.children;
+        //console.log("LOOKING FOR PARENT");
+
+        for (var i = 0;children[i];i++) {
+            //console.log(children[i].name.concat(" ").concat(children[i].componentType));
+            if(children[i].componentId === id){
+                return rootComponent;
+            }
+            if(children[i].componentType === "PROGRAM") {
+                var foundedComponent = this._getParentComponent(id, children[i]);
+                //console.log("success");
+                //console.log(foundedComponent);
+
+                if (foundedComponent !== null){
+                    return foundedComponent;
+                }
+            }
+        }
+        return null;
+    },
+    getParent: function(id){
+        var component=this._getParentComponent(id, _portfolio);
+        if(component !== null ) {
+            return component;
+        }
+        return null;
+    },
+    getPortfolioCategories: function(){
+        var categories = [];
+
+    }
 
 /*
     dispatcherIndex: AppDispatcher.register(function(payload){

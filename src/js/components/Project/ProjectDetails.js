@@ -1,9 +1,12 @@
-var React = require('react/addons');
+var React = require('react');
 var Router = require('react-router');
-var AppStore = require('../../stores/AppStore');
+var AppStore = require('../../stores/PortfolioStore');
+
 var mui = require('material-ui');
 var Tabs = mui.Tabs;
 var Tab = mui.Tab;
+
+var ProjectDetailsHeader = require('./ProjectDetails/ProjectDetailsHeader');
 
 
 var ProjectDetails = React.createClass({
@@ -13,9 +16,11 @@ var ProjectDetails = React.createClass({
         //var project= AppStore.getProject(projectId);
         return (
             <div>
-                <div>ProjectDetails {projectId}</div>
+                <div>
+                    <ProjectDetailsHeader projectId={projectId}></ProjectDetailsHeader>
+                </div>
                 <Tabs>
-                    <Tab label="Item One" >
+                    <Tab label="Overview" >
                         <div>
                             <h2 >Tab One Template Example</h2>
                             <p>
@@ -26,7 +31,51 @@ var ProjectDetails = React.createClass({
                             </p>
                         </div>
                     </Tab>
-                    <Tab label="Item Two" >
+                    <Tab label="Evaluation" >
+                        <div>
+                            <h2 >Tab Two Template Example</h2>
+                            <p>
+                                This is another example of a tab template!
+                            </p>
+                            <p>
+                                Fair warning - the next tab routes to home!
+                            </p>
+                        </div>
+                    </Tab>
+                    <Tab label="Recommendations" >
+                        <div>
+                            <h2 >Tab Two Template Example</h2>
+                            <p>
+                                This is another example of a tab template!
+                            </p>
+                            <p>
+                                Fair warning - the next tab routes to home!
+                            </p>
+                        </div>
+                    </Tab>
+                    <Tab label="Stakeholders" >
+                        <div>
+                            <h2 >Tab Two Template Example</h2>
+                            <p>
+                                This is another example of a tab template!
+                            </p>
+                            <p>
+                                Fair warning - the next tab routes to home!
+                            </p>
+                        </div>
+                    </Tab>
+                    <Tab label="Schedule" >
+                        <div>
+                            <h2 >Tab Two Template Example</h2>
+                            <p>
+                                This is another example of a tab template!
+                            </p>
+                            <p>
+                                Fair warning - the next tab routes to home!
+                            </p>
+                        </div>
+                    </Tab>
+                    <Tab label="Financial" >
                         <div>
                             <h2 >Tab Two Template Example</h2>
                             <p>
@@ -41,6 +90,7 @@ var ProjectDetails = React.createClass({
             </div>
         )
     }
+
 });
 
 module.exports = ProjectDetails;
