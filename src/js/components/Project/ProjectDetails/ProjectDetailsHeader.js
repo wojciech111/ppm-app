@@ -38,9 +38,9 @@ var ProjectDetailsHeader = React.createClass({
             }
             var secondaryText;
             if(categoryMembership.percentageOfSupport){
-                secondaryText=categoryMembership.percentageOfSupport+" %  of support";
+                secondaryText="Support in "+categoryMembership.percentageOfSupport+"%";
             } else {
-                secondaryText="100 % of support";
+                secondaryText="Support in 100%";
             }
             categories.push(
                 <ListItem key={categoryMembership.category.categoryId}
@@ -54,12 +54,12 @@ var ProjectDetailsHeader = React.createClass({
 
         return (
             <div className="row">
-                <div className="col-xs-8">
+                <div className="col-sm-8">
                     {projectProgramSubheader}
                     <h1><b>{project.name}</b></h1>
                     <h4>(ID: {projectId})</h4>
                 </div>
-                <div className="col-xs-4">
+                <div className="col-sm-4">
                     <List  subheader="Supported categories:" style={{marginTop:5}}>
                         {categories}
                     </List>

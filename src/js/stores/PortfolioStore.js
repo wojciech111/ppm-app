@@ -155,7 +155,7 @@ var _portfolio = {
                     "componentType": "PROJECT",
                     "componentId": "11308",
                     "code": "PF1       ",
-                    "name": "portfolioProgramProject",
+                    "name": "portfolio Program Project",
                     "customer": "customer jakis",
                     "description": "Opis Opisik",
                     "overallPriority": null,
