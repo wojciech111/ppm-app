@@ -1,4 +1,0 @@
-module.exports = {
-    LOAD_PORTFOLIO: 'LOAD_PORTFOLIO',
-    SAVE_PORTFOLIO: 'SAVE_PORTFOLIO'
-};

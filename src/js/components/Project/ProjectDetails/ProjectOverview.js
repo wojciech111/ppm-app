@@ -1,5 +1,5 @@
 var React = require('react');
-var AppStore = require('../../../stores/PortfolioStore');
+var AppStore = require('../../../stores/portfolioStore');
 var mui = require('material-ui');
 var TextField = mui.TextField;
 var SelectField = mui.SelectField;
@@ -10,7 +10,7 @@ var DatePicker = mui.DatePicker;
 var ProjectOverview = React.createClass({
     propTypes: function () {
         return {
-            projectId: React.PropTypes.number.isRequired
+            project: React.PropTypes.object.isRequired
         };
     },
     getInitialState: function() {
@@ -23,8 +23,7 @@ var ProjectOverview = React.createClass({
         };
     },
     render:function(){
-        var projectId = this.props.projectId;
-        var project= AppStore.getProject(projectId);
+        var project= this.props.project;
         return (
             <Paper zDepth={1} className="row">
                 <div className="col-sm-4">
@@ -78,21 +77,21 @@ var ProjectOverview = React.createClass({
                     <h1>Dates</h1>
                     <DatePicker
                         fullWidth={true}
-                        autoOk={true}
+                        autoOk={false}
                         showYearSelector={true}
                         mode="landscape"
                         floatingLabelText="Start date"
                         hintText="When this project will start?"/>
                     <DatePicker
                         fullWidth={true}
-                        autoOk={true}
+                        autoOk={false}
                         showYearSelector={true}
                         mode="landscape"
                         floatingLabelText="End date"
                         hintText="When you plan this project will end?"/>
                     <DatePicker
                         fullWidth={true}
-                        autoOk={true}
+                        autoOk={false}
                         showYearSelector={true}
                         mode="landscape"
                         floatingLabelText="Deadline"

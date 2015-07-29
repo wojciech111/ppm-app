@@ -1,6 +1,8 @@
 var React = require('react');
 var Router = require('react-router');
-var AppStore = require('../../stores/PortfolioStore');
+
+var portfolioStore = require('../../stores/portfolioStore');
+var appActions = require('../../actions/appActions');
 
 var mui = require('material-ui');
 var Tabs = mui.Tabs;
@@ -10,20 +12,45 @@ var ProjectDetailsHeader = require('./ProjectDetails/ProjectDetailsHeader');
 var ProjectOverview = require('./ProjectDetails/ProjectOverview');
 
 
-var ProjectDetails = React.createClass({
+var ProjectDetailsContainer = React.createClass({
     mixins: [Router.State],
+    getInitialState: function(){
+        return {
+            project: portfolioStore.getProject(this.getParams().projectId),
+            parentComponent: portfolioStore.getParent(this.getParams().projectId)
+        }
+    },
+    componentDidMount: function(){
+        portfolioStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function(){
+        portfolioStore.removeChangeListener(this._onChange);
+    },
+    _onChange: function(){
+        this.setState({
+            project: portfolioStore.getProject(this.getParams().projectId),
+            parentComponent: portfolioStore.getParent(this.getParams().projectId)
+        })
+    },
+    handleProjectUpdate: function(changedProject){
+        appActions.updateComponent(changedProject);
+    },
     render:function(){
-        var projectId = this.getParams().projectId;
-        //var project= AppStore.getProject(projectId);
+        var project= this.state.project;
+        var parentComponent= this.state.parentComponent;
         return (
             <div>
                 <div className="container-fluid">
-                    <ProjectDetailsHeader projectId={projectId}></ProjectDetailsHeader>
+                    <ProjectDetailsHeader
+                        project={project} parentComponent={parentComponent}
+                        ></ProjectDetailsHeader>
                 </div>
                 <Tabs>
                     <Tab label="Overview">
                         <div className="container-fluid">
-                            <ProjectOverview projectId={projectId}></ProjectOverview>
+                            <ProjectOverview
+                                project={project}
+                                ></ProjectOverview>
                         </div>
                    </Tab>
                     <Tab label="Evaluation" >
@@ -88,4 +115,4 @@ var ProjectDetails = React.createClass({
 
 });
 
-module.exports = ProjectDetails;
+module.exports = ProjectDetailsContainer;

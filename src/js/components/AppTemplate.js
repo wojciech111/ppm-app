@@ -1,6 +1,6 @@
 var React = require('react');
 
-var AppStore = require('../stores/PortfolioStore');
+var AppStore = require('../stores/portfolioStore');
 
 var Router = require('react-router');
 var routes_names = require('../config/routes_names');
@@ -15,7 +15,7 @@ var LeftNav = mui.LeftNav;
 var MenuItem = mui.MenuItem;
 var AppBar = mui.AppBar;
 
-var AppContext = require('./AppContext/AppContext');
+var AppContextContainer = require('./AppContext/AppContextContainer');
 
 
 
@@ -79,7 +79,7 @@ var AppTemplate = React.createClass({
                     <LeftNav ref = "menu"
                              docked = {true}
                              menuItems = {menuItems}
-                             header={<AppContext/>}
+                             header={<AppContextContainer/>}
                              selectedIndex={this._getSelectedIndex()}
                              onChange={this._onLeftNavChange}
                         />
@@ -93,7 +93,7 @@ var AppTemplate = React.createClass({
                     <LeftNav ref = "menu"
                              docked = {false}
                              menuItems = {menuItems}
-                             header={<AppContext/>}
+                             header={<AppContextContainer/>}
                              selectedIndex={this._getSelectedIndex()}
                              onChange={this._onLeftNavChange}
                         />

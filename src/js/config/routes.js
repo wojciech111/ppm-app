@@ -9,9 +9,9 @@ var App = require('../components/App');
 
 var ProjectMainPage = require('../components/Project/ProjectMainPage');
 var TestPage = require('../components/Project/TestPage');
-var ProjectDetails = require('../components/Project/ProjectDetails');
+var ProjectDetailsContainer = require('../components/Project/ProjectDetailsContainer');
 
-var AppContext = require('../components/AppContext/AppContext');
+var AppContextContainer = require('../components/AppContext/AppContextContainer');
 
 
 
@@ -19,8 +19,8 @@ module.exports = (
     <Route name="app" path="/" handler={App}>
         <Route name={routes_names.PROJECT_MAIN} path={routes_names.PROJECT_MAIN} handler={ProjectMainPage} />
         <Route name={routes_names.PROGRAM_MAIN} path={routes_names.PROGRAM_MAIN} handler={TestPage} />
-        <Route name={routes_names.PROJECT_DETAILS} path={routes_names.PROJECT_DETAILS.concat("/:projectId")} handler={ProjectDetails} />
+        <Route name={routes_names.PROJECT_DETAILS} path={routes_names.PROJECT_DETAILS.concat("/:projectId")} handler={ProjectDetailsContainer} />
 
-        <DefaultRoute handler={AppContext} />
+        <DefaultRoute handler={AppContextContainer} />
     </Route>
 );

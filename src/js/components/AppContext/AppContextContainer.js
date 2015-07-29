@@ -1,6 +1,6 @@
 var React = require('react');
 
-var AppContext = React.createClass({
+var AppContextContainer = React.createClass({
     render:function(){
         return (
             <div>
@@ -18,4 +18,4 @@ var AppContext = React.createClass({
     }
 });
 
-module.exports = AppContext;
+module.exports = AppContextContainer;
