@@ -8,6 +8,7 @@ var CHANGE_EVENT = 'change';
 
 /* MODEL */
 var _store = {
+    nrOfChanges:0,
     portfolio: {
         "componentType": "PORTFOLIO",
         "areasOfFocus": [
@@ -376,8 +377,14 @@ var createComponent = function(component, parentId){
 
 };
 
-var updateComponent = function(component){
-
+var updateComponent = function(updatedComponent){
+    var parentComponent=_getParentComponent(updatedComponent.componentId, _store.portfolio);
+    for (var i = 0;parentComponent.children[i];i++) {
+        if(parentComponent.children[i].componentId === updatedComponent.componentId){
+            parentComponent.children[i]=updatedComponent;
+            console.log(parentComponent.children[i].name);
+        }
+    }
 };
 
 var removeComponent = function(componentId){
@@ -435,16 +442,17 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
     removeChangeListener: function(cb){
         this.removeListener(CHANGE_EVENT, cb);
     },
-    /*
+
     emitChange: function() {
         this.emit('change');
-    },*/
+    },
     getPortfolio: function(){
         return _store.portfolio;
     },
     getProject: function(projectId){
         var project=_getComponentById(projectId, _store.portfolio);
         if(project !== null && project.componentType === "PROJECT") {
+            console.log(project.name);
             return project;
         }
         return null;
@@ -455,7 +463,8 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
             return component;
         }
         return null;
-    }
+    },
+
 });
 /* PUBLIC GETTERS & LISTENERS & EMITTER - STORE API */
 /* LISTEN FOR DISPATCHER & AND CHOOSE ACTION TO PERFORM */
@@ -464,15 +473,15 @@ AppDispatcher.register(function(payload){
     switch(action.actionType){
         case appConstants.CREATE_COMPONENT:
             createComponent(action.component,action.parentId);
-            PortfolioStore.emit(CHANGE_EVENT);
+            PortfolioStore.emitChange(CHANGE_EVENT);
             break;
         case appConstants.UPDATE_COMPONENT:
             updateComponent(action.component);
-            PortfolioStore.emit(CHANGE_EVENT);
+            PortfolioStore.emitChange(CHANGE_EVENT);
             break;
         case appConstants.REMOVE_COMPONENT:
             removeComponent(action.componentId);
-            PortfolioStore.emit(CHANGE_EVENT);
+            PortfolioStore.emitChange(CHANGE_EVENT);
             break;
         default:
             return true;

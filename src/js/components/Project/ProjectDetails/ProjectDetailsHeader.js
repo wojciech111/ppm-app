@@ -1,10 +1,13 @@
 var React = require('react');
+var viewModes = require('../../../constants/viewModes');
+
+
 var mui = require('material-ui');
 var Avatar = mui.Avatar;
 var List = mui.List;
 var ListItem = mui.ListItem;
-
-
+var TextField = mui.TextField;
+var ModefulTextField = require('../../Forms/ModefulTextField')
 
 
 
@@ -12,12 +15,16 @@ var ProjectDetailsHeader = React.createClass({
     propTypes: function () {
         return {
             project: React.PropTypes.object.isRequired,
-            parentComponent : React.PropTypes.object
+            parentComponent : React.PropTypes.object,
+            mode: React.PropTypes.string.isRequired,
+            handleProjectChange: React.PropTypes.func.isRequired
         };
     },
+
     render:function(){
         var project= this.props.project;
         var parentComponent =  this.props.parentComponent;
+        var mode = this.props.mode;
 
         var projectProgramSubheader;
         if(parentComponent !== null && parentComponent.componentType === "PROGRAM"){
@@ -51,11 +58,23 @@ var ProjectDetailsHeader = React.createClass({
             );
         });
 
+
+
         return (
             <div className="row">
                 <div className="col-sm-8">
                     {projectProgramSubheader}
-                    <h1><b>{project.name}</b></h1>
+                    <h1><b>
+                        <ModefulTextField object={project}
+                                          mode={mode}
+                                          keyOfValue="name"
+                                          labelText="Project name"
+                                          showLabelInView={false}
+                                          hintText="Name of this project"
+                                          handleChange={this.props.handleProjectChange}
+                            >
+                    </ModefulTextField>
+                    </b></h1>
                     <h4>(ID: {project.componentId})</h4>
                 </div>
                 <div className="col-sm-4">

@@ -175,6 +175,7 @@ var ProjectOverview = React.createClass({
         });
     },
     _handleScopeValueChange: function(e) {
+
         this.setState({
             scopeValue: e.target.value
         });

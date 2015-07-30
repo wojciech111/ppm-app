@@ -85,7 +85,7 @@ var AppTemplate = React.createClass({
                         />
                     <div style={{marginLeft:256}}>
                         <AppBar showMenuIconButton={false} onLeftIconButtonTouchTap = { this._handleHamburgerClick }
-                            title = {portfolio.name}/>
+                            title = {portfolio.name} style={{marginBottom:5}}/>
                         {this.props.children}
                     </div>
                 </MediaQuery>
@@ -98,7 +98,7 @@ var AppTemplate = React.createClass({
                              onChange={this._onLeftNavChange}
                         />
                     <AppBar showMenuIconButton={true} onLeftIconButtonTouchTap = { this._handleHamburgerClick }
-                            title = {portfolio.name}/>
+                            title = {portfolio.name} style={{marginBottom:5}}/>
                     {this.props.children}
                 </MediaQuery>
             </div>
