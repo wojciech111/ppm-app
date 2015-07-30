@@ -78,7 +78,6 @@ var ProjectDetailsContainer = React.createClass({
         var parentComponent= this.state.parentComponent;
         var mode= this.state.mode;
         var nrOfChanges= this.state.nrOfChanges;
-        console.log(nrOfChanges);
         return (
             <div>
                 <div className="container-fluid">

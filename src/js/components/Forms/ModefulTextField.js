@@ -39,9 +39,11 @@ var ModefulTextField = React.createClass({
     },
     _handleTextFieldBlur: function(e) {
         //console.log("save value: "+e.target.value+" to key: "+this.props.keyOfValue);
-        var object =objectAssign({}, this.props.object);
-        object[this.props.keyOfValue]=e.target.value;
-        this.props.handleChange(object);
+        if(this.state.textFieldValue && this.state.textFieldValue !== this.props.object[this.props.keyOfValue]) {
+            var object = objectAssign({}, this.props.object);
+            object[this.props.keyOfValue] = e.target.value;
+            this.props.handleChange(object);
+        }
     },
     render:function(){
         var mode = this.props.mode;

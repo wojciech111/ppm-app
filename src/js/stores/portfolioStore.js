@@ -382,7 +382,7 @@ var updateComponent = function(updatedComponent){
     for (var i = 0;parentComponent.children[i];i++) {
         if(parentComponent.children[i].componentId === updatedComponent.componentId){
             parentComponent.children[i]=updatedComponent;
-            console.log(parentComponent.children[i].name);
+            //console.log(parentComponent.children[i].name);
         }
     }
 };
@@ -452,7 +452,7 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
     getProject: function(projectId){
         var project=_getComponentById(projectId, _store.portfolio);
         if(project !== null && project.componentType === "PROJECT") {
-            console.log(project.name);
+            //console.log(project.name);
             return project;
         }
         return null;
