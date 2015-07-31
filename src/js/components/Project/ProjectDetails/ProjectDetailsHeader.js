@@ -7,7 +7,9 @@ var Avatar = mui.Avatar;
 var List = mui.List;
 var ListItem = mui.ListItem;
 var TextField = mui.TextField;
-var ModefulTextField = require('../../Forms/ModefulTextField')
+
+var ModefulTextField = require('../../Forms/ModefulTextField');
+
 
 
 
@@ -72,6 +74,7 @@ var ProjectDetailsHeader = React.createClass({
                                           showLabelInView={false}
                                           hintText="Name of this project"
                                           handleChange={this.props.handleProjectChange}
+                                          maxLength={150}
                             >
                     </ModefulTextField>
                     </b></h1>

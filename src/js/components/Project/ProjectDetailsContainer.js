@@ -40,13 +40,7 @@ var ProjectDetailsContainer = React.createClass({
     /* MANAGE STORE CHANGES*/
 
     /* HANDLE APP STATES CHANGES*/
-    handleProjectChange: function(project){
-        this.setState({
-            project: project,
-            nrOfChanges: this.state.nrOfChanges+1
-        })
 
-    },
     _handleProjectUpdate: function(changedProject){
         appActions.updateComponent(changedProject);
     },
@@ -72,12 +66,23 @@ var ProjectDetailsContainer = React.createClass({
         });
     },
     /* VIEW MODE CHANGES*/
+    /*HELPERS     */
+    handleProjectChange: function(project){
+        this.setState({
+            project: project,
+            nrOfChanges: this.state.nrOfChanges+1
+        })
+
+    },
+    /*HELPERS     */
+
 
     render:function(){
         var project= this.state.project;
         var parentComponent= this.state.parentComponent;
         var mode= this.state.mode;
         var nrOfChanges= this.state.nrOfChanges;
+        console.log("PDC: "+project.description);
         return (
             <div>
                 <div className="container-fluid">
@@ -88,7 +93,10 @@ var ProjectDetailsContainer = React.createClass({
                         changeToViewModeWithCancel={this.changeToViewModeWithCancel}
                         ></ModeChanger>
                     <ProjectDetailsHeader
-                        project={project} parentComponent={parentComponent} mode={mode} handleProjectChange={this.handleProjectChange}
+                        project={project}
+                        parentComponent={parentComponent}
+                        mode={mode}
+                        handleProjectChange={this.handleProjectChange}
                         ></ProjectDetailsHeader>
                 </div>
                 <Tabs>
@@ -96,6 +104,8 @@ var ProjectDetailsContainer = React.createClass({
                         <div className="container-fluid">
                             <ProjectOverview
                                 project={project}
+                                mode={mode}
+                                handleProjectChange={this.handleProjectChange}
                                 ></ProjectOverview>
                         </div>
                    </Tab>

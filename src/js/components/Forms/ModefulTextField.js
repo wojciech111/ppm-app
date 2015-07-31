@@ -6,7 +6,9 @@ var objectAssign = require('react/lib/Object.assign');
 
 var mui = require('material-ui');
 var TextField = mui.TextField;
-
+var Avatar = mui.Avatar;
+var List = mui.List;
+var ListItem = mui.ListItem;
 
 
 var ModefulTextField = React.createClass({
@@ -18,7 +20,10 @@ var ModefulTextField = React.createClass({
             labelText: React.PropTypes.string,
             showLabelInView: React.PropTypes.bool,
             hintText: React.PropTypes.string,
-            handleChange: React.PropTypes.func.isRequired
+            handleChange: React.PropTypes.func.isRequired,
+            maxLength: React.PropTypes.number,
+            multiLine: React.PropTypes.bool,
+            article: React.PropTypes.bool
         };
     },
     getDefaultProps: function() {
@@ -52,11 +57,36 @@ var ModefulTextField = React.createClass({
 
 
         var result;
-        if(mode === viewModes.VIEW_MODE){
-            if(this.props.showLabelInView) {
-                result = <span>{this.props.labelText + ": " + this.props.object[this.props.keyOfValue]}</span>;
+        if(mode === viewModes.VIEW_MODE) {
+            if (this.props.article) {
+                result = (<TextField
+                        defaultValue={this.props.object[this.props.keyOfValue]}
+                        onChange={this._handleTextFieldChange}
+                        onBlur={this._handleTextFieldBlur}
+                        floatingLabelText={this.props.labelText}
+                        hintText={this.props.hintText}
+                        fullWidth={true}
+                        maxLength={this.props.maxLength}
+                        multiLine={this.props.multiLine}
+                        disabled={true}
+                        />
+                )
             } else {
-                result = <span>{this.props.object[this.props.keyOfValue]}</span>;
+                if (this.props.showLabelInView) {
+                    var avatar=(<Avatar>{this.props.keyOfValue.toUpperCase().slice(0,1)}</Avatar>);
+                    result = (
+                        <List>
+                            <ListItem key={1}
+                                      primaryText={this.props.labelText}
+                                      leftAvatar={avatar}
+                                      secondaryText={this.props.object[this.props.keyOfValue]}
+                                      disabled={true}>
+                            </ListItem>
+                        </List>
+                    );
+                } else {
+                    result = <p>{this.props.object[this.props.keyOfValue]}</p>;
+                }
             }
         }else if(mode === viewModes.EDIT_MODE){
             result = <TextField
@@ -65,7 +95,11 @@ var ModefulTextField = React.createClass({
                 onBlur={this._handleTextFieldBlur}
                 floatingLabelText={this.props.labelText}
                 hintText={this.props.hintText}
-                fullWidth={true}/>;
+                fullWidth={true}
+                maxLength={this.props.maxLength}
+                multiLine={this.props.multiLine}
+
+                />;
         };
 
 

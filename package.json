@@ -13,6 +13,8 @@
   },
   "devDependencies": {
     "flux": "^2.0.3",
+    "formsy-react": "^0.14.1",
+    "formsy-react-components": "^0.4.0",
     "material-ui": "^0.10.1",
     "react-responsive": "0.0.7",
     "react-router": "^0.13.3",
