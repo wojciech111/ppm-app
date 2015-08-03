@@ -3,8 +3,6 @@ var viewModes = require('../../../constants/viewModes');
 
 
 var mui = require('material-ui');
-var TextField = mui.TextField;
-var SelectField = mui.SelectField;
 var Paper = mui.Paper;
 var DatePicker = mui.DatePicker;
 var Avatar = mui.Avatar;
@@ -12,6 +10,8 @@ var List = mui.List;
 var ListItem = mui.ListItem;
 
 var ModefulTextField = require('../../Forms/ModefulTextField');
+var ModefulSelectField = require('../../Forms/ModefulSelectField');
+var ModefulDatePicker = require('../../Forms/ModefulDatePicker');
 
 
 
@@ -25,21 +25,12 @@ var ProjectOverview = React.createClass({
             handleProjectChange: React.PropTypes.func.isRequired
         };
     },
-    getInitialState: function() {
-        return {
-            typeValue: undefined,
-            healthValue: undefined,
-            scopeValue: undefined,
-            scheduleValue: undefined,
-            budgetValue: undefined
-        };
-    },
     render:function(){
         var project= this.props.project;
         var mode = this.props.mode;
         var avatarC=(<Avatar>C</Avatar>);
         var avatarL=(<Avatar>L</Avatar>);
-        console.log("PO: "+project.description);
+        //console.log("PO: "+project.description);
 
         return (
             <div>
@@ -55,18 +46,17 @@ var ProjectOverview = React.createClass({
                                           handleChange={this.props.handleProjectChange}
                                           maxLength={10}
                             />
-
-                        <SelectField
-                            fullWidth={true}
-                            value={this.state.typeValue}
-                            onChange={this._handleTypeValueChange}
-                            floatingLabelText="Project type"
-                            valueMember="id"
-                            displayMember="name"
-                            menuItems=
-                                {[{id:"ex",name:"External project"},
-                                {id:"in",name:"Internal project"}]}
+                        <ModefulSelectField object={project}
+                                          mode={mode}
+                                          keyOfValue="type"
+                                          labelText="Project type"
+                                          showLabelInView={true}
+                                          handleChange={this.props.handleProjectChange}
+                                          menuItems=
+                                              {[{id:"EX",name:"External project"},
+                                              {id:"IN",name:"Internal project"}]}
                             />
+
                         <ModefulTextField object={project}
                                           mode={mode}
                                           keyOfValue="customer"
@@ -95,42 +85,37 @@ var ProjectOverview = React.createClass({
                                           maxLength={50}
                             />
 
-                        <ModefulTextField object={project}
-                                          mode={mode}
-                                          keyOfValue="purpose"
-                                          labelText="Purpose of project"
-                                          showLabelInView={true}
-                                          hintText="Why this project should be executed?"
-                                          handleChange={this.props.handleProjectChange}
-                                          maxLength={500}
-                                          multiLine={true}
-                            />
-
 
                     </div>
                     <div className="col-sm-4">
                         <h3>Dates</h3>
-                        <DatePicker
-                            fullWidth={true}
-                            autoOk={false}
-                            showYearSelector={true}
-                            mode="landscape"
-                            floatingLabelText="Start date"
-                            hintText="When this project will start?"/>
-                        <DatePicker
-                            fullWidth={true}
-                            autoOk={false}
-                            showYearSelector={true}
-                            mode="landscape"
-                            floatingLabelText="End date"
-                            hintText="When you plan this project will end?"/>
-                        <DatePicker
-                            fullWidth={true}
-                            autoOk={false}
-                            showYearSelector={true}
-                            mode="landscape"
-                            floatingLabelText="Deadline"
-                            hintText="When the window of opportunity will be closed?"/>
+                        <ModefulDatePicker
+                            object={project}
+                            mode={mode}
+                            keyOfValue="startDate"
+                            labelText="Start date"
+                            showLabelInView={true}
+                            hintText="When this project will start?"
+                            handleChange={this.props.handleProjectChange}
+                            />
+                        <ModefulDatePicker
+                            object={project}
+                            mode={mode}
+                            keyOfValue="endDate"
+                            labelText="End date"
+                            showLabelInView={true}
+                            hintText="When you plan this project will end"
+                            handleChange={this.props.handleProjectChange}
+                            />
+                        <ModefulDatePicker
+                            object={project}
+                            mode={mode}
+                            keyOfValue="deadline"
+                            labelText="Deadline"
+                            showLabelInView={true}
+                            hintText="When the window of opportunity will close?"
+                            handleChange={this.props.handleProjectChange}
+                            />
                         {//project.creationDate+" by "+project.createdBy
                         }
 
@@ -157,51 +142,47 @@ var ProjectOverview = React.createClass({
                     </div>
                     <div className="col-sm-4">
                         <h3>Condition</h3>
-                        <SelectField
-                            fullWidth={true}
-                            value={this.state.healthValue}
-                            onChange={this._handleHealthValueChange}
-                            floatingLabelText="Overall health"
-                            valueMember="id"
-                            displayMember="name"
-                            menuItems=
-                                {[{id:"G",name:"Good"},
-                                {id:"B",name:"Below average"},
-                                {id:"P",name:"Poor"}]}
+                        <ModefulSelectField object={project}
+                                            mode={mode}
+                                            keyOfValue="health"
+                                            labelText="Overall health"
+                                            showLabelInView={true}
+                                            handleChange={this.props.handleProjectChange}
+                                            menuItems=
+                                                {[{id:"G",name:"Good"},
+                                                {id:"B",name:"Below average"},
+                                                {id:"P",name:"Poor"}]}
                             />
-                        <SelectField
-                            fullWidth={true}
-                            value={this.state.scopeValue}
-                            onChange={this._handleScopeValueChange}
-                            floatingLabelText="Scope"
-                            valueMember="id"
-                            displayMember="name"
-                            menuItems=
-                                {[{id:"ON",name:"On target scope"},
-                                {id:"OV",name:"Over target scope"},
-                                {id:"OF",name:"Off target scope"}]}
+                        <ModefulSelectField object={project}
+                                            mode={mode}
+                                            keyOfValue="scope"
+                                            labelText="Scope"
+                                            showLabelInView={true}
+                                            handleChange={this.props.handleProjectChange}
+                                            menuItems=
+                                                {[{id:"ON",name:"On target scope"},
+                                               {id:"OV",name:"Over target scope"},
+                                               {id:"OF",name:"Off target scope"}]}
                             />
-                        <SelectField
-                            fullWidth={true}
-                            value={this.state.scheduleValue}
-                            onChange={this._handleScheduleValueChange}
-                            floatingLabelText="Schedule"
-                            valueMember="id"
-                            displayMember="name"
-                            menuItems=
-                                {[{id:"ON",name:"On plan"},
+                        <ModefulSelectField object={project}
+                                            mode={mode}
+                                            keyOfValue="schedule"
+                                            labelText="Schedule"
+                                            showLabelInView={true}
+                                            handleChange={this.props.handleProjectChange}
+                                            menuItems=
+                                                {[{id:"ON",name:"On plan"},
                                 {id:"FA",name:"Faster then planned"},
                                 {id:"OF",name:"Off plan"}]}
                             />
-                        <SelectField
-                            fullWidth={true}
-                            value={this.state.budgetValue}
-                            onChange={this._handleBudgetValueChange}
-                            floatingLabelText="Budget"
-                            valueMember="id"
-                            displayMember="name"
-                            menuItems=
-                                {[{id:"ON",name:"On budget"},
+                        <ModefulSelectField object={project}
+                                            mode={mode}
+                                            keyOfValue="budget"
+                                            labelText="Budget"
+                                            showLabelInView={true}
+                                            handleChange={this.props.handleProjectChange}
+                                            menuItems=
+                                                {[{id:"ON",name:"On budget"},
                                 {id:"BE",name:"Below planned budget"},
                                 {id:"OF",name:"Off budget"}]}
                             />
@@ -209,7 +190,20 @@ var ProjectOverview = React.createClass({
 
                 </Paper>
                 <Paper zDepth={1} className="row" style={{marginTop:10}}>
-                    <div className="col-sm-6 col-md-offset-3">
+                    <div className="col-sm-3 col-sm-offset-2">
+                        <ModefulTextField object={project}
+                                          mode={mode}
+                                          keyOfValue="purpose"
+                                          labelText="Purpose of project"
+                                          showLabelInView={true}
+                                          hintText="Why this project should be executed?"
+                                          handleChange={this.props.handleProjectChange}
+                                          maxLength={1500}
+                                          multiLine={true}
+                                          article={true}
+                            />
+                    </div>
+                    <div className="col-sm-5">
                         <ModefulTextField object={project}
                                           mode={mode}
                                           keyOfValue="description"
@@ -221,36 +215,11 @@ var ProjectOverview = React.createClass({
                                           multiLine={true}
                                           article={true}/>
                     </div>
+
                 </Paper>
             </div>
         )
-    },
-    _handleTypeValueChange: function(e) {
-        this.setState({
-            typeValue: e.target.value
-        });
-    },
-    _handleHealthValueChange: function(e) {
-        this.setState({
-            healthValue: e.target.value
-        });
-    },
-    _handleScopeValueChange: function(e) {
-
-        this.setState({
-            scopeValue: e.target.value
-        });
-    },
-    _handleScheduleValueChange: function(e) {
-        this.setState({
-            scheduleValue: e.target.value
-        });
-    },
-    _handleBudgetValueChange: function(e) {
-        this.setState({
-            budgetValue: e.target.value
-        });
-    },
+    }
 
 });
 

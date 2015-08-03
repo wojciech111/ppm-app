@@ -23,7 +23,9 @@ var ModefulTextField = React.createClass({
             handleChange: React.PropTypes.func.isRequired,
             maxLength: React.PropTypes.number,
             multiLine: React.PropTypes.bool,
-            article: React.PropTypes.bool
+            article: React.PropTypes.bool,
+            disabled: React.PropTypes.bool
+
         };
     },
     getDefaultProps: function() {
@@ -60,7 +62,7 @@ var ModefulTextField = React.createClass({
         if(mode === viewModes.VIEW_MODE) {
             if (this.props.article) {
                 result = (<TextField
-                        defaultValue={this.props.object[this.props.keyOfValue]}
+                        value={this.props.object[this.props.keyOfValue]}
                         onChange={this._handleTextFieldChange}
                         onBlur={this._handleTextFieldBlur}
                         floatingLabelText={this.props.labelText}
@@ -98,7 +100,7 @@ var ModefulTextField = React.createClass({
                 fullWidth={true}
                 maxLength={this.props.maxLength}
                 multiLine={this.props.multiLine}
-
+                disabled={this.props.disabled}
                 />;
         };
 

@@ -82,7 +82,7 @@ var ProjectDetailsContainer = React.createClass({
         var parentComponent= this.state.parentComponent;
         var mode= this.state.mode;
         var nrOfChanges= this.state.nrOfChanges;
-        console.log("PDC: "+project.description);
+        //console.log("PDC: "+project.description);
         return (
             <div>
                 <div className="container-fluid">
