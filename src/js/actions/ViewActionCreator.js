@@ -1,35 +1,34 @@
-var appConstants = require('../constants/appConstants');
+var AppConstants = require('../constants/AppConstants');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 
+var WebAPIUtils = require('../utils/WebAPIUtils.js');
+
+var ActionTypes = AppConstants.ActionTypes;
+
 var AppActions = {
-    /*addItem: function(index){
+    loadPortfolio: function(portfolioId){
         AppDispatcher.handleViewAction({
-            actionType: appConstants.LOAD_PORTFOLIO,
-            item: index
+            actionType: ActionTypes.LOAD_PORTFOLIO,
+            portfolioId: portfolioId
         })
+        WebAPIUtils.loadPortfolio(portfolioId);
     },
-    removeItem: function(item){
-        AppDispatcher.handleViewAction({
-            actionType: appConstants.SAVE_PORTFOLIO,
-            index: item
-        })
-    }*/
     createComponent: function(component, parentId){
         AppDispatcher.handleViewAction({
-            actionType: appConstants.CREATE_COMPONENT,
+            actionType: ActionTypes.CREATE_COMPONENT,
             component: component,
             parentId: parentId
         })
     },
     updateComponent: function(component){
         AppDispatcher.handleViewAction({
-            actionType: appConstants.UPDATE_COMPONENT,
+            actionType: ActionTypes.UPDATE_COMPONENT,
             component: component
         })
     },
     removeComponent: function(componentId){
         AppDispatcher.handleViewAction({
-            actionType: appConstants.REMOVE_COMPONENT,
+            actionType: ActionTypes.REMOVE_COMPONENT,
             componentId: componentId
         })
     }

@@ -1,6 +1,6 @@
 var React = require('react');
-var viewModes = require('../../constants/viewModes');
-
+var AppConstants = require('../../constants/AppConstants');
+var ViewModes = AppConstants.ViewModes;
 var objectAssign = require('react/lib/Object.assign');
 
 
@@ -53,7 +53,7 @@ var ModefulSelectField = React.createClass({
 
 
         var result;
-        if(mode === viewModes.VIEW_MODE) {
+        if(mode === ViewModes.VIEW_MODE) {
             if (this.props.showLabelInView) {
                 var avatar=(<Avatar>{this.props.keyOfValue.toUpperCase().slice(0,1)}</Avatar>);
                 var value;
@@ -79,7 +79,7 @@ var ModefulSelectField = React.createClass({
                 result = <p>{this.props.object[this.props.keyOfValue]}</p>;
             }
 
-        }else if(mode === viewModes.EDIT_MODE){
+        }else if(mode === ViewModes.EDIT_MODE){
             result = <SelectField
                 fullWidth={true}
                 value={this.state.selectValue}

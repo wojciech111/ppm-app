@@ -9,4 +9,5 @@ module.exports = {
     USER_DETAILS: 'user_details',
 
     PROJECT_DETAILS: 'project',
+    PROGRAM_DETAILS: 'program',
 };

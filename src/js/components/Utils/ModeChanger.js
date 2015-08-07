@@ -3,7 +3,8 @@ var mui = require('material-ui');
 var RaisedButton = mui.RaisedButton;
 var FlatButton = mui.FlatButton;
 
-var viewModes = require('../../constants/viewModes');
+var AppConstants = require('../../constants/AppConstants');
+var ViewModes = AppConstants.ViewModes;
 
 
 
@@ -25,9 +26,9 @@ var ModeChanger = React.createClass({
         var nrOfChanges = this.props.nrOfChanges;
         var btn;
 
-        if(currentMode === viewModes.VIEW_MODE){
+        if(currentMode === ViewModes.VIEW_MODE){
             btn = <RaisedButton label="Edit this page" secondary={true} onClick={this.props.changeToEdit}/>;
-        } else if(currentMode === viewModes.EDIT_MODE){
+        } else if(currentMode === ViewModes.EDIT_MODE){
             if(nrOfChanges === 0){
                 btn = (
                     <div>

@@ -1,5 +1,6 @@
 var React = require('react');
-var viewModes = require('../../constants/viewModes');
+var AppConstants = require('../../constants/AppConstants');
+var ViewModes = AppConstants.ViewModes;
 
 var objectAssign = require('react/lib/Object.assign');
 
@@ -59,7 +60,7 @@ var ModefulTextField = React.createClass({
 
 
         var result;
-        if(mode === viewModes.VIEW_MODE) {
+        if(mode === ViewModes.VIEW_MODE) {
             if (this.props.article) {
                 result = (<TextField
                         value={this.props.object[this.props.keyOfValue]}
@@ -90,7 +91,7 @@ var ModefulTextField = React.createClass({
                     result = <p>{this.props.object[this.props.keyOfValue]}</p>;
                 }
             }
-        }else if(mode === viewModes.EDIT_MODE){
+        }else if(mode === ViewModes.EDIT_MODE){
             result = <TextField
                 defaultValue={this.props.object[this.props.keyOfValue]}
                 onChange={this._handleTextFieldChange}

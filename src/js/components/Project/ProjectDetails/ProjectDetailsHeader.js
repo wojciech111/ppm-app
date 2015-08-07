@@ -1,5 +1,5 @@
 var React = require('react');
-var viewModes = require('../../../constants/viewModes');
+
 
 
 var mui = require('material-ui');

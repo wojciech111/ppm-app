@@ -1,5 +1,5 @@
 var React = require('react');
-var viewModes = require('../../../constants/viewModes');
+
 
 
 var mui = require('material-ui');
@@ -15,7 +15,7 @@ var ModefulDatePicker = require('../../Forms/ModefulDatePicker');
 
 
 
-var AppStore = require('../../../stores/portfolioStore');
+var AppStore = require('../../../stores/PortfolioStore');
 
 var ProjectOverview = React.createClass({
     propTypes: function () {

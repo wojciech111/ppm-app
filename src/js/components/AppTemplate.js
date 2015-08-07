@@ -1,6 +1,9 @@
 var React = require('react');
 
-var AppStore = require('../stores/portfolioStore');
+var PortfolioStore = require('../stores/PortfolioStore');
+var AppConstants = require('../constants/AppConstants');
+
+var StoreStatuses = AppConstants.StoreStatuses;
 
 var Router = require('react-router');
 var routes_names = require('../config/routes_names');
@@ -22,7 +25,11 @@ var AppContextContainer = require('./AppContext/AppContextContainer');
 
 var AppTemplate = React.createClass({
     mixins: [Router.Navigation],
-
+    getInitialState: function(){
+        return {
+            portfolioName: null
+        }
+    },
 
     _handleHamburgerClick: function()
     {
@@ -69,8 +76,26 @@ var AppTemplate = React.createClass({
         console.log(payload);
         this.transitionTo(payload.route);
     },
+    /* MANAGE STORE CHANGES*/
+    componentDidMount: function(){
+        PortfolioStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function(){
+        PortfolioStore.removeChangeListener(this._onChange);
+    },
+    _onChange: function(){
+        if(PortfolioStore.getStatus() === StoreStatuses.UP_TO_DATE || PortfolioStore.getStatus() === StoreStatuses.MODIFIED) {
+            this.setState({
+                portfolioName: PortfolioStore.getPortfolio().name
+            })
+        }
+    },
+    /* MANAGE STORE CHANGES*/
     render:function(){
-        var portfolio = AppStore.getPortfolio();
+        var title = "Loading for data...";
+        if(this.state.portfolioName !== null) {
+            title = this.state.portfolioName;
+        }
         var menuItems = this.props.menuItems;
 
         return (
@@ -85,7 +110,7 @@ var AppTemplate = React.createClass({
                         />
                     <div style={{marginLeft:256}}>
                         <AppBar showMenuIconButton={false} onLeftIconButtonTouchTap = { this._handleHamburgerClick }
-                            title = {portfolio.name} style={{marginBottom:5}}/>
+                            title = {title} style={{marginBottom:5}}/>
                         {this.props.children}
                     </div>
                 </MediaQuery>
@@ -98,7 +123,7 @@ var AppTemplate = React.createClass({
                              onChange={this._onLeftNavChange}
                         />
                     <AppBar showMenuIconButton={true} onLeftIconButtonTouchTap = { this._handleHamburgerClick }
-                            title = {portfolio.name} style={{marginBottom:5}}/>
+                            title = {title} style={{marginBottom:5}}/>
                     {this.props.children}
                 </MediaQuery>
             </div>

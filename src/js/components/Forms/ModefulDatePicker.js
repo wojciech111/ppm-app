@@ -1,5 +1,6 @@
 var React = require('react');
-var viewModes = require('../../constants/viewModes');
+var AppConstants = require('../../constants/AppConstants');
+var ViewModes = AppConstants.ViewModes;
 
 var objectAssign = require('react/lib/Object.assign');
 
@@ -68,7 +69,7 @@ var ModefulDatePicker = React.createClass({
 
 
         var result;
-        if(mode === viewModes.VIEW_MODE) {
+        if(mode === ViewModes.VIEW_MODE) {
             if (this.props.showLabelInView) {
                 var avatar=(<Avatar>{this.props.keyOfValue.toUpperCase().slice(0,1)}</Avatar>);
                 result = (
@@ -85,7 +86,7 @@ var ModefulDatePicker = React.createClass({
                 result = <p>{this.props.object[this.props.keyOfValue]}</p>;
             }
 
-        }else if(mode === viewModes.EDIT_MODE) {
+        }else if(mode === ViewModes.EDIT_MODE) {
             var defaultDate;
             if (this.props.object[this.props.keyOfValue]) {
                 var dateArr = this.props.object[this.props.keyOfValue].split("/");

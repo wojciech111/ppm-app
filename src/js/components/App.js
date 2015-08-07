@@ -18,6 +18,7 @@ var App = React.createClass({
             muiTheme: ThemeManager.getCurrentTheme()
         };
     },
+
     componentWillMount() {
         ThemeManager.setPalette({
             accent1Color: Colors.blue500
