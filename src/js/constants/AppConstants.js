@@ -1,20 +1,20 @@
 var keyMirror = require('react/lib/keyMirror');
 
-var APIRoot = "http://192.168.0.14:4567";
+var APIRoot = "http://192.168.146.1:4567";
 
 var appConstants = {
 
 //API
     APIEndpoints: {
-        LOGIN:          APIRoot + "/v1/login",
-        REGISTRATION:   APIRoot + "/v1/users",
-        STORIES:        APIRoot + "/v1/stories",
+        LOGIN:          APIRoot + "/login",
+        REGISTRATION:   APIRoot + "/users",
         PORTFOLIO:      APIRoot + "/portfolios"
     },
 //Source of actions
     PayloadSources: keyMirror({
         SERVER_ACTION: null,
-        VIEW_ACTION: null
+        VIEW_ACTION: null,
+        STORE_ACTION: null
     }),
 //Modes of views
     ViewModes: keyMirror({
@@ -27,19 +27,25 @@ var appConstants = {
         EMPTY: null,
         WAITING_FOR_DATA: null,
         UP_TO_DATE: null,
-        MODIFIED: null
+        MODIFIED: null,
+        SAVING: null
     }),
 //Action types
     ActionTypes: keyMirror({
+
         // Session
         LOGIN_REQUEST: null,
         LOGIN_RESPONSE: null,
+        LOGOUT: null,
 
         // Routes
         REDIRECT: null,
 
-        //From views
+        //From stores
         LOAD_PORTFOLIO: null,
+        SAVE_PORTFOLIO: null,
+
+        //From views
         CREATE_COMPONENT: null,
         UPDATE_COMPONENT: null,
         REMOVE_COMPONENT: null,

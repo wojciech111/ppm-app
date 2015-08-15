@@ -10,4 +10,7 @@ module.exports = {
 
     PROJECT_DETAILS: 'project',
     PROGRAM_DETAILS: 'program',
+
+    LOGIN: 'login',
+    SIGNUP: 'signup'
 };

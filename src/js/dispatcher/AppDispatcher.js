@@ -16,6 +16,15 @@ var AppDispatcher = assign(new Dispatcher(),{
         };
         this.dispatch(payload);
     },
+    //Actions initiated by store
+    handleStoreAction: function(action) {
+        console.log('store action', action);
+        var payload = {
+            source: PayloadSources.STORE_ACTION,
+            action: action
+        };
+        this.dispatch(payload);
+    },
     //Actions initiated by view
     handleViewAction: function(action) {
         console.log('view action', action);

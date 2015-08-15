@@ -17,4 +17,11 @@ module.exports = {
             error: error
         });
     },
+    receiveLogin: function(user, errors) {
+        SmallAppDispatcher.handleServerAction({
+          type: ActionTypes.LOGIN_RESPONSE,
+          user: user,
+          errors: errors
+        });
+    },            
 };

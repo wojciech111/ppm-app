@@ -13,10 +13,15 @@ var ProjectDetailsContainer = require('../components/Project/ProjectDetailsConta
 
 var AppContextContainer = require('../components/AppContext/AppContextContainer');
 
+var LoginPage = require('../components/Session/LoginPage');
+//var SignupPage = require('../components/Session/SignupPage');
+
 
 
 module.exports = (
     <Route name="app" path="/" handler={App}>
+        <Route name={routes_names.LOGIN} path={routes_names.LOGIN} handler={LoginPage} />
+
         <Route name={routes_names.PROJECT_MAIN} path={routes_names.PROJECT_MAIN} handler={ProjectMainPage} />
         <Route name={routes_names.PROGRAM_MAIN} path={routes_names.PROGRAM_MAIN} handler={TestPage} />
         <Route name={routes_names.PROJECT_DETAILS} path={routes_names.PROJECT_DETAILS.concat("/:projectId")} handler={ProjectDetailsContainer} />

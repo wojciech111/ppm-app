@@ -21,39 +21,40 @@ var ProjectDetailsContainer = React.createClass({
     mixins: [Router.State],
     getInitialState: function(){
         return {
-            project: null,
-            parentComponent: null,
+            project: PortfolioStore.getProject(this.getParams().projectId),
+            parentComponent: PortfolioStore.getParent(this.getParams().projectId),
             mode: ViewModes.VIEW_MODE,
             nrOfChanges: 0,
-            portfolioId: 1600
+            portfolioId: 2950
         }
     },
     /* MANAGE STORE CHANGES*/
     componentDidMount: function(){
         PortfolioStore.addChangeListener(this._onChange);
-        this._loadPortfolio(this.state.portfolioId);
+        //this._loadPortfolio(this.state.portfolioId);
     },
     componentWillUnmount: function(){
         PortfolioStore.removeChangeListener(this._onChange);
     },
     _onChange: function(){
-        if(PortfolioStore.getStatus() === StoreStatuses.UP_TO_DATE || PortfolioStore.getStatus() === StoreStatuses.MODIFIED) {
+        //if(PortfolioStore.getStatus() === StoreStatuses.UP_TO_DATE || PortfolioStore.getStatus() === StoreStatuses.MODIFIED) {
             this.setState({
                 project: PortfolioStore.getProject(this.getParams().projectId),
                 parentComponent: PortfolioStore.getParent(this.getParams().projectId)
             })
-        }
+       // }
+
     },
     /* MANAGE STORE CHANGES*/
 
     /* HANDLE APP STATES CHANGES*/
-    _loadPortfolio: function(portfolioId){
+    /*_loadPortfolio: function(portfolioId){
         if(PortfolioStore.getStatus() === StoreStatuses.EMPTY) {
             ViewActionCreator.loadPortfolio(portfolioId);
         }else if(PortfolioStore.getCurrentPortfolioId() !== portfolioId){
             console.log("PortfolioStore.getCurrentPortfolioId() !== portfolioId");
         }
-    },
+    },*/
 
     _handleProjectUpdate: function(changedProject){
         ViewActionCreator.updateComponent(changedProject);
@@ -96,13 +97,18 @@ var ProjectDetailsContainer = React.createClass({
         var parentComponent= this.state.parentComponent;
         var mode= this.state.mode;
         var nrOfChanges= this.state.nrOfChanges;
-        console.log("PDC: "+PortfolioStore.getStatus());
+        console.log("ProjectDetailsContainer: "+PortfolioStore.getStatus());
         var viewToShow;
+
         if(PortfolioStore.getStatus() === StoreStatuses.EMPTY || PortfolioStore.getStatus() === StoreStatuses.WAITING_FOR_DATA){
             viewToShow=(
                 <div>Loading...</div>
             );
-        } else {
+        } else if(project === null) {
+            viewToShow=(
+                <div>No project with ID: {this.getParams().projectId} found!</div>
+            );
+        }else {
             viewToShow = (
                 <div>
                     <div className="container-fluid">

@@ -4,6 +4,9 @@ var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var WebAPIUtils = require('../utils/WebAPIUtils');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
+var StoreActionCreator = require('../actions/StoreActionCreator');
+
+
 
 var ActionTypes = AppConstants.ActionTypes;
 var StoreStatuses = AppConstants.StoreStatuses;
@@ -18,9 +21,84 @@ var _state = {
     status: StoreStatuses.EMPTY,
     nrOfChanges:0, //when modified
     errors: [],
-    currentPortfolioId: null
+    portfolioId: 2950,
+    messages:[],
+    autosave: true
 };
 /* MODEL */
+/* STATE MANAGEMENT*/
+var _canServeData = function(){
+    console.log("_canServeData "+_state.status);
+    if(_state.status === StoreStatuses.EMPTY ){
+        _state.status = StoreStatuses.WAITING_FOR_DATA;
+        StoreActionCreator.loadPortfolio(_state.portfolioId);
+        return false;
+    } else if(_state.status === StoreStatuses.WAITING_FOR_DATA ){
+        return false;
+    } else if(_state.status === StoreStatuses.UP_TO_DATE ){
+        return true;
+    } else if(_state.status === StoreStatuses.MODIFIED ){
+        return true;
+    } else if(_state.status === StoreStatuses.SAVING ){
+        return true;
+    }
+};
+var _canModifyData = function(){
+    console.log("_canModifyData "+_state.status);
+    if(_state.status === StoreStatuses.EMPTY ){
+        console.log("Store was in incorrect state for modification!!!");
+        return false;
+    } else if(_state.status === StoreStatuses.WAITING_FOR_DATA ){
+        console.log("Store was in incorrect state for modification!!!");
+        return false;
+    } else if(_state.status === StoreStatuses.UP_TO_DATE ){
+        _state.status = StoreStatuses.MODIFIED;
+        _state.nrOfChanges=_state.nrOfChanges+1;
+        return true;
+    } else if(_state.status === StoreStatuses.MODIFIED ){
+        _state.nrOfChanges=_state.nrOfChanges+1;
+        return true;
+    } else if(_state.status === StoreStatuses.SAVING ){
+        _state.status = StoreStatuses.MODIFIED;
+        _state.nrOfChanges=_state.nrOfChanges+1;
+        return true;
+    }
+};
+var _updateData = function(){
+    console.log("_updateData "+_state.status);
+
+    if(_state.status === StoreStatuses.EMPTY ){
+        _state.status = StoreStatuses.UP_TO_DATE;
+        _state.nrOfChanges=0;
+        _state.errors = [];
+        return true;
+    } else if(_state.status === StoreStatuses.WAITING_FOR_DATA ){
+        _state.status = StoreStatuses.UP_TO_DATE;
+        _state.nrOfChanges=0;
+        _state.errors = [];
+        return true;
+    } else if(_state.status === StoreStatuses.UP_TO_DATE ){
+        _state.status = StoreStatuses.UP_TO_DATE;
+        _state.nrOfChanges=0;
+        _state.errors = [];
+        return true;
+    } else if(_state.status === StoreStatuses.MODIFIED ){
+        return false;
+    } else if(_state.status === StoreStatuses.SAVING ){
+        _state.status = StoreStatuses.UP_TO_DATE;
+        _state.nrOfChanges=0;
+        _state.errors = [];
+        return true;
+    }
+};
+var _autosaveData = function(){
+    console.log("_autosaveData "+_state.status);
+    if(_state.autosave && _state.status === StoreStatuses.MODIFIED){
+        StoreActionCreator.savePortfolio(_store.portfolio);
+        _state.status = StoreStatuses.SAVING;
+    }
+};
+/* STATE MANAGEMENT*/
 /* PRIVATE ACTIONS - STORE LOGIC */
 
 //FROM VIEWS
@@ -29,30 +107,27 @@ var createComponent = function(component, parentId){
 };
 
 var updateComponent = function(updatedComponent){
-    var parentComponent=_getParentComponent(updatedComponent.componentId, _store.portfolio);
-    for (var i = 0;parentComponent.children[i];i++) {
-        if(parentComponent.children[i].componentId === updatedComponent.componentId){
-            parentComponent.children[i]=updatedComponent;
-            //console.log(parentComponent.children[i].name);
+    if(_canModifyData()) {
+        var parentComponent = _getParentComponent(updatedComponent.componentId, _store.portfolio);
+        for (var i = 0; parentComponent.children[i]; i++) {
+            if (parentComponent.children[i].componentId === updatedComponent.componentId) {
+                parentComponent.children[i] = updatedComponent;
+                //console.log(parentComponent.children[i].name);
+            }
         }
+        _autosaveData();
     }
-    _markModification();
+
 };
 
 var loadPortfolio = function(portfolioId){
-    if(_state.status === StoreStatuses.EMPTY){
-        _state.status = StoreStatuses.WAITING_FOR_DATA;
-        _state.currentPortfolioId = portfolioId;
-    }
+    _state.portfolioId = portfolioId;
+    _canServeData();
 };
 //FROM SERVER
 var receivePortfolio = function(newPortfolio){
-    if(newPortfolio) {
+    if(_updateData()) {
         _store.portfolio = newPortfolio;
-        _state.status = StoreStatuses.UP_TO_DATE;
-        _state.nrOfChanges = 0;
-        _state.errors = [];
-        _state.currentPortfolioId = newPortfolio.componentId;
     }
 };
 var receiveError = function(error){
@@ -61,7 +136,9 @@ var receiveError = function(error){
     }
     if(_state.status === StoreStatuses.WAITING_FOR_DATA){
         _state.status = StoreStatuses.EMPTY;
-        _state.currentPortfolioId = null;
+    }
+    if(_state.status === StoreStatuses.SAVING){
+        _state.status = StoreStatuses.MODIFIED;
     }
 };
 
@@ -107,16 +184,7 @@ var _getParentComponent = function(id, rootComponent) {
     }
     return null;
 };
-var _markModification = function(){
-    if(_state.status === StoreStatuses.UP_TO_DATE || _state.status === StoreStatuses.MODIFIED){
-        _state.status =StoreStatuses.MODIFIED;
-        _state.nrOfChanges=_state.nrOfChanges+1;
-        return true;
-    } else {
-        _state.errors.push("Store was in incorrect state for modification");
-        return false;
-    }
-};
+
 /* PRIVATE STORE HELPERS */
 
 var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
@@ -144,28 +212,37 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
     /* STORE STATUS INFO */
     /* PUBLIC GETTERS */
     getPortfolio: function(){
-        return _store.portfolio;
+        if(_canServeData()) {
+            return _store.portfolio;
+        }
     },
     getProject: function(projectId){
-        var project=_getComponentById(projectId, _store.portfolio);
-        if(project !== null && project.componentType === "PROJECT") {
-            //console.log(project.name);
-            return project;
+        if(_canServeData()) {
+            //console.log("search project "+_store.portfolio);
+            var project = _getComponentById(projectId, _store.portfolio);
+            if (project !== null && project.componentType === "PROJECT") {
+                //console.log("project "+project.name);
+                return project;
+            }
         }
         return null;
     },
     getProgram: function(programId){
-        var program=_getComponentById(programId, _store.portfolio);
-        if(program !== null && program.componentType === "PROGRAM") {
-            //console.log(project.name);
-            return program;
+        if(_canServeData()) {
+            var program = _getComponentById(programId, _store.portfolio);
+            if (program !== null && program.componentType === "PROGRAM") {
+                //console.log(project.name);
+                return program;
+            }
         }
         return null;
     },
     getParent: function(childId){
-        var component=_getParentComponent(childId, _store.portfolio);
-        if(component !== null ) {
-            return component;
+        if(_canServeData()) {
+            var component = _getParentComponent(childId, _store.portfolio);
+            if (component !== null) {
+                return component;
+            }
         }
         return null;
     },
