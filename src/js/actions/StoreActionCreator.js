@@ -14,11 +14,18 @@ var StoreActionCreator = {
         WebAPIUtils.savePortfolio(portfolio);
     },
     loadPortfolio: function(portfolioId){
-        AppDispatcher.handleStoreAction({
+        /*AppDispatcher.handleStoreAction({
             actionType: ActionTypes.LOAD_PORTFOLIO,
             portfolioId: portfolioId
-        })
+        })*/
         WebAPIUtils.loadPortfolio(portfolioId);
+    },
+    loadUser: function(userId){
+        /*AppDispatcher.handleStoreAction({
+            actionType: ActionTypes.LOAD_USER,
+            userId: userId
+        })*/
+        WebAPIUtils.loadUser(userId);
     }
 };
 

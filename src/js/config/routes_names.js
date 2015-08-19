@@ -11,6 +11,7 @@ module.exports = {
     PROJECT_DETAILS: 'project',
     PROGRAM_DETAILS: 'program',
 
+    PORTFOLIO_CHOOSER: 'portfolio_chooser',
     LOGIN: 'login',
     SIGNUP: 'signup'
 };

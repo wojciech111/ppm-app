@@ -6,6 +6,13 @@ var WebAPIUtils = require('../utils/WebAPIUtils.js');
 var ActionTypes = AppConstants.ActionTypes;
 
 var ViewActionCreator = {
+    loadPortfolio: function(portfolioId){
+        AppDispatcher.handleViewAction({
+         actionType: ActionTypes.LOAD_PORTFOLIO,
+         portfolioId: portfolioId
+         })
+        //WebAPIUtils.loadPortfolio(portfolioId);
+    },
     createComponent: function(component, parentId){
         AppDispatcher.handleViewAction({
             actionType: ActionTypes.CREATE_COMPONENT,

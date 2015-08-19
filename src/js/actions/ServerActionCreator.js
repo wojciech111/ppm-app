@@ -11,14 +11,26 @@ module.exports = {
             portfolio: portfolio
         });
     },
-    receiveError: function(error) {
+    receivePortfolioError: function(error) {
         AppDispatcher.handleServerAction({
-            actionType: ActionTypes.RECEIVE_ERROR,
+            actionType: ActionTypes.RECEIVE_PORTFOLIO_ERROR,
+            error: error
+        });
+    },
+    receiveUser: function(user) {
+        AppDispatcher.handleServerAction({
+            actionType: ActionTypes.RECEIVE_USER,
+            user: user
+        });
+    },
+    receiveUserError: function(error) {
+        AppDispatcher.handleServerAction({
+            actionType: ActionTypes.RECEIVE_USER_ERROR,
             error: error
         });
     },
     receiveLogin: function(user, errors) {
-        SmallAppDispatcher.handleServerAction({
+        AppDispatcher.handleServerAction({
           type: ActionTypes.LOGIN_RESPONSE,
           user: user,
           errors: errors

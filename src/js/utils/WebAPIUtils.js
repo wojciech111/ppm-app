@@ -11,16 +11,34 @@ var WebAPIUtils = {
     login: function(email, password) {
         console.log("API: login "+email);
         request.post(APIEndpoints.LOGIN)
-            .send({ email: email, password: password, grant_type: 'password' })
+            .send({ email: email, password: password, grantType: 'password' })
             .set('Accept', 'application/json')
             .end(function(error, res){
                 if (res) {
                     if (res.error) {
-                        var errorMsgs = _getErrors(res);
-                        ServerActionCreator.receiveLogin(null, errorMsgs);
+                        var errorMsgs = res.error;
+                        ServerActionCreator.receiveUserError(errorMsgs);
                     } else {
-                        json = JSON.parse(res.text);
-                        ServerActionCreator.receiveLogin(json, null);
+                        user = JSON.parse(res.text);
+                        ServerActionCreator.receiveUser(user);
+                    }
+                }
+            });
+    },
+    loadUser: function(userId) {
+        //console.log("loadUser");
+        request.get(APIEndpoints.USER+'/'+userId)
+            .set('Accept', 'application/json')
+            .end(function(error, res){
+                if (res) {
+                    if (res.error) {
+                        var errorMsgs = res.error;
+                        //console.log(errorMsgs);
+                        ServerActionCreator.receiveUserError(errorMsgs);
+                    } else {
+                        var user = JSON.parse(res.text);
+                        //console.log(portfolio);
+                        ServerActionCreator.receiveUser(user);
                     }
                 }
             });
@@ -34,7 +52,7 @@ var WebAPIUtils = {
                     if (res.error) {
                         var errorMsgs = res.error;
                         //console.log(errorMsgs);
-                        ServerActionCreator.receiveError(errorMsgs);
+                        ServerActionCreator.receivePortfolioError(errorMsgs);
                     } else {
                         var portfolio = JSON.parse(res.text);
                         //console.log(portfolio);
@@ -53,7 +71,7 @@ var WebAPIUtils = {
                     if (res.error) {
                         var errorMsgs = res.error;
                         //console.log(errorMsgs);
-                        ServerActionCreator.receiveError(errorMsgs);
+                        ServerActionCreator.receivePortfolioError(errorMsgs);
                     } else {
                         var portfolio = JSON.parse(res.text);
                         //console.log(portfolio);

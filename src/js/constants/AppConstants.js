@@ -8,6 +8,7 @@ var appConstants = {
     APIEndpoints: {
         LOGIN:          APIRoot + "/login",
         REGISTRATION:   APIRoot + "/users",
+        USER:           APIRoot + "/users",
         PORTFOLIO:      APIRoot + "/portfolios"
     },
 //Source of actions
@@ -44,6 +45,8 @@ var appConstants = {
         //From stores
         LOAD_PORTFOLIO: null,
         SAVE_PORTFOLIO: null,
+        LOAD_USER: null,
+        SAVE_USER: null,
 
         //From views
         CREATE_COMPONENT: null,
@@ -52,7 +55,9 @@ var appConstants = {
 
         //From server
         RECEIVE_PORTFOLIO: null,
-        RECEIVE_ERROR: null,
+        RECEIVE_PORTFOLIO_ERROR: null,
+        RECEIVE_USER: null,
+        RECEIVE_USER_ERROR: null,
 
 
         //tmp
