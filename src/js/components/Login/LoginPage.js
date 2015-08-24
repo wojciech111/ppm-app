@@ -1,6 +1,20 @@
 var React = require('react');
-var SessionActionCreator = require('../../actions/SessionActionCreator');
+//Router
+//routes names
+//Stores
 var UserStore = require('../../stores/UserStore');
+//var PortfolioStore = require('../../stores/PortfolioStore');
+//Action creators
+var ViewActionCreator = require('../../actions/ViewActionCreator');
+//Constants
+//Components
+//Material-ui components
+var mui = require('material-ui');
+var FlatButton = mui.FlatButton;
+
+/*
+ TODO  zamiana na material-ui, jezeli button wciseniety to loading indiactor do momementu dostania errorow
+ */
 
 var LoginPage = React.createClass({
     getInitialState: function() {
@@ -24,7 +38,7 @@ var LoginPage = React.createClass({
         this.setState({ errors: [] });
         var email = this.refs.email.getDOMNode().value;
         var password = this.refs.password.getDOMNode().value;
-        SessionActionCreator.login(email, password);
+        ViewActionCreator.login(email, password);
     },
 
     render: function() {

@@ -1,18 +1,26 @@
 var React = require('react');
-
-var mui = require('material-ui');
-var ThemeManager = new mui.Styles.ThemeManager();
-var Colors = mui.Styles.Colors;
-
+//Router
 var Router =require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Navigation = Router.Navigation;
-
-var AppTemplate = require('./AppTemplate');
-
+//routes names
+var routes_names = require('../config/routes_names');
+//Stores
 var UserStore = require('../stores/UserStore');
 var PortfolioStore = require('../stores/PortfolioStore');
-var routes_names = require('../config/routes_names');
+//Action creators
+//Constants
+var AppConstants = require('../constants/AppConstants');
+var AppStatuses = AppConstants.AppStatuses;
+//Components
+var LoginPage = require('./Login/LoginPage');
+var PortfolioChooserPage = require('./Login/PortfolioChooserPage');
+var AppTemplate = require('./AppTemplate/AppTemplate');
+//Material-ui components
+var mui = require('material-ui');
+var ThemeManager = new mui.Styles.ThemeManager();
+var Colors = mui.Styles.Colors;
+var RefreshIndicator = mui.RefreshIndicator;
 
 
 var App = React.createClass({
@@ -20,8 +28,11 @@ var App = React.createClass({
     //STORES
     getInitialState: function() {
         return {
-            userId: UserStore.getCurrentUserId(),
-            portfolioId: PortfolioStore.getCurrentPortfolioId()
+            appStatus: AppStatuses.LOGGED_OUT,
+            //user: UserStore.getUser(),
+            userErrors: UserStore.getErrors(),
+            //portfolio: PortfolioStore.getPortfolio(),
+            portfolioErrors: PortfolioStore.getErrors()
         };
     },
 
@@ -36,9 +47,26 @@ var App = React.createClass({
     },
 
     _onChange: function() {
+        var newStatus=null;
+        if(!UserStore.isLoggedIn()) {
+            newStatus=AppStatuses.LOGGED_OUT;
+        } else if(UserStore.isLoggedIn() && !UserStore.haveUser()){
+            newStatus=AppStatuses.WAITING_FOR_USER;
+        } else if(UserStore.haveUser() && !PortfolioStore.isPortfolioChoosen()){
+            newStatus=AppStatuses.HAVE_USER;
+        } else if(UserStore.haveUser() && !PortfolioStore.havePortfolio()){
+            newStatus=AppStatuses.WAITING_FOR_PORTFOLIO;
+        } else if(UserStore.haveUser() && PortfolioStore.havePortfolio()){
+            newStatus=AppStatuses.READY_TO_WORK;
+        } else {
+            newStatus=null;
+        }
         this.setState({
-            userId: UserStore.getCurrentUserId(),
-            portfolioId: PortfolioStore.getCurrentPortfolioId()
+            appStatus: newStatus,
+            //user: UserStore.getUser(),
+            userErrors: UserStore.getErrors(),
+            //portfolio: PortfolioStore.getPortfolio(),
+            portfolioErrors: PortfolioStore.getErrors()
         });
     },
     //STORES
@@ -52,7 +80,6 @@ var App = React.createClass({
             muiTheme: ThemeManager.getCurrentTheme()
         };
     },
-
     componentWillMount() {
         ThemeManager.setPalette({
             accent1Color: Colors.blue500
@@ -62,19 +89,23 @@ var App = React.createClass({
 
 
     render:function(){
-        var routeHandler = (<RouteHandler />);
-        if(this.state.userId === null){
-            console.log("APP: need login ID. this.state.userId="+this.state.userId);
-            this.transitionTo(routes_names.LOGIN);
-        } else if(this.state.portfolioId === null){
-            console.log("APP: need portfolio ID. this.state.portfolioId="+this.state.portfolioId);
-            this.transitionTo(routes_names.PORTFOLIO_CHOOSER);
-        }else{
-            console.log("APP: generate template");
-            routeHandler= (<AppTemplate><RouteHandler /></AppTemplate>);
+        var content = (<RouteHandler />);
+        console.log("RERENDER! appStatus: "+this.state.appStatus);
+        if(this.state.appStatus === AppStatuses.LOGGED_OUT){
+            content = <LoginPage errors={this.state.userErrors} />
+        } else if(this.state.appStatus === AppStatuses.HAVE_USER){
+            content = <PortfolioChooserPage errors={this.state.portfolioErrors} />
+        } else if(this.state.appStatus === AppStatuses.WAITING_FOR_PORTFOLIO ||
+                this.state.appStatus === AppStatuses.WAITING_FOR_PORTFOLIO){
+            content = <RefreshIndicator size={40} left={80} top={5} status="loading" />
+        } else if(this.state.appStatus === AppStatuses.READY_TO_WORK){
+            content="SUCCES!";
+            //content= (<AppTemplate><RouteHandler /></AppTemplate>);
+        } else{
+            content="ERROR: No app status!";
         }
         return (
-            <div>{routeHandler}</div>
+            <div>{content}</div>
         );
     }
 });

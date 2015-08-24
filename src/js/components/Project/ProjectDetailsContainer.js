@@ -1,24 +1,33 @@
 var React = require('react');
-var Router = require('react-router');
-var AppConstants = require('../../constants/AppConstants');
-
+//Router
+var State = require('react-router').State;
+//routes names
+//Stores
+//var UserStore = require('../../stores/UserStore');
 var PortfolioStore = require('../../stores/PortfolioStore');
+//Action creators
 var ViewActionCreator = require('../../actions/ViewActionCreator');
-
+//Constants
+var AppConstants = require('../../constants/AppConstants');
+var StoreStatuses = AppConstants.StoreStatuses;
+var ViewModes = AppConstants.ViewModes;
+//Components
+var ModeChanger = require('../Commons/ModeChanger');
+var ProjectDetailsHeader = require('./ProjectDetails/ProjectDetailsHeader');
+var ProjectOverview = require('./ProjectDetails/ProjectOverview');
+//Material-ui components
 var mui = require('material-ui');
 var Tabs = mui.Tabs;
 var Tab = mui.Tab;
 
-var ModeChanger = require('../Utils/ModeChanger');
-var ProjectDetailsHeader = require('./ProjectDetails/ProjectDetailsHeader');
-var ProjectOverview = require('./ProjectDetails/ProjectOverview');
+/*
+ TODO brakuje pozostalych stron opsiu projektu
+ */
 
-var StoreStatuses = AppConstants.StoreStatuses;
-var ViewModes = AppConstants.ViewModes;
 
 
 var ProjectDetailsContainer = React.createClass({
-    mixins: [Router.State],
+    mixins: [State],
     getInitialState: function(){
         return {
             project: PortfolioStore.getProject(this.getParams().projectId),

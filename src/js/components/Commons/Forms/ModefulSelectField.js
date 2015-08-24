@@ -1,5 +1,5 @@
 var React = require('react');
-var AppConstants = require('../../constants/AppConstants');
+var AppConstants = require('../../../constants/AppConstants');
 var ViewModes = AppConstants.ViewModes;
 var objectAssign = require('react/lib/Object.assign');
 

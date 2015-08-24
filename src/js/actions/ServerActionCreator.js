@@ -1,6 +1,6 @@
-var AppConstants = require('../constants/AppConstants');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-
+//Constants
+var AppConstants = require('../constants/AppConstants');
 var ActionTypes = AppConstants.ActionTypes;
 
 module.exports = {
@@ -29,11 +29,11 @@ module.exports = {
             error: error
         });
     },
-    receiveLogin: function(user, errors) {
+    /*receiveLogin: function(user,token, errors) {
         AppDispatcher.handleServerAction({
           type: ActionTypes.LOGIN_RESPONSE,
           user: user,
           errors: errors
         });
-    },            
+    },   */
 };

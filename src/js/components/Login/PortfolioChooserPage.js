@@ -1,16 +1,26 @@
 var React = require('react');
-var UserStore = require('../../stores/UserStore');
-var ViewActionCreator = require('../../actions/ViewActionCreator');
-var routes_names = require('../../config/routes_names');
-
-
+//Router
 var Navigation = require('react-router').Navigation;
-
+//routes names
+//Stores
+var UserStore = require('../../stores/UserStore');
+//var PortfolioStore = require('../../stores/PortfolioStore');
+//Action creators
+var ViewActionCreator = require('../../actions/ViewActionCreator');
+//Constants
+//Components
+//Material-ui components
 var mui = require('material-ui');
 var Card = mui.Card;
 var CardHeader = mui.CardHeader;
 var CardText = mui.CardText;
 var Avatar = mui.Avatar;
+
+/*
+ TODO dodanie buttona do work it
+ */
+
+
 
 var PortfolioChooserPage = React.createClass({
     mixins: [Navigation],
@@ -28,7 +38,7 @@ var PortfolioChooserPage = React.createClass({
     },
     _handleClick: function(portfolioId){
         ViewActionCreator.loadPortfolio(portfolioId);
-        this.transitionTo(routes_names.PROJECT_MAIN);
+        //this.transitionTo(routes_names.PROJECT_MAIN);
     },
     render:function(){
         var portfoliosPapers = [];

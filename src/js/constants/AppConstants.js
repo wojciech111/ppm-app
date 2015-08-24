@@ -7,7 +7,7 @@ var appConstants = {
 //API
     APIEndpoints: {
         LOGIN:          APIRoot + "/login",
-        REGISTRATION:   APIRoot + "/users",
+        REGISTRATION:   APIRoot + "/register",
         USER:           APIRoot + "/users",
         PORTFOLIO:      APIRoot + "/portfolios"
     },
@@ -30,6 +30,14 @@ var appConstants = {
         UP_TO_DATE: null,
         MODIFIED: null,
         SAVING: null
+    }),
+//Statuses of App
+    AppStatuses: keyMirror({
+        LOGGED_OUT: null,
+        WAITING_FOR_USER: null,
+        HAVE_USER: null,
+        WAITING_FOR_PORTFOLIO: null,
+        READY_TO_WORK: null
     }),
 //Action types
     ActionTypes: keyMirror({

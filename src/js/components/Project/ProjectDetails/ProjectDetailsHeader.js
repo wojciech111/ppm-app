@@ -8,7 +8,7 @@ var List = mui.List;
 var ListItem = mui.ListItem;
 var TextField = mui.TextField;
 
-var ModefulTextField = require('../../Forms/ModefulTextField');
+var ModefulTextField = require('../../Commons/Forms/ModefulTextField');
 
 
 

@@ -5,12 +5,11 @@ var AppConstants = require('../constants/AppConstants');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var StoreActionCreator = require('../actions/StoreActionCreator');
 
-
-
 var ActionTypes = AppConstants.ActionTypes;
 var StoreStatuses = AppConstants.StoreStatuses;
 var CHANGE_EVENT = 'change';
 
+//
 
 /* MODEL */
 var _store = {
@@ -27,10 +26,9 @@ var _state = {
 /* MODEL */
 /* STATE MANAGEMENT*/
 var _canServeData = function(){
-    console.log("PortfolioStore: _canServeData "+_state.status);
+    //console.log("PortfolioStore: _canServeData "+_state.status);
     if(_state.status === StoreStatuses.EMPTY ){
         _state.status = StoreStatuses.WAITING_FOR_DATA;
-
         StoreActionCreator.loadPortfolio(_state.portfolioId);
         return false;
     } else if(_state.status === StoreStatuses.WAITING_FOR_DATA ){
@@ -44,7 +42,7 @@ var _canServeData = function(){
     }
 };
 var _canModifyData = function(){
-    console.log("PortfolioStore: _canModifyData "+_state.status);
+    //console.log("PortfolioStore: _canModifyData "+_state.status);
     if(_state.status === StoreStatuses.EMPTY ){
         console.log("PortfolioStore: Store was in incorrect state for modification!!!");
         return false;
@@ -65,7 +63,7 @@ var _canModifyData = function(){
     }
 };
 var _updateData = function(){
-    console.log("PortfolioStore: _updateData "+_state.status);
+    //console.log("PortfolioStore: _updateData "+_state.status);
 
     if(_state.status === StoreStatuses.EMPTY ){
         _state.status = StoreStatuses.UP_TO_DATE;
@@ -92,7 +90,7 @@ var _updateData = function(){
     }
 };
 var _autosaveData = function(){
-    console.log("PortfolioStore: _autosaveData "+_state.status);
+    //console.log("PortfolioStore: _autosaveData "+_state.status);
     if(_state.autosave && _state.status === StoreStatuses.MODIFIED){
         StoreActionCreator.savePortfolio(_store.portfolio);
         _state.status = StoreStatuses.SAVING;
@@ -102,10 +100,16 @@ var _autosaveData = function(){
 /* PRIVATE ACTIONS - STORE LOGIC */
 
 //FROM VIEWS
+var logout = function(){
+    localStorage.clear();
+    _store.portfolio=null;
+    _state.status=StoreStatuses.EMPTY;
+    _state.portfolioId=null;
+    console.log(localStorage.getItem('portfolioId'));
+}
 var createComponent = function(component, parentId){
 
 };
-
 var updateComponent = function(updatedComponent){
     if(_canModifyData()) {
         var parentComponent = _getParentComponent(updatedComponent.componentId, _store.portfolio);
@@ -119,8 +123,13 @@ var updateComponent = function(updatedComponent){
     }
 
 };
-
 var loadPortfolio = function(portfolioId){
+    if( _state.portfolioId !== portfolioId){
+        _store.portfolio = null;
+        _state.status = StoreStatuses.EMPTY;
+        console.log("CHANGE PORTFOLIO IN STORE");
+
+    }
     _state.portfolioId = portfolioId;
     localStorage.setItem('portfolioId',portfolioId);
     console.log("localStorage.setItem('portfolioId', "+localStorage.getItem('portfolioId')+")");
@@ -129,8 +138,8 @@ var loadPortfolio = function(portfolioId){
 //FROM SERVER
 var receivePortfolio = function(newPortfolio){
     if(_updateData()) {
-        localStorage.setItem('portfolioId',newPortfolio.componentId);
-        console.log("localStorage.setItem('portfolioId', "+localStorage.getItem('portfolioId')+")");
+        //localStorage.setItem('portfolioId',newPortfolio.componentId);
+        //console.log("localStorage.setItem('portfolioId', "+localStorage.getItem('portfolioId')+")");
         _store.portfolio = newPortfolio;
     }
 };
@@ -200,15 +209,31 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, cb);
     },
     emitChange: function() {
+        console.log("PortfolioStore: CHANGE_EVENT");
         this.emit(CHANGE_EVENT);
     },
     /* EMITTER SUBSCRIPTION */
     /* STORE STATUS INFO */
-    getStatus: function(){
-        return _state.status;
+    isPortfolioChoosen: function(){
+        if(_state.userId === null){
+            _state.portfolioId=localStorage.getItem('portfolioId');
+        }
+        if(_state.portfolioId === null){
+            return false;
+        } else {
+            return true;
+        }
+    },
+    havePortfolio: function(){
+        //console.log("PORTFOLIO: _state.status:"+_state.status +", _canServeData():"+ _canServeData());
+        return _canServeData();
     },
     getErrors: function() {
         return _state.errors;
+    },
+    /*
+    getStatus: function(){
+        return _state.status;
     },
     getCurrentPortfolioId: function() {
         if(_state.portfolioId === null && localStorage.getItem('portfolioId')){
@@ -218,11 +243,14 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
         }
         return _state.portfolioId;
     },
+    */
     /* STORE STATUS INFO */
     /* PUBLIC GETTERS */
     getPortfolio: function(){
         if(_canServeData()) {
             return _store.portfolio;
+        } else {
+            return null;
         }
     },
     getProject: function(projectId){
@@ -264,6 +292,10 @@ AppDispatcher.register(function(payload){
     var action = payload.action;
     switch(action.actionType){
         /*ACTIONS FROM VIEWS */
+        case ActionTypes.LOGOUT:
+            logout();
+            PortfolioStore.emitChange(CHANGE_EVENT);
+            break;
         case ActionTypes.CREATE_COMPONENT:
             createComponent(action.component,action.parentId);
             PortfolioStore.emitChange(CHANGE_EVENT);

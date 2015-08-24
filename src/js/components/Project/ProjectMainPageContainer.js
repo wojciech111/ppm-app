@@ -1,7 +1,10 @@
 var React = require('react');
+/*
+ TODO  Wypisanie listy projektw z linkami do nich
+ */
 
 
-var ProjectMainPage = React.createClass({
+var ProjectMainPageContainer = React.createClass({
     render:function(){
         return (
             <div>
@@ -11,4 +14,4 @@ var ProjectMainPage = React.createClass({
     }
 });
 
-module.exports = ProjectMainPage
+module.exports = ProjectMainPageContainer

@@ -13,5 +13,6 @@ module.exports = {
 
     PORTFOLIO_CHOOSER: 'portfolio_chooser',
     LOGIN: 'login',
-    SIGNUP: 'signup'
+    SIGNUP: 'signup',
+    DASHBOARD: 'dashboard'
 };

@@ -1,30 +1,34 @@
 var React = require('react');
-
-var PortfolioStore = require('../stores/PortfolioStore');
-var AppConstants = require('../constants/AppConstants');
-
-var StoreStatuses = AppConstants.StoreStatuses;
-
+//Router
 var Router = require('react-router');
-var routes_names = require('../config/routes_names');
-
-var MediaQuery = require('react-responsive');
-
-
+var Navigation = Router.Navigation;
+//routes names
+var routes_names = require('../../config/routes_names');
+//Stores
+//var UserStore = require('../../stores/UserStore');
+var PortfolioStore = require('../../stores/PortfolioStore');
+//Action creators
+var ViewActionCreator = require('../../actions/ViewActionCreator');
+//Constants
+var AppConstants = require('../../constants/AppConstants');
+var StoreStatuses = AppConstants.StoreStatuses;
+//Components
+var AppContextContainer = require('./AppContextContainer');
+//Material-ui components
 var mui = require('material-ui');
-
-
 var LeftNav = mui.LeftNav;
 var MenuItem = mui.MenuItem;
 var AppBar = mui.AppBar;
+//Extras
+var MediaQuery = require('react-responsive');
 
-var AppContextContainer = require('./AppContext/AppContextContainer');
-
-
+/*
+TODO PRzekazywanie ze storow danych do contextu przez props
+ */
 
 
 var AppTemplate = React.createClass({
-    mixins: [Router.Navigation],
+    mixins: [Navigation],
     getInitialState: function(){
         return {
             portfolioName: null

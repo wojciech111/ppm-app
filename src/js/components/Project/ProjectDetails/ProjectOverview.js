@@ -9,13 +9,9 @@ var Avatar = mui.Avatar;
 var List = mui.List;
 var ListItem = mui.ListItem;
 
-var ModefulTextField = require('../../Forms/ModefulTextField');
-var ModefulSelectField = require('../../Forms/ModefulSelectField');
-var ModefulDatePicker = require('../../Forms/ModefulDatePicker');
-
-
-
-var AppStore = require('../../../stores/PortfolioStore');
+var ModefulTextField = require('../../Commons/Forms/ModefulTextField');
+var ModefulSelectField = require('../../Commons/Forms/ModefulSelectField');
+var ModefulDatePicker = require('../../Commons/Forms/ModefulDatePicker');
 
 var ProjectOverview = React.createClass({
     propTypes: function () {

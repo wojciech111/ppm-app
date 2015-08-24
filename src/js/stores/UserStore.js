@@ -5,7 +5,6 @@ var AppConstants = require('../constants/AppConstants');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var StoreActionCreator = require('../actions/StoreActionCreator');
 
-
 var ActionTypes = AppConstants.ActionTypes;
 var StoreStatuses = AppConstants.StoreStatuses;
 var CHANGE_EVENT = 'change';
@@ -25,8 +24,8 @@ var _state = {
 };
 /* MODEL */
 /* STATE MANAGEMENT*/
-var _canServeData = function(){
-    console.log("UserStore: _canServeData "+_state.status);
+var _canServeData= function(){
+    //console.log("UserStore: _canServeData "+_state.status);
     if(_state.status === StoreStatuses.EMPTY ){
         _state.status = StoreStatuses.WAITING_FOR_DATA;
         StoreActionCreator.loadUser(_state.userId);
@@ -42,7 +41,7 @@ var _canServeData = function(){
     }
 };
 var _canModifyData = function(){
-    console.log("UserStore: _canModifyData "+_state.status);
+    //console.log("UserStore: _canModifyData "+_state.status);
     if(_state.status === StoreStatuses.EMPTY ){
         console.log("UserStore: Store was in incorrect state for modification!!!");
         return false;
@@ -63,7 +62,7 @@ var _canModifyData = function(){
     }
 };
 var _updateData = function(){
-    console.log("UserStore: _updateData "+_state.status);
+    //console.log("UserStore: _updateData "+_state.status);
 
     if(_state.status === StoreStatuses.EMPTY ){
         _state.status = StoreStatuses.UP_TO_DATE;
@@ -90,7 +89,7 @@ var _updateData = function(){
     }
 };
 var _autosaveData = function(){
-    console.log("UserStore: _autosaveData "+_state.status);
+    //console.log("UserStore: _autosaveData "+_state.status);
     if(_state.autosave && _state.status === StoreStatuses.MODIFIED){
         //StoreActionCreator.saveUser(_store.user);
         console.log("UserStore: _autosaveData blocked ");
@@ -101,7 +100,13 @@ var _autosaveData = function(){
 /* PRIVATE ACTIONS - STORE LOGIC */
 
 //FROM VIEWS
-
+var logout = function(){
+    localStorage.clear();
+    _store.user=null;
+    _state.status=StoreStatuses.EMPTY;
+    _state.userId=null;
+    console.log(localStorage.getItem('userId'));
+}
 var loadUser = function(userId){
     _state.userId = userId;
     localStorage.setItem('userId',userId);
@@ -144,17 +149,33 @@ var UserStore = objectAssign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, cb);
     },
     emitChange: function() {
+        console.log("UserStore: CHANGE_EVENT");
         this.emit(CHANGE_EVENT);
     },
     /* EMITTER SUBSCRIPTION */
     /* STORE STATUS INFO */
-    getStatus: function(){
-        return _state.status;
+    isLoggedIn: function(){
+        if(_state.userId === null){
+            _state.userId=localStorage.getItem('userId');
+        }
+        if(_state.userId === null){
+            return false;
+        } else {
+            return true;
+        }
+    },
+    haveUser: function(){
+        //console.log("USER: _state.status:"+_state.status +", _canServeData():"+ _canServeData());
+        return _canServeData();
     },
     getErrors: function() {
         return _state.errors;
     },
-    getCurrentUserId: function() {
+    /*
+     getStatus: function(){
+        return _state.status;
+     },
+     getCurrentUserId: function() {
         if(_state.userId === null && localStorage.getItem('userId')){
             console.log("localStorage.getItem('userId'): "+localStorage.getItem('userId'));
             _state.userId = localStorage.getItem('userId');
@@ -162,11 +183,14 @@ var UserStore = objectAssign({}, EventEmitter.prototype, {
         }
         return _state.userId;
     },
+    */
     /* STORE STATUS INFO */
     /* PUBLIC GETTERS */
     getUser: function(){
         if(_canServeData()) {
             return _store.user;
+        } else {
+            return null;
         }
     },
     /* PUBLIC GETTERS */
@@ -178,6 +202,10 @@ AppDispatcher.register(function(payload){
     var action = payload.action;
     switch(action.actionType){
         /*ACTIONS FROM VIEWS */
+        case ActionTypes.LOGOUT:
+            logout();
+            UserStore.emitChange(CHANGE_EVENT);
+            break;
         case ActionTypes.LOAD_USER:
             loadUser(action.userId);
             UserStore.emitChange(CHANGE_EVENT);
