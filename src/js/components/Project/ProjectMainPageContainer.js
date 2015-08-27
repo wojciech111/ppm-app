@@ -6,6 +6,7 @@ var React = require('react');
 
 var ProjectMainPageContainer = React.createClass({
     render:function(){
+        console.log("MAIN");
         return (
             <div>
                 <div>To jest strona listy projektow</div>

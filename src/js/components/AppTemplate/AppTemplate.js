@@ -3,6 +3,7 @@ var React = require('react');
 var Router = require('react-router');
 var Navigation = Router.Navigation;
 var State = Router.State;
+var RouteHandler = Router.RouteHandler;
 //routes names
 var routes_names = require('../../config/routes_names');
 //Stores
@@ -108,7 +109,7 @@ var AppTemplate = React.createClass({
                     <div style={{marginLeft:256}}>
                         <AppBar showMenuIconButton={false} onLeftIconButtonTouchTap = { this._handleHamburgerClick }
                             title = {title} style={{marginBottom:5}}/>
-                        {this.props.children}
+                        <RouteHandler />
                     </div>
                 </MediaQuery>
                 <MediaQuery maxWidth={1224}>
@@ -121,7 +122,7 @@ var AppTemplate = React.createClass({
                         />
                     <AppBar showMenuIconButton={true} onLeftIconButtonTouchTap = { this._handleHamburgerClick }
                             title = {title} style={{marginBottom:5}}/>
-                    {this.props.children}
+                    <RouteHandler />
                 </MediaQuery>
             </div>
         );
