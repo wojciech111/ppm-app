@@ -28,15 +28,14 @@ var ProjectEvaluation = React.createClass({
         var categories=[];
         for(var c=0; c<project.categoryMemberships.length;c++){
             categories.push(
-                <Paper zDepth={1} className="row">
-                    <ProjectCategoryScoringCard project={project}
-                                                categoryMembership={project.categoryMemberships[c]}
-                                                mode={mode}
-                                                handleProjectChange={this.props.handleProjectChange}
-                                                key={project.categoryMemberships[c].category.categoryId}>
-                    </ProjectCategoryScoringCard>
-                </Paper>
-
+                    <Paper zDepth={1} className="row">
+                        <ProjectCategoryScoringCard project={project}
+                                                    categoryMembership={project.categoryMemberships[c]}
+                                                    mode={mode}
+                                                    handleProjectChange={this.props.handleProjectChange}
+                                                    key={project.categoryMemberships[c].category.categoryId}>
+                        </ProjectCategoryScoringCard>
+                    </Paper>
             );
         }
         return (
