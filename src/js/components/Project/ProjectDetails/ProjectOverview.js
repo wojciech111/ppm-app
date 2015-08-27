@@ -44,7 +44,7 @@ var ProjectOverview = React.createClass({
                             />
                         <ModefulSelectField object={project}
                                           mode={mode}
-                                          keyOfValue="type"
+                                          keyOfValue="customerType"
                                           labelText="Project type"
                                           showLabelInView={true}
                                           handleChange={this.props.handleProjectChange}
@@ -64,7 +64,7 @@ var ProjectOverview = React.createClass({
                             />
                         <ModefulTextField object={project}
                                           mode={mode}
-                                          keyOfValue="projectManager"
+                                          keyOfValue="manager"
                                           labelText="Project manager"
                                           showLabelInView={true}
                                           hintText="Who manage this project?"
@@ -106,7 +106,7 @@ var ProjectOverview = React.createClass({
                         <ModefulDatePicker
                             object={project}
                             mode={mode}
-                            keyOfValue="deadline"
+                            keyOfValue="deadlineDate"
                             labelText="Deadline"
                             showLabelInView={true}
                             hintText="When the window of opportunity will close?"

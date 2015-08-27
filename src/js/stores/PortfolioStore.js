@@ -172,6 +172,8 @@ var _getComponentById = function(id, rootComponent){
     }
     return null;
 };
+
+
 var _getParentComponent = function(id, rootComponent) {
     var children = rootComponent.children;
     //console.log("PortfolioStore: LOOKING FOR PARENT");
@@ -242,6 +244,54 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
 
     /* STORE STATUS INFO */
     /* PUBLIC GETTERS */
+    getAllProjects: function() {
+        var projects = [];
+        //var portfolio = this.state.portfolio;
+        if(_canServeData()) {
+            //console.log(_store.portfolio);
+            //console.log(_store.portfolio.children.length);
+            for (var i = 0; i<_store.portfolio.children.length; i++) {
+                var portfolioChild = _store.portfolio.children[i];
+                ////console.log(_store.portfolio.children[i].componentId+" "+_store.portfolio.children[i].componentType);
+                //console.log("portfolioChild.componentType="+portfolioChild.componentType);
+
+                if (portfolioChild.componentType === "PROJECT") {
+                    //console.log("projects.push(portfolioChild)"+portfolioChild.componentId );
+
+                    projects.push(portfolioChild);
+                } else if (portfolioChild.componentType === "PROGRAM") {
+                    for (var j = 0; j<portfolioChild.children.length; j++) {
+                        var programChild = portfolioChild.children[j];
+                        //console.log("programChild.componentType="+programChild.componentType);
+
+                        if (programChild.componentType === "PROJECT") {
+                            //console.log("projects.push(programChild)"+programChild.componentId );
+
+                            projects.push(programChild);
+                        } else if (programChild.componentType === "PROGRAM") {
+                            //console.log(programChild);
+                            //console.log(programChild.children);
+
+                            for (var k = 0; k<programChild.children.length; k++) {
+                                //console.log("k:"+k);
+                                //console.log(programChild.children[k]);
+
+                                var subbprogramChild = programChild.children[k];
+                                //console.log("subbprogramChild:"+subbprogramChild);
+                                //console.log("subbprogramChild.componentType="+subbprogramChild.componentType);
+                                if (subbprogramChild.componentType === "PROJECT") {
+                                    //console.log("projects.push(subbprogramChild)"+subbprogramChild.componentId );
+                                    projects.push(subbprogramChild);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //console.log(projects);
+        return projects;
+    },
     getPortfolio: function(){
         if(_canServeData()) {
             return _store.portfolio;
@@ -260,6 +310,7 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
         }
         return null;
     },
+
     getProgram: function(programId){
         if(_canServeData()) {
             var program = _getComponentById(programId, _store.portfolio);

@@ -76,8 +76,15 @@ var AppContextContainer = React.createClass({
             var avatarOrg;
             var nameOrg;
             var employeeOrg;
+
+            //console.log(user.employees.length);
+
             for (var e = 0; e < user.employees.length; e++) {
+                //console.log( user.employees[e].organization.portfolios.length);
+
                 for (var p = 0; p < user.employees[e].organization.portfolios.length; p++) {
+                    //console.log(user.employees[e].organization.portfolios[p].componentId);
+
                     availablePortfolios.push(
                         {
                             componentId: user.employees[e].organization.portfolios[p].componentId,

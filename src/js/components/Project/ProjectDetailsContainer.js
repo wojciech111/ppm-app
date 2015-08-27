@@ -34,7 +34,6 @@ var ProjectDetailsContainer = React.createClass({
             parentComponent: PortfolioStore.getParent(this.getParams().projectId),
             mode: ViewModes.VIEW_MODE,
             nrOfChanges: 0,
-            portfolioId: 2950
         }
     },
     /* MANAGE STORE CHANGES*/
@@ -106,10 +105,10 @@ var ProjectDetailsContainer = React.createClass({
         var parentComponent= this.state.parentComponent;
         var mode= this.state.mode;
         var nrOfChanges= this.state.nrOfChanges;
-        console.log("ProjectDetailsContainer: "+PortfolioStore.getStatus());
+        //console.log("ProjectDetailsContainer: "+PortfolioStore.getStatus());
         var viewToShow;
 
-        if(PortfolioStore.getStatus() === StoreStatuses.EMPTY || PortfolioStore.getStatus() === StoreStatuses.WAITING_FOR_DATA){
+        if(!PortfolioStore.havePortfolio()){
             viewToShow=(
                 <div>Loading...</div>
             );
@@ -118,6 +117,8 @@ var ProjectDetailsContainer = React.createClass({
                 <div>No project with ID: {this.getParams().projectId} found!</div>
             );
         }else {
+            console.log("PROJECT:");
+            console.log(project);
             viewToShow = (
                 <div>
                     <div className="container-fluid">

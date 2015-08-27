@@ -34,6 +34,7 @@ var AppTemplate = React.createClass({
     getDefaultProps: function() {
         return {
             menuItems: [
+                { route: routes_names.DASHBOARD, text: 'Dashboard' },
                 { route: routes_names.PROJECT_MAIN, text: 'Projects' },
                 { route: routes_names.PROGRAM_MAIN, text: 'Programs' },
                 { route: routes_names.DECISION_MAIN, text: 'Decisions' },

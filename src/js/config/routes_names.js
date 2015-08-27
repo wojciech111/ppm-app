@@ -8,8 +8,8 @@ module.exports = {
     ORGANIZATION_DETAILS: 'organization_details',
     USER_DETAILS: 'user_details',
 
-    PROJECT_DETAILS: 'project',
-    PROGRAM_DETAILS: 'program',
+    PROJECT_DETAILS: 'projects',
+    PROGRAM_DETAILS: 'programs',
 
     PORTFOLIO_CHOOSER: 'portfolio_chooser',
     LOGIN: 'login',

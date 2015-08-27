@@ -11,7 +11,7 @@ var App = require('../components/App');
 var AppTemplate = require('../components/AppTemplate/AppTemplate');
 //Other Pages
 var PortfolioChooserPage = require('../components/Login/PortfolioChooserPage');
-
+var DashboardContainer =  require('../components/Dashboard/DashboardContainer');
 //Main Pages
 var ProjectMainPageContainer = require('../components/Project/ProjectMainPageContainer');
 
@@ -20,7 +20,7 @@ var ProjectDetailsContainer = require('../components/Project/ProjectDetailsConta
 
 
 //Test Pages
-var TestPage = require('../components/Project/TestPage');
+var TestPage = require('../components/Commons/TestPage');
 
 
 //Other Pages
@@ -38,8 +38,8 @@ module.exports = (
     <Route name="app" path="/" handler={App}>
         <Route name={routes_names.PORTFOLIO} path={routes_names.PORTFOLIO.concat("/:portfolioId/")} handler={AppTemplate} >
             //Default
-            <DefaultRoute handler={TestPage} />
-            <Route name={routes_names.DASHBOARD} path={routes_names.DASHBOARD} handler={TestPage} />
+            <DefaultRoute handler={DashboardContainer} />
+            <Route name={routes_names.DASHBOARD} path={routes_names.DASHBOARD} handler={DashboardContainer} />
             //Main Pages
             <Route name={routes_names.PROJECT_MAIN} path={routes_names.PROJECT_MAIN} handler={ProjectMainPageContainer} />
             //Detail Pages
@@ -47,4 +47,5 @@ module.exports = (
         </Route>
         <DefaultRoute handler={PortfolioChooserPage} />
     </Route>
+
 );
