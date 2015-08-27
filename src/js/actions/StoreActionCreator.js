@@ -6,15 +6,16 @@ var ActionTypes = AppConstants.ActionTypes;
 var WebAPIUtils = require('../utils/WebAPIUtils.js');
 
 
+
 var StoreActionCreator = {
     savePortfolio: function(portfolio){
-        WebAPIUtils.savePortfolio(portfolio);
+            WebAPIUtils.savePortfolio(portfolio);
     },
-    loadPortfolio: function(portfolioId){
-        WebAPIUtils.loadPortfolio(portfolioId);
+    loadPortfolio: function(portfolioId) {
+             WebAPIUtils.loadPortfolio(portfolioId);
     },
     loadUser: function(userId){
-        WebAPIUtils.loadUser(userId);
+            WebAPIUtils.loadUser(userId);
     }
 };
 

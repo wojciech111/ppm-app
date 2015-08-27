@@ -9,6 +9,8 @@ var ActionTypes = AppConstants.ActionTypes;
 var StoreStatuses = AppConstants.StoreStatuses;
 var CHANGE_EVENT = 'change';
 
+// TODO zapisywanie userId zamienic na zapisywanie otrzymanego tokena do localstorage
+
 
 /* MODEL */
 var _store = {
@@ -27,8 +29,10 @@ var _state = {
 var _canServeData= function(){
     //console.log("UserStore: _canServeData "+_state.status);
     if(_state.status === StoreStatuses.EMPTY ){
-        _state.status = StoreStatuses.WAITING_FOR_DATA;
-        StoreActionCreator.loadUser(_state.userId);
+        if(_state.userId !== null) {
+            _state.status = StoreStatuses.WAITING_FOR_DATA;
+            StoreActionCreator.loadUser(_state.userId);
+        }
         return false;
     } else if(_state.status === StoreStatuses.WAITING_FOR_DATA ){
         return false;
@@ -105,8 +109,9 @@ var logout = function(){
     _store.user=null;
     _state.status=StoreStatuses.EMPTY;
     _state.userId=null;
-    console.log(localStorage.getItem('userId'));
+    console.log("UserStore: LOGOUT!!!");
 }
+//loadUser prawdopodobnie nigdy jeszcze nie uywane
 var loadUser = function(userId){
     _state.userId = userId;
     localStorage.setItem('userId',userId);
@@ -118,7 +123,7 @@ var receiveUser = function(newUser){
     if(_updateData()) {
         _state.userId=newUser.userId;
         localStorage.setItem('userId',_state.userId);
-        console.log("localStorage.setItem('userId', "+localStorage.getItem('userId')+")");
+        console.log("SAVE USER ID TO LOCAL STORAGE! localStorage.setItem('userId', "+localStorage.getItem('userId')+")");
         _store.user = newUser;
     }
 };
@@ -156,6 +161,7 @@ var UserStore = objectAssign({}, EventEmitter.prototype, {
     /* STORE STATUS INFO */
     isLoggedIn: function(){
         if(_state.userId === null){
+            console.log("LOGGING IN FROM LOCAL STORAGE! localStorage.getItem('userId')= "+localStorage.getItem('userId'));
             _state.userId=localStorage.getItem('userId');
         }
         if(_state.userId === null){
@@ -207,6 +213,7 @@ AppDispatcher.register(function(payload){
             UserStore.emitChange(CHANGE_EVENT);
             break;
         case ActionTypes.LOAD_USER:
+            console.log("TO SIE CHYBA NIGDY NIE DZIEJE!!!!!!!!!!")
             loadUser(action.userId);
             UserStore.emitChange(CHANGE_EVENT);
             break;

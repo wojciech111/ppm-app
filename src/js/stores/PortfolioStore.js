@@ -5,6 +5,8 @@ var AppConstants = require('../constants/AppConstants');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var StoreActionCreator = require('../actions/StoreActionCreator');
 
+var UserStore = require('../stores/UserStore');
+
 var ActionTypes = AppConstants.ActionTypes;
 var StoreStatuses = AppConstants.StoreStatuses;
 var CHANGE_EVENT = 'change';
@@ -17,6 +19,7 @@ var _store = {
 };
 var _state = {
     status: StoreStatuses.EMPTY,
+    loading: false,
     nrOfChanges:0, //when modified
     errors: [],
     portfolioId: null,
@@ -28,8 +31,11 @@ var _state = {
 var _canServeData = function(){
     //console.log("PortfolioStore: _canServeData "+_state.status);
     if(_state.status === StoreStatuses.EMPTY ){
-        _state.status = StoreStatuses.WAITING_FOR_DATA;
-        StoreActionCreator.loadPortfolio(_state.portfolioId);
+        console.log("_state.portfolioId="+_state.portfolioId+", UserStore.haveUser()="+UserStore.haveUser())
+        if(_state.portfolioId !== null && UserStore.haveUser()) {
+            _state.status = StoreStatuses.WAITING_FOR_DATA;
+            StoreActionCreator.loadPortfolio(_state.portfolioId);
+        }
         return false;
     } else if(_state.status === StoreStatuses.WAITING_FOR_DATA ){
         return false;
@@ -101,15 +107,9 @@ var _autosaveData = function(){
 
 //FROM VIEWS
 var logout = function(){
-    localStorage.clear();
-    _store.portfolio=null;
-    _state.status=StoreStatuses.EMPTY;
-    _state.portfolioId=null;
-    console.log(localStorage.getItem('portfolioId'));
+    _clearStore();
+    console.log("PortfolioStore: LOGOUT!!!");
 }
-var createComponent = function(component, parentId){
-
-};
 var updateComponent = function(updatedComponent){
     if(_canModifyData()) {
         var parentComponent = _getParentComponent(updatedComponent.componentId, _store.portfolio);
@@ -123,17 +123,13 @@ var updateComponent = function(updatedComponent){
     }
 
 };
-var loadPortfolio = function(portfolioId){
+var changePortfolio = function(portfolioId){
     if( _state.portfolioId !== portfolioId){
-        _store.portfolio = null;
-        _state.status = StoreStatuses.EMPTY;
-        console.log("CHANGE PORTFOLIO IN STORE");
-
+        console.log("CHANGE PORTFOLIO IN STORE from "+ _state.portfolioId+" to "+portfolioId);
+        _clearStore();
+        _state.portfolioId = portfolioId;
+        _canServeData();
     }
-    _state.portfolioId = portfolioId;
-    localStorage.setItem('portfolioId',portfolioId);
-    console.log("localStorage.setItem('portfolioId', "+localStorage.getItem('portfolioId')+")");
-    _canServeData();
 };
 //FROM SERVER
 var receivePortfolio = function(newPortfolio){
@@ -197,7 +193,11 @@ var _getParentComponent = function(id, rootComponent) {
     }
     return null;
 };
-
+var _clearStore = function(){
+    _store.portfolio=null;
+    _state.status=StoreStatuses.EMPTY;
+    //_state.portfolioId=null;
+};
 /* PRIVATE STORE HELPERS */
 
 var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
@@ -215,14 +215,7 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
     /* EMITTER SUBSCRIPTION */
     /* STORE STATUS INFO */
     isPortfolioChoosen: function(){
-        if(_state.userId === null){
-            _state.portfolioId=localStorage.getItem('portfolioId');
-        }
-        if(_state.portfolioId === null){
-            return false;
-        } else {
-            return true;
-        }
+      return !(_state.portfolioId === null);
     },
     havePortfolio: function(){
         //console.log("PORTFOLIO: _state.status:"+_state.status +", _canServeData():"+ _canServeData());
@@ -231,19 +224,22 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
     getErrors: function() {
         return _state.errors;
     },
+    isLoading: function() {
+          if(_state.status === StoreStatuses.WAITING_FOR_DATA || _state.status === StoreStatuses.SAVING){
+              return true;
+          } else {
+              return false;
+          }
+    },
     /*
     getStatus: function(){
         return _state.status;
     },
+     */
     getCurrentPortfolioId: function() {
-        if(_state.portfolioId === null && localStorage.getItem('portfolioId')){
-            console.log("localStorage.getItem('portfolioId'): "+localStorage.getItem('portfolioId'));
-            _state.portfolioId = localStorage.getItem('portfolioId');
-            StoreActionCreator.loadPortfolio(_state.portfolioId);
-        }
         return _state.portfolioId;
     },
-    */
+
     /* STORE STATUS INFO */
     /* PUBLIC GETTERS */
     getPortfolio: function(){
@@ -296,16 +292,12 @@ AppDispatcher.register(function(payload){
             logout();
             PortfolioStore.emitChange(CHANGE_EVENT);
             break;
-        case ActionTypes.CREATE_COMPONENT:
-            createComponent(action.component,action.parentId);
-            PortfolioStore.emitChange(CHANGE_EVENT);
-            break;
         case ActionTypes.UPDATE_COMPONENT:
             updateComponent(action.component);
             PortfolioStore.emitChange(CHANGE_EVENT);
             break;
-        case ActionTypes.LOAD_PORTFOLIO:
-            loadPortfolio(action.portfolioId);
+        case ActionTypes.CHANGE_PORTFOLIO:
+            changePortfolio(action.portfolioId);
             PortfolioStore.emitChange(CHANGE_EVENT);
             break;
         /*ACTIONS FROM VIEWS */

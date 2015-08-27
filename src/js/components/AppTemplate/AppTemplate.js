@@ -2,6 +2,7 @@ var React = require('react');
 //Router
 var Router = require('react-router');
 var Navigation = Router.Navigation;
+var State = Router.State;
 //routes names
 var routes_names = require('../../config/routes_names');
 //Stores
@@ -10,8 +11,8 @@ var PortfolioStore = require('../../stores/PortfolioStore');
 //Action creators
 var ViewActionCreator = require('../../actions/ViewActionCreator');
 //Constants
-var AppConstants = require('../../constants/AppConstants');
-var StoreStatuses = AppConstants.StoreStatuses;
+//var AppConstants = require('../../constants/AppConstants');
+//var StoreStatuses = AppConstants.StoreStatuses;
 //Components
 var AppContextContainer = require('./AppContextContainer');
 //Material-ui components
@@ -28,19 +29,7 @@ TODO PRzekazywanie ze storow danych do contextu przez props
 
 
 var AppTemplate = React.createClass({
-    mixins: [Navigation],
-    getInitialState: function(){
-        return {
-            portfolioName: null
-        }
-    },
-
-    _handleHamburgerClick: function()
-    {
-        this.refs.menu.toggle();
-        console.log('toggle LeftNav');
-    },
-
+    mixins: [Navigation, State],
     getDefaultProps: function() {
         return {
             menuItems: [
@@ -53,12 +42,18 @@ var AppTemplate = React.createClass({
                 { route: routes_names.PORTFOLIO_DETAILS, text: 'Portfolio' },
                 { route: routes_names.ORGANIZATION_DETAILS, text: 'Organization' },
                 { route: routes_names.USER_DETAILS, text: 'User' }
-            ]
+            ],
         };
     },
-
-    // Get the selected item in LeftMenu
+    getInitialState: function() {
+        return { title: PortfolioStore.getPortfolio().name };
+    },
+    _handleHamburgerClick: function(){
+        this.refs.menu.toggle();
+        console.log('toggle LeftNav');
+    },
     _getSelectedIndex() {
+        // Get the selected item in LeftMenu
         //console.log('idx LeftNav');
         var currentItem;
         var menuItems = this.props.menuItems;
@@ -76,11 +71,11 @@ var AppTemplate = React.createClass({
     },
 
     _onLeftNavChange(e, key, payload) {
-        console.log('LeftNav item clicked');
-        console.log(payload);
-        this.transitionTo(payload.route);
+        console.log('ROUTER TRANSITION - LeftNav item clicked '+payload.route);
+        this.transitionTo(payload.route, {portfolioId: this.getParams().portfolioId});
     },
     /* MANAGE STORE CHANGES*/
+
     componentDidMount: function(){
         PortfolioStore.addChangeListener(this._onChange);
     },
@@ -88,18 +83,16 @@ var AppTemplate = React.createClass({
         PortfolioStore.removeChangeListener(this._onChange);
     },
     _onChange: function(){
-        if(PortfolioStore.getStatus() === StoreStatuses.UP_TO_DATE || PortfolioStore.getStatus() === StoreStatuses.MODIFIED) {
+        //console.log("PortfolioStore.havePortfolio():"+PortfolioStore.havePortfolio());
+        if(PortfolioStore.havePortfolio()) {
             this.setState({
-                portfolioName: PortfolioStore.getPortfolio().name
+                title: PortfolioStore.getPortfolio().name
             })
         }
     },
     /* MANAGE STORE CHANGES*/
     render:function(){
-        var title = "Loading for data...";
-        if(this.state.portfolioName !== null) {
-            title = this.state.portfolioName;
-        }
+        var title = this.state.title;
         var menuItems = this.props.menuItems;
 
         return (

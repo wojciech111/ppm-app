@@ -57,6 +57,7 @@ var appConstants = {
         SAVE_USER: null,
 
         //From views
+        CHANGE_PORTFOLIO: null,
         CREATE_COMPONENT: null,
         UPDATE_COMPONENT: null,
         REMOVE_COMPONENT: null,

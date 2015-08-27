@@ -2,6 +2,7 @@ var React = require('react');
 //Router
 var Navigation = require('react-router').Navigation;
 //routes names
+var routes_names = require('../../config/routes_names');
 //Stores
 var UserStore = require('../../stores/UserStore');
 //var PortfolioStore = require('../../stores/PortfolioStore');
@@ -37,7 +38,10 @@ var PortfolioChooserPage = React.createClass({
         this.setState({ user: UserStore.getUser() });
     },
     _handleClick: function(portfolioId){
-        ViewActionCreator.loadPortfolio(portfolioId);
+        ViewActionCreator.changePortfolio(portfolioId);
+        console.log("Choosed Portfolio ID="+portfolioId)
+        this.transitionTo(routes_names.PORTFOLIO, {portfolioId: portfolioId});
+
         //this.transitionTo(routes_names.PROJECT_MAIN);
     },
     render:function(){

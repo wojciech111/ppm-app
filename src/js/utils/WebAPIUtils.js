@@ -3,13 +3,14 @@ var request = require('superagent');
 var ServerActionCreator = require('../actions/ServerActionCreator');
 var AppConstants = require('../constants/AppConstants');
 
+var UserStore = require('../stores/UserStore');
 
 var APIEndpoints = AppConstants.APIEndpoints;
 
 var WebAPIUtils = {
-
+    //FROM VIEWS
     login: function(email, password) {
-        console.log("API: login "+email);
+        //console.log("API: login "+email);
         request.post(APIEndpoints.LOGIN)
             .send({ email: email, password: password, grantType: 'password' })
             .set('Accept', 'application/json')
@@ -25,6 +26,8 @@ var WebAPIUtils = {
                 }
             });
     },
+    //FROM STORES
+    //USER STORE
     loadUser: function(userId) {
         //console.log("loadUser");
         request.get(APIEndpoints.USER+'/'+userId)
@@ -43,6 +46,7 @@ var WebAPIUtils = {
                 }
             });
     },
+    //PORTFOLIO STORE
     loadPortfolio: function(portfolioId) {
         //console.log("loadPortfolio");
         request.get(APIEndpoints.PORTFOLIO+'/'+portfolioId)
@@ -62,7 +66,7 @@ var WebAPIUtils = {
             });
     },
     savePortfolio: function(modifiedPortfolio) {
-        console.log("savePortfolio!!! ");
+        //console.log("savePortfolio!!! ");
         console.log(modifiedPortfolio);
         request.put(APIEndpoints.PORTFOLIO+'/'+modifiedPortfolio.componentId)
             .send(modifiedPortfolio)

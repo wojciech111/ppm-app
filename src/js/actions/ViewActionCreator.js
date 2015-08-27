@@ -22,9 +22,9 @@ var ViewActionCreator = {
     },
     //Session
     //Portfolio
-    loadPortfolio: function(portfolioId){
+    changePortfolio: function(portfolioId){
         AppDispatcher.handleViewAction({
-         actionType: ActionTypes.LOAD_PORTFOLIO,
+         actionType: ActionTypes.CHANGE_PORTFOLIO,
          portfolioId: portfolioId
          })
         //WebAPIUtils.loadPortfolio(portfolioId);

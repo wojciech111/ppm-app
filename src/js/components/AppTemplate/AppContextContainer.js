@@ -1,6 +1,9 @@
 var React = require('react');
 //Router
+var Router =require('react-router');
+var Navigation = Router.Navigation;
 //routes names
+var routes_names = require('../../config/routes_names');
 //Stores
 var UserStore = require('../../stores/UserStore');
 var PortfolioStore = require('../../stores/PortfolioStore');
@@ -9,7 +12,7 @@ var ViewActionCreator = require('../../actions/ViewActionCreator');
 //Constants
 var AppConstants = require('../../constants/AppConstants');
 var ActionTypes = AppConstants.ActionTypes;
-var StoreStatuses = AppConstants.StoreStatuses;
+//var StoreStatuses = AppConstants.StoreStatuses;
 //Components
 //Material-ui components
 var mui = require('material-ui');
@@ -25,6 +28,7 @@ var FlatButton = mui.FlatButton;
 
 
 var AppContextContainer = React.createClass({
+    mixins: [Navigation],
     //STORES
     getInitialState: function() {
         return {
@@ -53,15 +57,15 @@ var AppContextContainer = React.createClass({
     //STORES
     _handleSelectChange: function(e, selectedIndex, menuItem) {
         console.log(menuItem);
-        ViewActionCreator.loadPortfolio(menuItem.componentId);
+        this.transitionTo(routes_names.PORTFOLIO, {portfolioId: menuItem.componentId});
+        ViewActionCreator.changePortfolio(menuItem.componentId);
     },
     _handleLogout: function(){
         ViewActionCreator.logout();
     },
     render:function(){
         //console.log(typeof this.state.user+ " "+typeof this.state.portfolio);
-        if((UserStore.getStatus() === StoreStatuses.EMPTY || UserStore.getStatus() === StoreStatuses.WAITING_FOR_DATA)
-            && (PortfolioStore.getStatus() === StoreStatuses.EMPTY || PortfolioStore.getStatus() === StoreStatuses.WAITING_FOR_DATA)){
+        if(!UserStore.haveUser() || !PortfolioStore.havePortfolio()){
             return (<div>Loading...</div>);
         } else {
             var user = this.state.user;
