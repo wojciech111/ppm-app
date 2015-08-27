@@ -61,7 +61,10 @@ var AppContextContainer = React.createClass({
         ViewActionCreator.changePortfolio(menuItem.componentId);
     },
     _handleLogout: function(){
+        this.transitionTo(routes_names.APP);
         ViewActionCreator.logout();
+
+
     },
     render:function(){
         //console.log(typeof this.state.user+ " "+typeof this.state.portfolio);

@@ -119,7 +119,7 @@ var ProjectOverview = React.createClass({
                             <ListItem key={1}
                                       primaryText={"Creation date"}
                                       leftAvatar={avatarC}
-                                      secondaryText={"25/02/2012 by Jhonson"}
+                                      secondaryText={project.creationDate+" by "+project.createdBy}
                                       disabled={true}>
                             </ListItem>
                         </List>
@@ -128,8 +128,8 @@ var ProjectOverview = React.createClass({
                             <ListItem key={1}
                                       primaryText={"Last update"}
                                       leftAvatar={avatarL}
-                                    secondaryText={"25/02/2012 by Jhonson"}
-                                    disabled={true}>
+                                      secondaryText={project.updateDate+" by "+project.updatedBy}
+                                      disabled={true}>
                             </ListItem>
                         </List>
 
@@ -186,7 +186,7 @@ var ProjectOverview = React.createClass({
 
                 </Paper>
                 <Paper zDepth={1} className="row" style={{marginTop:10}}>
-                    <div className="col-sm-3 col-sm-offset-2">
+                    <div className="col-sm-5">
                         <ModefulTextField object={project}
                                           mode={mode}
                                           keyOfValue="purpose"
@@ -199,7 +199,7 @@ var ProjectOverview = React.createClass({
                                           article={true}
                             />
                     </div>
-                    <div className="col-sm-5">
+                    <div className="col-sm-7">
                         <ModefulTextField object={project}
                                           mode={mode}
                                           keyOfValue="description"

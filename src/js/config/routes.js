@@ -35,7 +35,7 @@ var PortfolioChooserPage = require('../components/Login/PortfolioChooserPage');
 //TODO template z /portfolio/:id
 
 module.exports = (
-    <Route name="app" path="/" handler={App}>
+    <Route name={routes_names.APP} path="/" handler={App}>
         <Route name={routes_names.PORTFOLIO} path={routes_names.PORTFOLIO.concat("/:portfolioId/")} handler={AppTemplate} >
             //Default
             <DefaultRoute handler={DashboardContainer} />

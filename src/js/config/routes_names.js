@@ -15,5 +15,6 @@ module.exports = {
     LOGIN: 'login',
     SIGNUP: 'signup',
     DASHBOARD: 'dashboard',
+    APP: 'app',
     PORTFOLIO: 'portfolios'
 };
