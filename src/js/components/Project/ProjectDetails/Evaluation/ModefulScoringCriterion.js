@@ -36,9 +36,13 @@ var ModefulScoringCriterion = React.createClass({
         );
         var question="";
         if(categoryEvaluation.scoringCriterion.question) {
+            var answer="";
+            if(score){
+                answer=score.answer;
+            }
             question = (
                 <TextField
-                    value={score.answer}
+                    value={answer}
                     floatingLabelText={categoryEvaluation.scoringCriterion.question}
                     fullWidth={true}
                     multiLine={true}
@@ -46,9 +50,13 @@ var ModefulScoringCriterion = React.createClass({
                     />
             );
         }
+        var motivationValue="";
+        if(score){
+            motivationValue=score.motivation;
+        }
         var motivation=(
             <TextField
-                value={score.motivation}
+                value={motivationValue}
                 floatingLabelText="Score motivation:"
                 fullWidth={true}
                 multiLine={true}
@@ -57,7 +65,7 @@ var ModefulScoringCriterion = React.createClass({
         );
         return (
 
-            <Paper zDepth={1} className="col-sm-12">
+            <Paper zDepth={3} className="col-sm-12 col-md-6" style={{marginBottom:25}}>
                 <div className="row">
                     <h3 className="col-sm-4">{categoryEvaluation.scoringCriterion.code}</h3>
                     <h4  className="col-sm-4" style={{marginTop:25}}>Weight in overall score: {categoryEvaluation.weight ? categoryEvaluation.weight:"0.0"}</h4>
@@ -73,7 +81,7 @@ var ModefulScoringCriterion = React.createClass({
                                 <p>{categoryEvaluation.scoringCriterion.maxScore?"Max: "+categoryEvaluation.scoringCriterion.maxScore:"No maximum"}</p>
                             </div>
                             <div  className="col-sm-7">
-                                <h1>{score.score}</h1>
+                                <h1>{score?score.score:"N/N"}</h1>
                             </div>
                         </div>
                     </Paper>

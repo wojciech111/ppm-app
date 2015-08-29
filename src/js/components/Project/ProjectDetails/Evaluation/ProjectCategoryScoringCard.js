@@ -30,6 +30,7 @@ var ProjectCategoryScoringCard = React.createClass({
             for(var i=0;i<project.scores.length;i++){
                 if(project.scores[i].scoringCriterion.scoringCriterionId === categoryEvaluation.scoringCriterion.scoringCriterionId){
                     score=project.scores[i];
+
                     break;
                 }
             }
