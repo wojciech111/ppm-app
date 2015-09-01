@@ -25,6 +25,36 @@ var appConstants = {
         EDIT_MODE : null,
         CREATION_MODE : null
     }),
+//Types of states
+    StatesTypes: {
+        BEGIN:"B",
+        EVALUATION:"E",
+        PLANING:"P",
+        VOTING:"V",
+        WAITING_FOR_RESOURCES:"W",
+        EXECUTING:"X",
+        CANCEL:"C",
+        DELAYED:"D",
+        ARCHIVE:"A"
+    },
+    //state of Decision
+    DecisionStates: {
+        PROPOSITION:"P",
+        RECOMMENDATION:"R",
+        DEFINITIVE:"D",
+        EXECUTED:"E",
+    },
+    /*
+        B  ("Begin"),
+    E  ("Evaluation"),
+P  ("Planing"),
+    V  ("Voting"),
+    W  ("Waiting for resources"),
+    X  ("Executing"),
+    C ("Cancel"),
+    D ("Delayed"),
+    A ("Archive")
+    */
 //Statuses of stores
     StoreStatuses: keyMirror({
         EMPTY: null,

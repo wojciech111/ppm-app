@@ -91,7 +91,7 @@ var App = React.createClass({
     },
     componentWillMount() {
         ThemeManager.setPalette({
-            accent1Color: Colors.blue500
+            accent1Color: Colors.green300
         });
     },
     //End of Material-ui settings

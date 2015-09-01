@@ -16,6 +16,7 @@ var ModeChanger = require('../Commons/ModeChanger');
 var ProjectDetailsHeader = require('./ProjectDetails/ProjectDetailsHeader');
 var ProjectOverview = require('./ProjectDetails/ProjectOverview');
 var ProjectEvaluation = require('./ProjectDetails/ProjectEvaluation');
+var ProjectDecisions = require('./ProjectDetails/ProjectDecisions');
 //Material-ui components
 var mui = require('material-ui');
 var Tabs = mui.Tabs;
@@ -156,14 +157,12 @@ var ProjectDetailsContainer = React.createClass({
                             </div>
                         </Tab>
                         <Tab label="Recommendations" >
-                            <div>
-                                <h2 >Tab Two Template Example</h2>
-                                <p>
-                                    This is another example of a tab template!
-                                </p>
-                                <p>
-                                    Fair warning - the next tab routes to home!
-                                </p>
+                            <div className="container-fluid">
+                                <ProjectDecisions
+                                    project={project}
+                                    mode={mode}
+                                    handleProjectChange={this.handleProjectChange}
+                                    ></ProjectDecisions>
                             </div>
                         </Tab>
                         <Tab label="Stakeholders" >
