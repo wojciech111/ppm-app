@@ -41,7 +41,7 @@ var ProjectCategoryScoringCard = React.createClass({
                                          score={score}
                                          mode={this.props.mode}
                                          handleProjectChange={this.props.handleProjectChange}
-                                         key={categoryEvaluation.scoringCriterion.scoringCriterionId}>
+                                         key={c}>
                 </ModefulScoringCriterion>
             );
         }

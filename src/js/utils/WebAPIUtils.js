@@ -42,6 +42,25 @@ var WebAPIUtils = {
                 }
             });
     },
+    createDecision:function(componentId,stateId,nextStateId,decisionState,decisionType,motivation) {
+        var dataToPost={ fromStateId: stateId, toStateId: nextStateId, decisionState: decisionState, decisionType: decisionType, motivation: motivation };
+        console.log("dataToPost");
+        console.log(dataToPost);
+        request.post(APIEndpoints.CLEAN_PATH+'/projects/'+componentId+'/create_decision')
+            .send(dataToPost)
+            .set('Accept', 'application/json')
+            .end(function(error, res){
+                if (res) {
+                    if (res.error) {
+                        var errorMsgs = res.error;
+                        ServerActionCreator.receivePortfolioError(errorMsgs);
+                    } else {
+                        var portfolio = JSON.parse(res.text);
+                        ServerActionCreator.receivePortfolio(portfolio);
+                    }
+                }
+            });
+    },
     //FROM STORES
     //USER STORE
     loadUser: function(userId) {

@@ -58,10 +58,19 @@ var ViewActionCreator = {
         });
         WebAPIUtils.createScore(componentId, scoringCriterionId);
 
-    }
+    },
 
 
     //Categorization
+    //Process
+    createDecision:function(componentId,stateId,nextStateId,decisionState,decisionType,motivation){
+        AppDispatcher.handleViewAction({
+            actionType: ActionTypes.CREATE_DECISION,
+            componentId: componentId,
+        });
+        WebAPIUtils.createDecision(componentId,stateId,nextStateId,decisionState,decisionType,motivation);
+    }
+    //Process
 
 
 };

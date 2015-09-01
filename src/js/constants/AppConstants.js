@@ -44,17 +44,13 @@ var appConstants = {
         DEFINITIVE:"D",
         EXECUTED:"E",
     },
-    /*
-        B  ("Begin"),
-    E  ("Evaluation"),
-P  ("Planing"),
-    V  ("Voting"),
-    W  ("Waiting for resources"),
-    X  ("Executing"),
-    C ("Cancel"),
-    D ("Delayed"),
-    A ("Archive")
-    */
+    //types of Decision
+    DecisionTypes: {
+        APPROVE:"A",
+        DELAY:"D",
+        CANCEL:"C",
+    },
+
 //Statuses of stores
     StoreStatuses: keyMirror({
         EMPTY: null,
@@ -95,6 +91,7 @@ P  ("Planing"),
         REMOVE_COMPONENT: null,
 
         CREATE_SCORE: null,
+        CREATE_DECISION: null,
 
         //From server
         RECEIVE_PORTFOLIO: null,

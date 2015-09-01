@@ -34,6 +34,7 @@ var ProjectDecisions = React.createClass({
             }
         }
         var isCurrentState=false;
+        var i=1;
         do{
             //console.log(tmpState.name);
             if(tmpState.stateId === project.state.stateId){
@@ -46,22 +47,14 @@ var ProjectDecisions = React.createClass({
                                                 isCurrentState={isCurrentState}
                                                 mode={mode}
                                                 handleProjectChange={this.props.handleProjectChange}
+                                           number={i}
                         >
                     </ProjectStateDecisions>
                 </Paper>
             );
             isCurrentState=false;
             tmpState=tmpState.nextState;
-            /*states.push(
-                    <Paper zDepth={1} className="row" key={project.categoryMemberships[c].category.categoryId}>
-                        <ProjectCategoryScoringCard project={project}
-                                                    categoryMembership={project.categoryMemberships[c]}
-                                                    mode={mode}
-                                                    handleProjectChange={this.props.handleProjectChange}
-                                                    >
-                        </ProjectCategoryScoringCard>
-                    </Paper>
-            );*/
+            i++;
         }while(tmpState.nextState!==null);
         return (
             <div>

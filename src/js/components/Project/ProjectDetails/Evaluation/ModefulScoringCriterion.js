@@ -152,8 +152,8 @@ var ModefulScoringCriterion = React.createClass({
             } else {
                 motivationBlock = <TextField
                     defaultValue={score.motivation}
-                    onChange={this._handleAnswerChange}
-                    onBlur={this._handleAnswerBlur}
+                    onChange={this._handleMotivationChange}
+                    onBlur={this._handleMotivationBlur}
                     floatingLabelText="Score motivation:"
                     fullWidth={true}
                     multiLine={true}
