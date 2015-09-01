@@ -9,7 +9,9 @@ var appConstants = {
         LOGIN:          APIRoot + "/login",
         REGISTRATION:   APIRoot + "/register",
         USER:           APIRoot + "/users",
-        PORTFOLIO:      APIRoot + "/portfolios"
+        PORTFOLIO:      APIRoot + "/portfolios",
+
+        CLEAN_PATH:   APIRoot
     },
 //Source of actions
     PayloadSources: keyMirror({
@@ -61,6 +63,8 @@ var appConstants = {
         CREATE_COMPONENT: null,
         UPDATE_COMPONENT: null,
         REMOVE_COMPONENT: null,
+
+        CREATE_SCORE: null,
 
         //From server
         RECEIVE_PORTFOLIO: null,

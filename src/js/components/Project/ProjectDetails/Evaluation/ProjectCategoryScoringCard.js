@@ -2,6 +2,7 @@ var React = require('react');
 
 var ModefulScoringCriterion = require('./ModefulScoringCriterion');
 
+
 var mui = require('material-ui');
 var Paper = mui.Paper;
 var Avatar = mui.Avatar;

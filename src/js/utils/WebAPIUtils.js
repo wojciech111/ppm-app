@@ -26,6 +26,22 @@ var WebAPIUtils = {
                 }
             });
     },
+    createScore: function(componentId, scoringCriterionId) {
+        //console.log("API: login "+email);
+        request.post(APIEndpoints.CLEAN_PATH+'/projects/'+componentId+'/scoring_criteria/'+scoringCriterionId+'/create_score')
+            .set('Accept', 'application/json')
+            .end(function(error, res){
+                if (res) {
+                    if (res.error) {
+                        var errorMsgs = res.error;
+                        ServerActionCreator.receivePortfolioError(errorMsgs);
+                    } else {
+                        var portfolio = JSON.parse(res.text);
+                        ServerActionCreator.receivePortfolio(portfolio);
+                    }
+                }
+            });
+    },
     //FROM STORES
     //USER STORE
     loadUser: function(userId) {

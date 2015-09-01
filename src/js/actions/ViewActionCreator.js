@@ -47,8 +47,23 @@ var ViewActionCreator = {
             actionType: ActionTypes.REMOVE_COMPONENT,
             componentId: componentId
         })
-    }
+    },
     //Portfolio
+    //Categorization
+    createScore: function(componentId, scoringCriterionId){
+        AppDispatcher.handleViewAction({
+            actionType: ActionTypes.CREATE_SCORE,
+            componentId: componentId,
+            scoringCriterionId: scoringCriterionId
+        });
+        WebAPIUtils.createScore(componentId, scoringCriterionId);
+
+    }
+
+
+    //Categorization
+
+
 };
 
 module.exports = ViewActionCreator;

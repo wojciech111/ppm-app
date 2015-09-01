@@ -23,17 +23,17 @@ var ProjectEvaluation = React.createClass({
     render:function(){
         var project= this.props.project;
         var mode = this.props.mode;
-        console.log("EVAL: ");
-        console.log(project.categoryMemberships);
+        //console.log("EVAL: ");
+        //console.log(project.categoryMemberships);
         var categories=[];
         for(var c=0; c<project.categoryMemberships.length;c++){
             categories.push(
-                    <Paper zDepth={1} className="row">
+                    <Paper zDepth={1} className="row" key={project.categoryMemberships[c].category.categoryId}>
                         <ProjectCategoryScoringCard project={project}
                                                     categoryMembership={project.categoryMemberships[c]}
                                                     mode={mode}
                                                     handleProjectChange={this.props.handleProjectChange}
-                                                    key={project.categoryMemberships[c].category.categoryId}>
+                                                    >
                         </ProjectCategoryScoringCard>
                     </Paper>
             );

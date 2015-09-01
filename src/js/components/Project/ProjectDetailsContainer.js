@@ -118,8 +118,8 @@ var ProjectDetailsContainer = React.createClass({
                 <div>No project with ID: {this.getParams().projectId} found!</div>
             );
         }else {
-            console.log("PROJECT:");
-            console.log(project);
+            //console.log("PROJECT:");
+            //console.log(project);
             viewToShow = (
                 <div>
                     <div className="container-fluid">
