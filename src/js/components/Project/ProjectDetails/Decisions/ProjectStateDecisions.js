@@ -12,6 +12,7 @@ var ModefulDecision = require('./ModefulDecision');
 var mui = require('material-ui');
 var Paper = mui.Paper;
 var FlatButton = mui.FlatButton;
+var RaisedButton = mui.RaisedButton;
 
 
 var ProjectCategoryScoringCard = React.createClass({
@@ -105,7 +106,7 @@ var ProjectCategoryScoringCard = React.createClass({
             if(isCreatingRecommendation) {
                 stateStatus = (
                     <div>
-                        <FlatButton
+                        <RaisedButton
                             label="Save"
                             primary={true}
                             onTouchTap={this._handleCreateRecommendationSubmit}/>
@@ -117,7 +118,7 @@ var ProjectCategoryScoringCard = React.createClass({
                 );
             }else {
                 stateStatus = (
-                    <FlatButton
+                    <RaisedButton
                         label="Create recommendation"
                         secondary={true}
                         onTouchTap={this._handleCreateRecommendation}/>
@@ -127,9 +128,7 @@ var ProjectCategoryScoringCard = React.createClass({
             stateStatus = <p>Not yet reached</p>
         }
 
-        var approveDecisions=[];
-        var delayDecisions=[];
-        var cancelDecisions=[];
+        var decisions=[];
         for(var i=0;i<project.decisions.length;i++){
             var decision=project.decisions[i];
             if(decision.fromState.stateId===state.stateId) {
@@ -142,54 +141,28 @@ var ProjectCategoryScoringCard = React.createClass({
                         >
                     </ModefulDecision>
                 );
-                if (decision.typeOfDecision === DecisionTypes.APPROVE) {
-                    approveDecisions.push(decisionBlock);
-                } else if (decision.typeOfDecision === DecisionTypes.DELAY) {
-                    delayDecisions.push(decisionBlock);
-                } else if (decision.typeOfDecision === DecisionTypes.CANCEL) {
-                    cancelDecisions.push(decisionBlock);
-                }
+                decisions.push(decisionBlock);
+
             }
         }
 
-        if(approveDecisions.length>0){
-            var approveDecisionsBlock=(
-                <Paper zDepth={1} className="row" >
-                    <p className="col-sm-12">Propositions of changing state to {state.nextState.name}:</p>
-                    {approveDecisions}
-                </Paper>
-            );
-        }
-        if(delayDecisions.length>0){
-            var delayDecisionsBlock=(
-                <Paper zDepth={1} className="row" >
-                    <p className="col-sm-12">Propositions to delay:</p>
-                    {delayDecisions}
-                </Paper>
-            );
-        }
-        if(cancelDecisions.length>0){
-            var cancelDecisionsBlock=(
-                <Paper zDepth={1} className="row" >
-                    <p className="col-sm-12">Propositions to cancel:</p>
-                    {cancelDecisions}
-                </Paper>
-            );
-        }
-        if(!approveDecisions.length>0 && !delayDecisions.length>0 && !cancelDecisions.length>0){
-            approveDecisionsBlock=(
-                <div className="row" >
-                    <h4 className="col-sm-12" style={{textAlign:"center"}} >
+        if(!decisions.length>0 ){
+            decisions.push(
+                    <h4 className="col-sm-10" style={{textAlign:"center"}} >
                         No propositions in this state
                     </h4>
-                </div>
             );
         }
 
         return (
-            <div  className="col-sm-12" >
-                <Paper zDepth={1} className="row" style={{ marginBottom:20, marginTop:10}}>
-                    <div className="col-sm-12">
+            <div  className="col-sm-12"  style={{ marginBottom:20,backgroundColor:"rgba(0,0,255,0.2)"}}>
+                <div className="row" style={{ marginBottom:20, marginTop:10}}>
+                    <div className="col-sm-2"  style={{backgroundColor:"rgba(255,255,255,0.0)"}}>
+                        <div className="row">
+                            <h4 className="col-sm-12">30/08/2015</h4>
+                        </div>
+                    </div>
+                     <div className="col-sm-10 "  style={{  backgroundColor:"rgba(255,255,255,0.5)"}}>
                         <div className="row">
                             <h2 className="col-sm-4">{this.props.number} {state.name}</h2>
                             <p className="col-sm-4" style={{marginTop:15}}>{state.description}</p>
@@ -197,10 +170,10 @@ var ProjectCategoryScoringCard = React.createClass({
                         </div>
                         {newRecommendationBlock}
                     </div>
-                    {approveDecisionsBlock}
-                    {delayDecisionsBlock}
-                    {cancelDecisionsBlock}
-                </Paper>
+                </div>
+                <div className="row" >
+                    {decisions}
+                </div>
             </div>
         )
     }

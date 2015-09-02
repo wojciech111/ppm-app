@@ -152,17 +152,25 @@ var ModefulDecision = React.createClass({
 
     return (
 
-            <Paper zDepth={2} className="col-sm-12" style={{marginBottom:25}}>
-                {header}
+            <div className="col-sm-12">
                 <div className="row">
-                    <div className="col-sm-8">
-                        {motivationBlock}
-                    </div>
-                     <div className="col-sm-4">
-                        Proposed by: Someone Angel
-                    </div>
+                    <h4 className="col-sm-2">22/08/2015</h4>
+                    <Paper zDepth={2}  className="col-sm-10"
+                           style={{marginBottom:15, backgroundColor:"white",
+                            borderWidth:4,borderColor:"green", borderStyle:"solid"}}>
+                        {header}
+                        <div className="row">
+                            <div className="col-sm-8">
+                                {motivationBlock}
+                            </div>
+                            <div className="col-sm-4">
+                                Proposed by: Someone Angel
+                            </div>
+                        </div>
+                    </Paper>
                 </div>
-            </Paper>
+            </div>
+
         )
     }
 
