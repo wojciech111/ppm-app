@@ -80,6 +80,7 @@ var ProjectCategoryScoringCard = React.createClass({
         var isCurrentState = this.props.isCurrentState;
         var isCreatingRecommendation = this.state.isCreatingRecommendation;
 
+
         var newRecommendationBlock=null;
         if(isCreatingRecommendation){
             newRecommendationBlock=(
@@ -132,47 +133,60 @@ var ProjectCategoryScoringCard = React.createClass({
         for(var i=0;i<project.decisions.length;i++){
             var decision=project.decisions[i];
             if(decision.fromState.stateId===state.stateId) {
-                var decisionBlock = (
-                    <ModefulDecision project={project}
-                                     state={state}
-                                     decision={decision}
-                                     mode={mode}
-                                     handleProjectChange={this.props.handleProjectChange}
-                        >
-                    </ModefulDecision>
-                );
-                decisions.push(decisionBlock);
+                decisions.push(decision);
 
             }
         }
+        function sortByKey(array, key) {
+            return array.sort(function(a, b) {
+                var x = a[key]; var y = b[key];
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            });
+        }
+        sortByKey(decisions,"lastUpdateDate");
 
-        if(!decisions.length>0 ){
-            decisions.push(
+        var decisionBlocks=[];
+        for(var i=0;i<decisions.length;i++) {
+            var decisionBlock = (
+                <ModefulDecision project={project}
+                                 state={state}
+                                 decision={decisions[i]}
+                                 mode={mode}
+                                 handleProjectChange={this.props.handleProjectChange}
+                                 key={decisions[i].decisionId}
+                    >
+                </ModefulDecision>
+            );
+            decisionBlocks.push(decisionBlock);
+        }
+        if(!decisionBlocks.length>0 ){
+            decisionBlocks.push(
                     <h4 className="col-sm-10" style={{textAlign:"center"}} >
-                        No propositions in this state
+                        No decisions in this state
                     </h4>
             );
         }
 
         return (
-            <div  className="col-sm-12"  style={{ marginBottom:20,backgroundColor:"rgba(0,0,255,0.2)"}}>
+            <div  className="col-sm-12"  style={{ marginBottom:20,
+                backgroundColor:"rgba("+state.colorRed+","+state.colorGreen+","+state.colorBlue+",0.2)"}}>
                 <div className="row" style={{ marginBottom:20, marginTop:10}}>
                     <div className="col-sm-2"  style={{backgroundColor:"rgba(255,255,255,0.0)"}}>
                         <div className="row">
                             <h4 className="col-sm-12">30/08/2015</h4>
                         </div>
                     </div>
-                     <div className="col-sm-10 "  style={{  backgroundColor:"rgba(255,255,255,0.5)"}}>
+                     <div className="col-sm-10 "  style={{  backgroundColor:"rgba(255,255,255,0.7)"}}>
                         <div className="row">
                             <h2 className="col-sm-4">{this.props.number} {state.name}</h2>
                             <p className="col-sm-4" style={{marginTop:15}}>{state.description}</p>
                             <div className="col-sm-4" style={{marginTop:10}}>{stateStatus}</div>
                         </div>
-                        {newRecommendationBlock}
                     </div>
                 </div>
                 <div className="row" >
-                    {decisions}
+                    {newRecommendationBlock}
+                    {decisionBlocks}
                 </div>
             </div>
         )

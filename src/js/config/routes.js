@@ -43,7 +43,8 @@ module.exports = (
             //Main Pages
             <Route name={routes_names.PROJECT_MAIN} path={routes_names.PROJECT_MAIN} handler={ProjectMainPageContainer} />
             //Detail Pages
-            <Route name={routes_names.PROJECT_DETAILS} path={routes_names.PROJECT_DETAILS.concat("/:projectId")} handler={ProjectDetailsContainer} />
+            <Route name={routes_names.PROJECT_DETAILS} path={routes_names.PROJECT_DETAILS.concat("/:projectId")} handler={ProjectDetailsContainer}>
+            </Route>
         </Route>
         <DefaultRoute handler={PortfolioChooserPage} />
     </Route>

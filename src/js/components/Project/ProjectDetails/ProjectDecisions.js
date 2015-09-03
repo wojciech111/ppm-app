@@ -59,8 +59,8 @@ var ProjectDecisions = React.createClass({
         return (
             <div>
                 <Paper zDepth={1} className="row" key={1}>
-                    <h1 className="col-sm-4">{process.name}</h1>
-                    <p className="col-sm-8" style={{marginTop:25}}>{process.description}</p>
+                    <h1 className="col-sm-6">Process: {process.name}</h1>
+                    <p className="col-sm-6" style={{marginTop:25}}>{process.description}</p>
                 </Paper>
 
                 {states}

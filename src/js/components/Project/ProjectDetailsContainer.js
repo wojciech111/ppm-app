@@ -2,6 +2,8 @@ var React = require('react');
 //Router
 var State = require('react-router').State;
 //routes names
+var routes_names = require('../../config/routes_names');
+
 //Stores
 //var UserStore = require('../../stores/UserStore');
 var PortfolioStore = require('../../stores/PortfolioStore');
@@ -100,7 +102,10 @@ var ProjectDetailsContainer = React.createClass({
 
     },
     /*HELPERS  Passed by props */
+    _handleTabActive:function(tab ){
+        console.log("TAB CLICKED: "+tab.props.route);
 
+    },
 
     render:function(){
         var project= this.state.project;
@@ -138,7 +143,9 @@ var ProjectDetailsContainer = React.createClass({
                             ></ProjectDetailsHeader>
                     </div>
                     <Tabs>
-                        <Tab label="Overview">
+                        <Tab label="Overview"
+                             route={routes_names.OVERVIEW}
+                             onActive={this._handleTabActive} >
                             <div className="container-fluid">
                                 <ProjectOverview
                                     project={project}
@@ -147,7 +154,9 @@ var ProjectDetailsContainer = React.createClass({
                                     ></ProjectOverview>
                             </div>
                         </Tab>
-                        <Tab label="Evaluation" >
+                        <Tab label="Evaluation"
+                             route={routes_names.EVALUATION}
+                             onActive={this._handleTabActive} >
                             <div className="container-fluid">
                                 <ProjectEvaluation
                                     project={project}
@@ -156,7 +165,9 @@ var ProjectDetailsContainer = React.createClass({
                                     ></ProjectEvaluation>
                             </div>
                         </Tab>
-                        <Tab label="Recommendations" >
+                        <Tab label="Decisions"
+                             route={routes_names.DECISIONS}
+                             onActive={this._handleTabActive} >
                             <div className="container-fluid">
                                 <ProjectDecisions
                                     project={project}
@@ -165,18 +176,9 @@ var ProjectDetailsContainer = React.createClass({
                                     ></ProjectDecisions>
                             </div>
                         </Tab>
-                        <Tab label="Stakeholders" >
-                        <div>
-                            <h2 >Tab Two Template Example</h2>
-                            <p>
-                                This is another example of a tab template!
-                            </p>
-                            <p>
-                                Fair warning - the next tab routes to home!
-                            </p>
-                        </div>
-                        </Tab>
-                        <Tab label="Schedule" >
+                        <Tab label="Finance"
+                             route={routes_names.FINANCE}
+                             onActive={this._handleTabActive} >
                             <div>
                                 <h2 >Tab Two Template Example</h2>
                                 <p>
@@ -187,7 +189,9 @@ var ProjectDetailsContainer = React.createClass({
                                 </p>
                             </div>
                         </Tab>
-                        <Tab label="Financial" >
+                        <Tab label="Stakeholders"
+                             route={routes_names.STAKEHOLDERS}
+                             onActive={this._handleTabActive} >
                         <div>
                             <h2 >Tab Two Template Example</h2>
                             <p>
@@ -202,6 +206,7 @@ var ProjectDetailsContainer = React.createClass({
                 </div>
             );
         }
+
         return (
             <div>{viewToShow}</div>
         )
