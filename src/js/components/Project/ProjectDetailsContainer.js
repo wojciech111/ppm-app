@@ -19,6 +19,7 @@ var ProjectDetailsHeader = require('./ProjectDetails/ProjectDetailsHeader');
 var ProjectOverview = require('./ProjectDetails/ProjectOverview');
 var ProjectEvaluation = require('./ProjectDetails/ProjectEvaluation');
 var ProjectDecisions = require('./ProjectDetails/ProjectDecisions');
+var ProjectFinance = require('./ProjectDetails/ProjectFinance');
 //Material-ui components
 var mui = require('material-ui');
 var Tabs = mui.Tabs;
@@ -179,14 +180,12 @@ var ProjectDetailsContainer = React.createClass({
                         <Tab label="Finance"
                              route={routes_names.FINANCE}
                              onActive={this._handleTabActive} >
-                            <div>
-                                <h2 >Tab Two Template Example</h2>
-                                <p>
-                                    This is another example of a tab template!
-                                </p>
-                                <p>
-                                    Fair warning - the next tab routes to home!
-                                </p>
+                            <div className="container-fluid">
+                                <ProjectFinance
+                                    project={project}
+                                    mode={mode}
+                                    handleProjectChange={this.handleProjectChange}
+                                    ></ProjectFinance>
                             </div>
                         </Tab>
                         <Tab label="Stakeholders"
