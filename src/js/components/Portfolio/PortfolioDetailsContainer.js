@@ -19,6 +19,7 @@ var PortfolioDetailsHeader = require('./PortfolioDetails/PortfolioDetailsHeader'
 var PortfolioOverview = require('./PortfolioDetails/PortfolioOverview');
 var PortfolioCategories = require('./PortfolioDetails/PortfolioCategories');
 var PortfolioCriteria = require('./PortfolioDetails/PortfolioCriteria');
+var PortfolioBudgets = require('./PortfolioDetails/PortfolioBudgets');
 //Material-ui components
 var mui = require('material-ui');
 var Tabs = mui.Tabs;
@@ -172,15 +173,13 @@ var PortfolioDetailsContainer = React.createClass({
                         <Tab label="Budgets"
                              route={routes_names.BUDGETS}
                              onActive={this._handleTabActive} >
-                        <div>
-                            <h2 >Tab Two Template Example</h2>
-                            <p>
-                                This is another example of a tab template!
-                            </p>
-                            <p>
-                                Fair warning - the next tab routes to home!
-                            </p>
-                        </div>
+                            <div className="container-fluid">
+                                <PortfolioBudgets
+                                    portfolio={portfolio}
+                                    mode={mode}
+                                    handlePortfolioChange={this.handlePortfolioChange}
+                                    ></PortfolioBudgets>
+                            </div>
                         </Tab>
                     </Tabs>
                 </div>

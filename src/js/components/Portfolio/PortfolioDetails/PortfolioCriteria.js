@@ -37,21 +37,25 @@ var PortfolioCategories = React.createClass({
         var avatar=(<Avatar>!#</Avatar>);
         for(var i=0;i<criteria.length;i++){
             if(criteria[i].type){
-                avatar=(<Avatar>{criteria[i].type.toUpperCase()}</Avatar>);
+                avatar=(<Avatar></Avatar>);
             }
             criteriaBlocks.push(
                 <div  className="col-sm-12">
                     <Paper zDepth={1} className="row" style={{ marginBottom:20, marginTop:10}}  key={criteria[i].scoringCriterionId}>
                         <div className="col-sm-12">
-
-                            <List>
-                                <ListItem key={1}
-                                          primaryText={criteria[i].name}
-                                          leftAvatar={avatar}
-                                          secondaryText={criteria[i].code}
-                                          disabled={true}>
-                                </ListItem>
-                            </List>
+                            <div className="row">
+                                <div className="col-sm-4">
+                                    <h2>
+                                        {criteria[i].code}
+                                    </h2>
+                                    <h4>
+                                        {criteria[i].type==="P"?"PREDICTIVE":"ACTUAL"}
+                                    </h4>
+                                </div>
+                                <h1 className="col-sm-8">
+                                    {criteria[i].name}
+                                </h1>
+                            </div>
                             <div className="row">
                                 <div className="col-sm-4">
                                     <List>
@@ -90,7 +94,14 @@ var PortfolioCategories = React.createClass({
                                 fullWidth={true}
                                 multiLine={true}
                                 disabled={true}
-                            />;
+                            />
+                              <TextField
+                                value={criteria[i].question}
+                                floatingLabelText="Question to ask:"
+                                fullWidth={true}
+                                multiLine={true}
+                                disabled={true}
+                            />
                         </div>
                     </Paper>
                 </div>

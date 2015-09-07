@@ -16,6 +16,7 @@ var DashboardContainer =  require('../components/Dashboard/DashboardContainer');
 var ProjectMainPageContainer = require('../components/Project/ProjectMainPageContainer');
 
 //Details Pages
+var UserDetailsContainer = require('../components/User/UserDetailsContainer');
 var PortfolioDetailsContainer = require('../components/Portfolio/PortfolioDetailsContainer');
 var ProjectDetailsContainer = require('../components/Project/ProjectDetailsContainer');
 
@@ -44,6 +45,7 @@ module.exports = (
             //Main Pages
             <Route name={routes_names.PROJECT_MAIN} path={routes_names.PROJECT_MAIN} handler={ProjectMainPageContainer} />
             //Detail Pages
+            <Route name={routes_names.USER_DETAILS} path={routes_names.USER_DETAILS} handler={UserDetailsContainer}/>
             <Route name={routes_names.PORTFOLIO_DETAILS} path={routes_names.PORTFOLIO_DETAILS} handler={PortfolioDetailsContainer}/>
             <Route name={routes_names.PROJECT_DETAILS} path={routes_names.PROJECT_DETAILS.concat("/:projectId")} handler={ProjectDetailsContainer}/>
 
