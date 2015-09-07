@@ -65,11 +65,13 @@ var ProjectCategoryScoringCard = React.createClass({
         );
         this.setState({
             isCreatingRecommendation: false,
+            newMotivation:""
         });
     },
     _handleCreateRecommendationCancel: function(){
         this.setState({
             isCreatingRecommendation: false,
+            newMotivation:""
         });
     },
 

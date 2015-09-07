@@ -128,7 +128,7 @@ var PortfolioOverview = React.createClass({
 
                 </Paper>
                 <Paper zDepth={1} className="row" style={{marginTop:10}}>
-                    <div className="col-sm-5">
+                    <div className="col-sm-6">
                         <ModefulTextField object={portfolio}
                                           mode={mode}
                                           keyOfValue="purpose"
@@ -141,7 +141,7 @@ var PortfolioOverview = React.createClass({
                                           article={true}
                             />
                     </div>
-                    <div className="col-sm-7">
+                    <div className="col-sm-6">
                         <ModefulTextField object={portfolio}
                                           mode={mode}
                                           keyOfValue="description"

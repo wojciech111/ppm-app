@@ -18,6 +18,7 @@ var ModeChanger = require('../Commons/ModeChanger');
 var PortfolioDetailsHeader = require('./PortfolioDetails/PortfolioDetailsHeader');
 var PortfolioOverview = require('./PortfolioDetails/PortfolioOverview');
 var PortfolioCategories = require('./PortfolioDetails/PortfolioCategories');
+var PortfolioCriteria = require('./PortfolioDetails/PortfolioCriteria');
 //Material-ui components
 var mui = require('material-ui');
 var Tabs = mui.Tabs;
@@ -161,7 +162,11 @@ var PortfolioDetailsContainer = React.createClass({
                              route={routes_names.CRITERIA}
                              onActive={this._handleTabActive} >
                             <div className="container-fluid">
-
+                                <PortfolioCriteria
+                                    portfolio={portfolio}
+                                    mode={mode}
+                                    handlePortfolioChange={this.handlePortfolioChange}
+                                    ></PortfolioCriteria>
                             </div>
                         </Tab>
                         <Tab label="Budgets"

@@ -72,18 +72,22 @@ var PortfolioCategories = React.createClass({
                     <Paper zDepth={1} className="row" key={1}>
                         <h1 className="col-sm-12">Categories</h1>
                         <table className="table table-bordered col-sm-12">
-                            <tr>
-                                <th>
-                                    Code
-                                </th>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Percentage of focus
-                                </th>
-                            </tr>
-                            {categoriesBlocks}
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Code
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Percentage of focus
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {categoriesBlocks}
+                            </tbody>
                         </table>
                     </Paper>
                 </div>
