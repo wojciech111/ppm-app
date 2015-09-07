@@ -112,11 +112,17 @@ var logout = function(){
 }
 var updateComponent = function(updatedComponent){
     if(_canModifyData()) {
-        var parentComponent = _getParentComponent(updatedComponent.componentId, _store.portfolio);
-        for (var i = 0; parentComponent.children[i]; i++) {
-            if (parentComponent.children[i].componentId === updatedComponent.componentId) {
-                parentComponent.children[i] = updatedComponent;
-                //console.log(parentComponent.children[i].name);
+        //console.log(_store.portfolio);
+        //console.log(updatedComponent);
+        if (_store.portfolio.componentId === updatedComponent.componentId) {
+            _store.portfolio=updatedComponent;
+        }else {
+            var parentComponent = _getParentComponent(updatedComponent.componentId, _store.portfolio);
+            for (var i = 0; parentComponent.children[i]; i++) {
+                if (parentComponent.children[i].componentId === updatedComponent.componentId) {
+                    parentComponent.children[i] = updatedComponent;
+                    //console.log(parentComponent.children[i].name);
+                }
             }
         }
         _autosaveData();

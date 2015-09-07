@@ -5,7 +5,7 @@ var State = require('react-router').State;
 var routes_names = require('../../config/routes_names');
 
 //Stores
-//var UserStore = require('../../stores/UserStore');
+var UserStore = require('../../stores/UserStore');
 var PortfolioStore = require('../../stores/PortfolioStore');
 //Action creators
 var ViewActionCreator = require('../../actions/ViewActionCreator');
@@ -15,11 +15,9 @@ var StoreStatuses = AppConstants.StoreStatuses;
 var ViewModes = AppConstants.ViewModes;
 //Components
 var ModeChanger = require('../Commons/ModeChanger');
-var ProjectDetailsHeader = require('./ProjectDetails/ProjectDetailsHeader');
-var ProjectOverview = require('./ProjectDetails/ProjectOverview');
-var ProjectEvaluation = require('./ProjectDetails/ProjectEvaluation');
-var ProjectDecisions = require('./ProjectDetails/ProjectDecisions');
-var ProjectFinance = require('./ProjectDetails/ProjectFinance');
+var PortfolioDetailsHeader = require('./PortfolioDetails/PortfolioDetailsHeader');
+var PortfolioOverview = require('./PortfolioDetails/PortfolioOverview');
+var PortfolioCategories = require('./PortfolioDetails/PortfolioCategories');
 //Material-ui components
 var mui = require('material-ui');
 var Tabs = mui.Tabs;
@@ -27,12 +25,13 @@ var Tab = mui.Tab;
 
 
 
-var ProjectDetailsContainer = React.createClass({
+
+var PortfolioDetailsContainer = React.createClass({
     mixins: [State],
     getInitialState: function(){
         return {
-            project: PortfolioStore.getProject(this.getParams().projectId),
-            parentComponent: PortfolioStore.getParent(this.getParams().projectId),
+            portfolio: PortfolioStore.getPortfolio(),
+            //user: UserStore.getUser(),
             mode: ViewModes.VIEW_MODE,
             nrOfChanges: 0,
         }
@@ -40,33 +39,26 @@ var ProjectDetailsContainer = React.createClass({
     /* MANAGE STORE CHANGES*/
     componentDidMount: function(){
         PortfolioStore.addChangeListener(this._onChange);
+        //UserStore.addChangeListener(this._onChange);
         //this._loadPortfolio(this.state.portfolioId);
     },
     componentWillUnmount: function(){
         PortfolioStore.removeChangeListener(this._onChange);
+        //UserStore.removeChangeListener(this._onChange);
     },
     _onChange: function(){
-        //if(PortfolioStore.getStatus() === StoreStatuses.UP_TO_DATE || PortfolioStore.getStatus() === StoreStatuses.MODIFIED) {
             this.setState({
-                project: PortfolioStore.getProject(this.getParams().projectId),
-                parentComponent: PortfolioStore.getParent(this.getParams().projectId)
+                portfolio: PortfolioStore.getPortfolio(),
+                //user: UserStore.getUser()
             })
-       // }
 
     },
     /* MANAGE STORE CHANGES*/
 
     /* HANDLE APP STATES CHANGES*/
-    /*_loadPortfolio: function(portfolioId){
-        if(PortfolioStore.getStatus() === StoreStatuses.EMPTY) {
-            ViewActionCreator.loadPortfolio(portfolioId);
-        }else if(PortfolioStore.getCurrentPortfolioId() !== portfolioId){
-            console.log("PortfolioStore.getCurrentPortfolioId() !== portfolioId");
-        }
-    },*/
 
-    _handleProjectUpdate: function(changedProject){
-        ViewActionCreator.updateComponent(changedProject);
+    _handlePortfolioUpdate: function(changedPortfolio){
+        ViewActionCreator.updateComponent(changedPortfolio);
     },
     /* HANDLE APP STATES CHANGES*/
     /* VIEW MODE CHANGES*/
@@ -76,7 +68,7 @@ var ProjectDetailsContainer = React.createClass({
         });
     },
     changeToViewModeWithSave: function(){
-        this._handleProjectUpdate(this.state.project);
+        this._handlePortfolioUpdate(this.state.portfolio);
         this.setState({
             mode: ViewModes.VIEW_MODE,
             nrOfChanges: 0
@@ -85,15 +77,15 @@ var ProjectDetailsContainer = React.createClass({
     changeToViewModeWithCancel: function(){
         this.setState({
             mode: ViewModes.VIEW_MODE,
-            project: PortfolioStore.getProject(this.getParams().projectId),
+            portfolio: PortfolioStore.getPortfolio(),
             nrOfChanges: 0
         });
     },
     /* VIEW MODE CHANGES*/
     /*HELPERS  Passed by props */
-    handleProjectChange: function(project){
+    handlePortfolioChange: function(portfolio){
         this.setState({
-            project: project,
+            portfolio: portfolio,
             nrOfChanges: this.state.nrOfChanges+1
         })
 
@@ -105,20 +97,23 @@ var ProjectDetailsContainer = React.createClass({
     },
 
     render:function(){
-        var project= this.state.project;
-        var parentComponent= this.state.parentComponent;
+        var portfolio= this.state.portfolio;
+        var user= this.state.user;
         var mode= this.state.mode;
         var nrOfChanges= this.state.nrOfChanges;
         //console.log("ProjectDetailsContainer: "+PortfolioStore.getStatus());
+        var organization=portfolio.organization;
+
+
         var viewToShow;
 
         if(!PortfolioStore.havePortfolio()){
             viewToShow=(
                 <div>Loading...</div>
             );
-        } else if(project === null) {
+        } else if(portfolio === null) {
             viewToShow=(
-                <div>No project with ID: {this.getParams().projectId} found!</div>
+                <div>No portfolio with ID: {this.getParams().portfolioId} found!</div>
             );
         }else {
             //console.log("PROJECT:");
@@ -132,60 +127,45 @@ var ProjectDetailsContainer = React.createClass({
                             changeToViewModeWithSave={this.changeToViewModeWithSave}
                             changeToViewModeWithCancel={this.changeToViewModeWithCancel}
                             ></ModeChanger>
-                        <ProjectDetailsHeader
-                            project={project}
-                            parentComponent={parentComponent}
+                        <PortfolioDetailsHeader
+                            portfolio={portfolio}
                             mode={mode}
-                            handleProjectChange={this.handleProjectChange}
-                            ></ProjectDetailsHeader>
+                            handlePortfolioChange={this.handlePortfolioChange}
+                            ></PortfolioDetailsHeader>
                     </div>
                     <Tabs>
                         <Tab label="Overview"
                              route={routes_names.OVERVIEW}
                              onActive={this._handleTabActive} >
                             <div className="container-fluid">
-                                <ProjectOverview
-                                    project={project}
+                                <PortfolioOverview
+                                    portfolio={portfolio}
+                                    organization={organization}
                                     mode={mode}
-                                    handleProjectChange={this.handleProjectChange}
-                                    ></ProjectOverview>
+                                    handlePortfolioChange={this.handlePortfolioChange}
+                                    ></PortfolioOverview>
                             </div>
                         </Tab>
-                        <Tab label="Evaluation"
-                             route={routes_names.EVALUATION}
+                        <Tab label="Categories"
+                             route={routes_names.CATEGORIES}
                              onActive={this._handleTabActive} >
                             <div className="container-fluid">
-                                <ProjectEvaluation
-                                    project={project}
+                                <PortfolioCategories
+                                    portfolio={portfolio}
                                     mode={mode}
-                                    handleProjectChange={this.handleProjectChange}
-                                    ></ProjectEvaluation>
+                                    handlePortfolioChange={this.handlePortfolioChange}
+                                    ></PortfolioCategories>
                             </div>
                         </Tab>
-                        <Tab label="Decisions"
-                             route={routes_names.DECISIONS}
+                        <Tab label="Scoring Criteria"
+                             route={routes_names.CRITERIA}
                              onActive={this._handleTabActive} >
                             <div className="container-fluid">
-                                <ProjectDecisions
-                                    project={project}
-                                    mode={mode}
-                                    handleProjectChange={this.handleProjectChange}
-                                    ></ProjectDecisions>
+
                             </div>
                         </Tab>
-                        <Tab label="Finance"
-                             route={routes_names.FINANCE}
-                             onActive={this._handleTabActive} >
-                            <div className="container-fluid">
-                                <ProjectFinance
-                                    project={project}
-                                    mode={mode}
-                                    handleProjectChange={this.handleProjectChange}
-                                    ></ProjectFinance>
-                            </div>
-                        </Tab>
-                        <Tab label="Stakeholders"
-                             route={routes_names.STAKEHOLDERS}
+                        <Tab label="Budgets"
+                             route={routes_names.BUDGETS}
                              onActive={this._handleTabActive} >
                         <div>
                             <h2 >Tab Two Template Example</h2>
@@ -209,4 +189,4 @@ var ProjectDetailsContainer = React.createClass({
 
 });
 
-module.exports = ProjectDetailsContainer;
+module.exports = PortfolioDetailsContainer;

@@ -15,10 +15,15 @@ module.exports = {
 
     //SUBDETAIL PAGES
     OVERVIEW:'overview',
-    EVALUATION:'evaluation',
-    DECISIONS:'decisions',
-    FINANCE:'finance',
-    STAKEHOLDERS:'stakeholders',
+        //Project
+        EVALUATION:'evaluation',
+        DECISIONS:'decisions',
+        FINANCE:'finance',
+        STAKEHOLDERS:'stakeholders',
+        //Portfolio
+        CATEGORIES:'categories',
+        CRITERIA:'criteria',
+        BUDGETS:'budgets',
 
     //HELPER PAGES
     PORTFOLIO_CHOOSER: 'portfolio_chooser',
