@@ -301,6 +301,18 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
     getAllProcesses:function(){
         return _store.portfolio.processes;
     },
+    getAllDecisions:function(){
+        var projects = this.getAllProjects();
+        var decisions = [];
+        for (var i=0;i<projects.length;i++){
+            for (var j=0;j<projects[i].decisions.length;j++){
+                var decision = projects[i].decisions[j];
+                decision.project=projects[i];
+                decisions.push(decision);
+            }
+        }
+        return decisions;
+    },
     getPortfolio: function(){
         if(_canServeData()) {
             return _store.portfolio;

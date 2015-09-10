@@ -23,7 +23,8 @@ var appConstants = {
     ViewModes: keyMirror({
         VIEW_MODE : null,
         EDIT_MODE : null,
-        CREATION_MODE : null
+        CREATION_MODE : null,
+        DECISION_MODE : null
     }),
 //Types of states
     StatesTypes: {

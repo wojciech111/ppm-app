@@ -51,6 +51,29 @@ var ModeChanger = React.createClass({
                     </div>
                 );            }
 
+        } else if(currentMode === ViewModes.DECISION_MODE){
+            if(nrOfChanges === 0){
+                btn = (
+                    <div>
+                        <RaisedButton label={"No changes"} primary={true} disabled={true}/>
+                        <FlatButton label={"Back"} secondary={true} onClick={this.props.changeToViewModeWithCancel}/>
+                    </div>
+                );
+            } else if(nrOfChanges === 1){
+                btn = (
+                    <div>
+                        <RaisedButton label={nrOfChanges+" change made"} primary={true}  disabled={true} />
+                        <FlatButton label={"Back"} secondary={true} onClick={this.props.changeToViewModeWithCancel}/>
+                    </div>
+                );
+            } else {
+                btn = (
+                    <div>
+                        <RaisedButton label={nrOfChanges+" changes made"} primary={true}   disabled={true}/>
+                        <FlatButton label={"Back"} secondary={true} onClick={this.props.changeToViewModeWithCancel}/>
+                    </div>
+                );            }
+
         }
         return (
             <div className="row" >

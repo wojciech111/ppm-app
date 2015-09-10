@@ -69,6 +69,14 @@ var ViewActionCreator = {
             componentId: componentId,
         });
         WebAPIUtils.createDecision(componentId,stateId,nextStateId,decisionState,decisionType,motivation);
+    },
+    updateDecision:function(decision){
+        /*AppDispatcher.handleViewAction({
+            actionType: ActionTypes.CREATE_DECISION,
+            componentId: componentId,
+        });
+        WebAPIUtils.createDecision(componentId,stateId,nextStateId,decisionState,decisionType,motivation);
+    */
     }
     //Process
 
