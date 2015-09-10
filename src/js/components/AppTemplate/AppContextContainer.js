@@ -99,7 +99,7 @@ var AppContextContainer = React.createClass({
                         selected=i;
                         avatarOrg=(<Avatar>{user.employees[e].organization.shortName.toUpperCase().slice(0,1)}</Avatar>);
                         nameOrg=user.employees[e].organization.shortName;
-                        employeeOrg="as "+user.employees[e].firstName+" "+user.employees[e].secondName;
+                        employeeOrg=user.employees[e].firstName+" "+user.employees[e].secondName;
 
                     }
                     i++;
@@ -120,15 +120,15 @@ var AppContextContainer = React.createClass({
                         <ListItem key={1}
                                   primaryText={user.username}
                                   leftAvatar={avatarUser}
-                                  secondaryText={user.email}
+                                  secondaryText={employeeOrg}
                                   disabled={true}>
                         </ListItem>
-                        <ListItem key={2}
+                        {/*<ListItem key={2}
                                   primaryText={nameOrg}
                                   leftAvatar={avatarOrg}
                                   secondaryText={employeeOrg}
                                   disabled={true}>
-                        </ListItem>
+                        </ListItem>*/}
                     </List>
 
                 </div>

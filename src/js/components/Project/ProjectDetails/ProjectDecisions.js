@@ -25,46 +25,44 @@ var ProjectDecisions = React.createClass({
         var project= this.props.project;
         var mode = this.props.mode;
         var process = project.process;
-        var states=[];
-        var tmpState=null;
-        for(var i=0; i<process.states.length;i++){
-            if(process.states[i].stateType=== StatesTypes.BEGIN){
-                tmpState=process.states[i];
-                break;
-            }
+        var states=project.process.states;
+        var statesBlocks=[];
+        function sortByKey(array, key) {
+            return array.sort(function(a, b) {
+                var x = a[key]; var y = b[key];
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            });
         }
+        sortByKey(states,"sequenceNumber");
+
         var isCurrentState=false;
-        var i=1;
-        do{
-            //console.log(tmpState.name);
-            if(tmpState.stateId === project.state.stateId){
+
+        for(var i=0; i<states.length;i++){
+            if(states[i].stateId === project.state.stateId){
                 isCurrentState=true;
             }
-            states.push(
-                <Paper zDepth={1} className="row" key={tmpState.stateId}>
+            statesBlocks.push(
+                <Paper zDepth={1} className="row" key={states[i].stateId}>
                     <ProjectStateDecisions project={project}
-                                                state={tmpState}
-                                                isCurrentState={isCurrentState}
-                                                mode={mode}
-                                                handleProjectChange={this.props.handleProjectChange}
-                                           number={i}
+                                           state={states[i]}
+                                           nextState={states[i+1]}
+                                           isCurrentState={isCurrentState}
+                                           mode={mode}
+                                           handleProjectChange={this.props.handleProjectChange}
+                                           number={states[i].sequenceNumber}
                         >
                     </ProjectStateDecisions>
                 </Paper>
             );
             isCurrentState=false;
-            tmpState=tmpState.nextState;
-            i++;
-        }while(tmpState.nextState!==null);
+        }
         return (
             <div>
                 <Paper zDepth={1} className="row" key={1}>
                     <h1 className="col-sm-6">Process: {process.name}</h1>
                     <p className="col-sm-6" style={{marginTop:25}}>{process.description}</p>
                 </Paper>
-
-                {states}
-
+                {statesBlocks}
             </div>
         )
     }

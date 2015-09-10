@@ -148,6 +148,17 @@ var PortfolioDetailsContainer = React.createClass({
                                     ></PortfolioOverview>
                             </div>
                         </Tab>
+                        <Tab label="Scores"
+                             route={routes_names.SCORES}
+                             onActive={this._handleTabActive} >
+                            <div className="container-fluid">
+                                <PortfolioCategories
+                                    portfolio={portfolio}
+                                    mode={mode}
+                                    handlePortfolioChange={this.handlePortfolioChange}
+                                    ></PortfolioCategories>
+                            </div>
+                        </Tab>
                         <Tab label="Categories"
                              route={routes_names.CATEGORIES}
                              onActive={this._handleTabActive} >

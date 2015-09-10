@@ -1,10 +1,10 @@
 var React = require('react');
 
-var AppConstants = require('../../../../constants/AppConstants');
+var AppConstants = require('../../../constants/AppConstants');
 var ViewModes = AppConstants.ViewModes;
 
 
-var ViewActionCreator = require('../../../../actions/ViewActionCreator');
+var ViewActionCreator = require('../../../actions/ViewActionCreator');
 
 var mui = require('material-ui');
 var Paper = mui.Paper;

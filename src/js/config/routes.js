@@ -14,6 +14,7 @@ var PortfolioChooserPage = require('../components/Login/PortfolioChooserPage');
 var DashboardContainer =  require('../components/Dashboard/DashboardContainer');
 //Main Pages
 var ProjectMainPageContainer = require('../components/Project/ProjectMainPageContainer');
+var ProcessMainPageContainer = require('../components/Process/ProcessMainPageContainer');
 
 //Details Pages
 var UserDetailsContainer = require('../components/User/UserDetailsContainer');
@@ -44,6 +45,7 @@ module.exports = (
             <Route name={routes_names.DASHBOARD} path={routes_names.DASHBOARD} handler={DashboardContainer} />
             //Main Pages
             <Route name={routes_names.PROJECT_MAIN} path={routes_names.PROJECT_MAIN} handler={ProjectMainPageContainer} />
+            <Route name={routes_names.PROCESS_MAIN} path={routes_names.PROCESS_MAIN} handler={ProcessMainPageContainer} />
             //Detail Pages
             <Route name={routes_names.USER_DETAILS} path={routes_names.USER_DETAILS} handler={UserDetailsContainer}/>
             <Route name={routes_names.PORTFOLIO_DETAILS} path={routes_names.PORTFOLIO_DETAILS} handler={PortfolioDetailsContainer}/>

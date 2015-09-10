@@ -56,8 +56,7 @@ var ModefulDecision = React.createClass({
 
 
         var selectDecisionTypeItems=
-            [{id:DecisionTypes.APPROVE,name:this.props.state.nextState.name,
-                title:"Move project to next stage"},
+            [{id:DecisionTypes.APPROVE,name:"Move forward",title:"Move project to next stage"},
                 {id:DecisionTypes.DELAY,name:"Delayed",title:"Delay project"},
                 {id:DecisionTypes.CANCEL,name:"Canceled",title:"Cancel project"}];
 

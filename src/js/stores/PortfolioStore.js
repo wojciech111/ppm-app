@@ -298,12 +298,25 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
         //console.log(projects);
         return projects;
     },
+    getAllProcesses:function(){
+        return _store.portfolio.processes;
+    },
     getPortfolio: function(){
         if(_canServeData()) {
             return _store.portfolio;
         } else {
             return null;
         }
+    },
+    getProgram: function(programId){
+        if(_canServeData()) {
+            var program = _getComponentById(programId, _store.portfolio);
+            if (program !== null && program.componentType === "PROGRAM") {
+                //console.log(project.name);
+                return program;
+            }
+        }
+        return null;
     },
     getProject: function(projectId){
         if(_canServeData()) {
@@ -312,17 +325,6 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
             if (project !== null && project.componentType === "PROJECT") {
                 //console.log("PortfolioStore: project "+project.name);
                 return project;
-            }
-        }
-        return null;
-    },
-
-    getProgram: function(programId){
-        if(_canServeData()) {
-            var program = _getComponentById(programId, _store.portfolio);
-            if (program !== null && program.componentType === "PROGRAM") {
-                //console.log(project.name);
-                return program;
             }
         }
         return null;
@@ -336,6 +338,7 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
         }
         return null;
     },
+
     /* PUBLIC GETTERS */
 
 });

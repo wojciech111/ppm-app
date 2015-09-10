@@ -12,6 +12,8 @@ module.exports = {
     //DETAILS PAGES
     PROJECT_DETAILS: 'projects',
     PROGRAM_DETAILS: 'programs',
+    PROCESS_DETAILS: 'processes',
+
 
     //SUBDETAIL PAGES
     OVERVIEW:'overview',
@@ -21,6 +23,7 @@ module.exports = {
         FINANCE:'finance',
         STAKEHOLDERS:'stakeholders',
         //Portfolio
+        SCORES:'scores',
         CATEGORIES:'categories',
         CRITERIA:'criteria',
         BUDGETS:'budgets',

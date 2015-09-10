@@ -1,6 +1,6 @@
 var React = require('react');
 
-var ModefulScoringCriterion = require('./ModefulScoringCriterion');
+var ModefulScoringCriterion = require('./../../../Commons/Scores/ModefulScoringCriterion');
 
 
 var mui = require('material-ui');

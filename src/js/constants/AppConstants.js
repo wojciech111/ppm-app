@@ -109,7 +109,9 @@ var appConstants = {
         RECEIVE_CREATED_STORY: null
 
     }),
-
+    DnDItemTypes: keyMirror({
+        STATE: null
+    }),
 };
 
 module.exports = appConstants;

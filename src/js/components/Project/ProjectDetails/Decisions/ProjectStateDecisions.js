@@ -20,6 +20,7 @@ var ProjectCategoryScoringCard = React.createClass({
         return {
             project: React.PropTypes.object.isRequired,
             state: React.PropTypes.object.isRequired,
+            nextState: React.PropTypes.object.isRequired,
             isCurrentState: React.PropTypes.object.isRequired,
             mode: React.PropTypes.bool.isRequired,
             number: React.PropTypes.number.isRequired,
@@ -58,7 +59,7 @@ var ProjectCategoryScoringCard = React.createClass({
         ViewActionCreator.createDecision(
             this.props.project.componentId,
             this.props.state.stateId,
-            this.props.state.nextState.stateId,
+            this.props.nextState.stateId,
             this.state.newDecisionState,
             this.state.newDecisionType,
             this.state.newMotivation
@@ -172,13 +173,13 @@ var ProjectCategoryScoringCard = React.createClass({
         return (
             <div  className="col-sm-12"  style={{ marginBottom:20,
                 backgroundColor:"rgba("+state.colorRed+","+state.colorGreen+","+state.colorBlue+",0.2)"}}>
-                <div className="row" style={{ marginBottom:20, marginTop:10}}>
+                <div className="row" style={{ marginBottom:10, marginTop:10}}>
                     <div className="col-sm-2"  style={{backgroundColor:"rgba(255,255,255,0.0)"}}>
                         <div className="row">
                             <h4 className="col-sm-12">30/08/2015</h4>
                         </div>
                     </div>
-                     <div className="col-sm-10 "  style={{  backgroundColor:"rgba(255,255,255,0.7)"}}>
+                     <div className="col-sm-10 "  style={{  backgroundColor:"rgba(255,255,255,0.9)"}}>
                         <div className="row">
                             <h2 className="col-sm-4">{this.props.number} {state.name}</h2>
                             <p className="col-sm-4" style={{marginTop:15}}>{state.description}</p>
