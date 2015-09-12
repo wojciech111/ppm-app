@@ -15,6 +15,7 @@ var List = mui.List;
 var ListItem = mui.ListItem;
 var TextField = mui.TextField;
 var RaisedButton = mui.RaisedButton;
+var FlatButton = mui.FlatButton;
 var SelectField = mui.SelectField;
 
 
@@ -33,17 +34,26 @@ var ModefulDecision = React.createClass({
             handleMotivationChange: React.PropTypes.func
         };
     },
-    _handleMotivationBlur: function(e) {
-        /*if(this.state.motivation && this.state.motivation !== this.props.score.motivation) {
-         var project = this.props.project;
-         for(var i=0;i<project.scores.length;i++){
-         if(project.scores[i].scoresPK.scoringCriterionId === this.props.score.scoresPK.scoringCriterionId){
-         project.scores[i].motivation=this.state.motivation;
-         }
-         }
-         this.props.handleProjectChange(project);
-         }*/
+    getInitialState: function(){
+        return {
+            motivation:this.props.decision.motivation
+        }
     },
+    _handleMotivationChange: function(e) {
+        this.setState({
+            motivation: e.target.value
+        });
+    },
+    _handleSave: function(e) {
+
+    },
+    _handleApprove: function(e) {
+
+    },
+    _handleDiscard: function(e) {
+
+    },
+
     render:function(){
         var project= this.props.project;
         var decision= this.props.decision;
@@ -61,6 +71,7 @@ var ModefulDecision = React.createClass({
 
         var contentBlock="No content";
         var borderColor="gray";
+        var bgColor="gray";
 
         if(this.props.mode === ViewModes.CREATION_MODE){
             //CREATION
@@ -135,12 +146,23 @@ var ModefulDecision = React.createClass({
                     </div>
                 </div>
             );
-        }else if(this.props.mode === ViewModes.VIEW_MODE){
+        }else if(this.props.mode === ViewModes.VIEW_MODE || this.props.mode === ViewModes.DECISION_MODE){
             //VIEW
             var headerBlock;
             var bodyBlock;
             var motivationBlock;
             var asideBlock;
+
+            if(decision.typeOfDecision===DecisionTypes.APPROVE){
+                borderColor="green";
+            }else if(decision.typeOfDecision===DecisionTypes.DELAY){
+                borderColor="yellow";
+                bgColor="rgba(255,255,0,0.6)";
+            }else if(decision.typeOfDecision===DecisionTypes.CANCEL){
+                borderColor="red";
+                bgColor="rgba(255,0,0,0.6)";
+            }
+
             //HEADER BLOCK
             var decisionStateName;
             for(var i=0;i<selectDecisionStateItems.length;i++){
@@ -171,14 +193,34 @@ var ModefulDecision = React.createClass({
             if(decision.project) {
                 var fromStateBlock;
                 var toStateBlock;
-                var state=decision.project.state;
+                var fromState=decision.fromState;
+                var toState=decision.toState;
                 fromStateBlock=(
                     <span style={{ padding:10,
-                            backgroundColor:"rgba("+state.colorRed+","+state.colorGreen+","+state.colorBlue+",0.2)"}}>
-                        {state.sequenceNumber} {state.name}
+                            backgroundColor:"rgba("+fromState.colorRed+","+fromState.colorGreen+","+fromState.colorBlue+",0.3)"}}>
+                        {fromState.sequenceNumber} {fromState.name}
                     </span>
                 );
-                toStateBlock=fromStateBlock;
+                if(decision.typeOfDecision===DecisionTypes.APPROVE) {
+                    toStateBlock = (
+                        <span style={{ padding:10,
+                            backgroundColor:"rgba("+toState.colorRed+","+toState.colorGreen+","+toState.colorBlue+",0.3)"}}>
+                        {toState.sequenceNumber} {toState.name}
+                    </span>
+                    );
+                }else {
+                    for (var i = 0; i < selectDecisionTypeItems.length; i++) {
+                        if (selectDecisionTypeItems[i].id === decision.typeOfDecision) {
+                            var toText = selectDecisionTypeItems[i].name;
+                        }
+                    }
+                    toStateBlock = (
+                        <span style={{ padding:10,
+                            backgroundColor:bgColor}}>
+                        {toText}
+                    </span>
+                    );
+                }
                 bodyBlock=(
                     <div className="col-sm-12">
                         <h4>Move project from {fromStateBlock} to {toStateBlock}</h4>
@@ -186,11 +228,73 @@ var ModefulDecision = React.createClass({
                 );
             }
             //MOTIVATION BLOCK
-            if(this.props.decision.motivation) {
-                motivationBlock = (
-                    <div>
-                        <h6>Motivation:</h6>
-                        <p style={{textAlign: "justify"}}>{this.props.decision.motivation}</p>
+            if(this.props.mode === ViewModes.VIEW_MODE) {
+                //VIEW MODE
+                if (this.state.motivation) {
+                    motivationBlock = (
+                        <div>
+                            <h6>Motivation:</h6>
+
+                            <p style={{textAlign: "justify"}}>{this.state.motivation}</p>
+                        </div>
+                    );
+                }
+            }else if(this.props.mode === ViewModes.DECISION_MODE) {
+                //DECISION MODE
+                motivationBlock = <TextField
+                    defaultValue={this.state.motivation}
+                    onChange={this._handleMotivationChange}
+                    onBlur={this._handleMotivationBlur}
+                    floatingLabelText="Decision motivation:"
+                    fullWidth={true}
+                    multiLine={true}
+                    />;
+            }
+            //ASIDE BLOCK
+            var buttonsBlock;
+            if(this.props.mode === ViewModes.DECISION_MODE) {
+                var saveBtn;
+                var recommendBtn;
+                var approveBtn;
+                var executeBtn;
+                var discardBtn;
+
+                if(this.state.motivation !== this.props.decision.motivation) {
+                    saveBtn = (<FlatButton label={"Save"}
+                                           style={{width:"100%", marginBottom:5}}
+                                           primary={true} onClick={this._handleSave}/>);
+                }
+                if(true) {
+                    recommendBtn = (<RaisedButton label={"Recommend"}
+                                                  style={{width:"100%", marginBottom:5}}
+                                                  primary={true} onClick={this._handleApprove} />);
+                }
+                if(true) {
+                    approveBtn = (<RaisedButton label={"Approve"}
+                                                style={{width:"100%", marginBottom:5}}
+                                                primary={true} onClick={this._handleApprove} />);
+                }
+                if(true) {
+                    executeBtn = (<RaisedButton label={"Execute"}
+                                                style={{width:"100%", marginBottom:5}}
+                                                primary={true} onClick={this._handleApprove} />);
+                }
+                if(true) {
+                    discardBtn = (<FlatButton label={"Discard"}
+                                              style={{width:"100%", marginBottom:5}}
+                                              secondary={true} onClick={this._handleDiscard} />);
+                }
+                buttonsBlock=(
+                    <div className="row">
+                        <div className="col-sm-6">
+                            {recommendBtn}
+                            {approveBtn}
+                            {executeBtn}
+                        </div>
+                        <div className="col-sm-6">
+                            {discardBtn}
+                            {saveBtn}
+                        </div>
                     </div>
                 );
             }
@@ -200,6 +304,7 @@ var ModefulDecision = React.createClass({
             }
             asideBlock=(
                 <div className="row" style={{marginTop:10}}>
+                    <div className="col-sm-12">{buttonsBlock}</div>
                     <p className="col-sm-12">Decision ID: <b>{decision.decisionId}</b></p>
                     <p className="col-sm-12">Updated: <b>{decision.lastUpdateDate}</b> {createdByText}</p>
                     <p className="col-sm-12">Created: <b>{decision.createDate}</b> {createdByText}</p>
@@ -221,6 +326,7 @@ var ModefulDecision = React.createClass({
                     </p>
                 </div>
             );
+            //CONTENT
             contentBlock=(
                 <div className="row">
                     <div className="col-sm-8">
@@ -233,13 +339,7 @@ var ModefulDecision = React.createClass({
                     </div>
                 </div>
             );
-            if(decision.typeOfDecision===DecisionTypes.APPROVE){
-                borderColor="green";
-            }else if(decision.typeOfDecision===DecisionTypes.DELAY){
-                borderColor="yellow";
-            }else if(decision.typeOfDecision===DecisionTypes.CANCEL){
-                borderColor="red";
-            }
+
         }
 
         return (
