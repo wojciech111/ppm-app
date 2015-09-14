@@ -46,7 +46,7 @@ var WebAPIUtils = {
         var dataToPost={ fromStateId: stateId, toStateId: nextStateId, decisionState: decisionState, decisionType: decisionType, motivation: motivation };
         console.log("dataToPost");
         console.log(dataToPost);
-        request.post(APIEndpoints.CLEAN_PATH+'/projects/'+componentId+'/create_decision')
+        request.post(APIEndpoints.CLEAN_PATH+'/projects/'+componentId+'/decisions')
             .send(dataToPost)
             .set('Accept', 'application/json')
             .end(function(error, res){
@@ -60,6 +60,28 @@ var WebAPIUtils = {
                     }
                 }
             });
+    },
+    updateDecision: function(componentId, decision) {
+        //console.log("savePortfolio!!! ");
+        console.log("API: Decision update");
+        console.log(decision);
+
+        request.put(APIEndpoints.CLEAN_PATH+'/projects/'+componentId+'/decisions/'+decision.decisionId)
+            .send(decision)
+            .end(function(error, res){
+                if (res) {
+                    if (res.error) {
+                        var errorMsgs = res.error;
+                        //console.log(errorMsgs);
+                        ServerActionCreator.receivePortfolioError(errorMsgs);
+                    } else {
+                        var portfolio = JSON.parse(res.text);
+                        //console.log(portfolio);
+                        ServerActionCreator.receivePortfolio(portfolio);
+                    }
+                }
+            });
+
     },
     //FROM STORES
     //USER STORE

@@ -42,8 +42,10 @@ var appConstants = {
     DecisionStates: {
         PROPOSITION:"P",
         RECOMMENDATION:"R",
-        DEFINITIVE:"D",
+        APPROVED:"A",
         EXECUTED:"E",
+        ARCHIVED:"H",
+        DISCARDED:"D",
     },
     //types of Decision
     DecisionTypes: {
@@ -93,6 +95,7 @@ var appConstants = {
 
         CREATE_SCORE: null,
         CREATE_DECISION: null,
+        UPDATE_DECISION: null,
 
         //From server
         RECEIVE_PORTFOLIO: null,

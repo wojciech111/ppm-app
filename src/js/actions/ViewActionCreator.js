@@ -70,13 +70,13 @@ var ViewActionCreator = {
         });
         WebAPIUtils.createDecision(componentId,stateId,nextStateId,decisionState,decisionType,motivation);
     },
-    updateDecision:function(decision){
-        /*AppDispatcher.handleViewAction({
-            actionType: ActionTypes.CREATE_DECISION,
-            componentId: componentId,
+    updateDecision:function(portfolioId,decision){
+        AppDispatcher.handleViewAction({
+            actionType: ActionTypes.UPDATE_DECISION,
+            portfolioId: portfolioId,
         });
-        WebAPIUtils.createDecision(componentId,stateId,nextStateId,decisionState,decisionType,motivation);
-    */
+        WebAPIUtils.updateDecision(portfolioId,decision);
+
     }
     //Process
 

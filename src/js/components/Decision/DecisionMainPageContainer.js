@@ -51,8 +51,8 @@ var DecisionMainPageContainer = React.createClass({
 
     /* HANDLE APP STATES CHANGES*/
 
-    _handleDecisionUpdate: function(decision){
-        ViewActionCreator.updateDecision(decision);
+    _handleDecisionUpdate: function(componentId,decision){
+        ViewActionCreator.updateDecision(componentId,decision);
     },
     /* HANDLE APP STATES CHANGES*/
     /* VIEW MODE CHANGES*/
@@ -71,8 +71,10 @@ var DecisionMainPageContainer = React.createClass({
     /* VIEW MODE CHANGES*/
     /*HELPERS  Passed by props */
 
-    handleDecisionChange: function(decision){
-        this._handleDecisionUpdate(decision);
+    handleDecisionChange: function(componentId,decision){
+
+
+        this._handleDecisionUpdate(componentId,decision);
         this.setState({
             nrOfChanges: this.state.nrOfChanges+1
         })
@@ -85,7 +87,6 @@ var DecisionMainPageContainer = React.createClass({
         var mode= this.state.mode;
         var nrOfChanges= this.state.nrOfChanges;
         console.log("decisions");
-        console.log(decisions);
 
 
         var viewToShow;

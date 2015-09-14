@@ -1,4 +1,6 @@
 var React = require('react');
+var objectAssign = require('react/lib/Object.assign');
+
 
 var AppConstants = require('../../../constants/AppConstants');
 var ViewModes = AppConstants.ViewModes;
@@ -25,13 +27,7 @@ var ModefulDecision = React.createClass({
             project: React.PropTypes.object,
             decision: React.PropTypes.object,
             mode: React.PropTypes.string.isRequired,
-            decisionState: React.PropTypes.string,
-            decisionType: React.PropTypes.string,
-            motivation: React.PropTypes.string,
-            handleDecisionChange: React.PropTypes.func,
-            handleDecisionStateChange: React.PropTypes.func,
-            handleDecisionTypeChange: React.PropTypes.func,
-            handleMotivationChange: React.PropTypes.func
+            handleDecisionChange: React.PropTypes.func.isRequired
         };
     },
     getInitialState: function(){
@@ -44,15 +40,50 @@ var ModefulDecision = React.createClass({
             motivation: e.target.value
         });
     },
-    _handleSave: function(e) {
-
+    _getDecision:function(){
+        var decision = objectAssign({}, this.props.decision);
+        decision.motivation=this.state.motivation;
+        decision.project = null;
+        return decision;
+    },
+    _handleRecommend: function(e) {
+        var decision=this._getDecision();
+        decision.stateOfDecision=DecisionStates.RECOMMENDATION;
+        var componentId=this.props.decision.project.componentId;
+        this.props.handleDecisionChange(componentId,decision);
     },
     _handleApprove: function(e) {
-
+        var decision=this._getDecision();
+        decision.stateOfDecision=DecisionStates.APPROVED;
+        var componentId=this.props.decision.project.componentId;
+        this.props.handleDecisionChange(componentId,decision);
+    },
+    _handleExecute: function(e) {
+        var decision=this._getDecision();
+        decision.stateOfDecision=DecisionStates.EXECUTED;
+        var componentId=this.props.decision.project.componentId;
+        this.props.handleDecisionChange(componentId,decision);
     },
     _handleDiscard: function(e) {
-
+        var decision=this._getDecision();
+        decision.stateOfDecision=DecisionStates.DISCARDED;
+        var componentId=this.props.decision.project.componentId;
+        this.props.handleDecisionChange(componentId,decision);
     },
+    _handleArchive: function(e) {
+        var decision=this._getDecision();
+        decision.stateOfDecision=DecisionStates.ARCHIVED;
+        var componentId=this.props.decision.project.componentId;
+        this.props.handleDecisionChange(componentId,decision);
+    },
+
+    _handleSave: function(e) {
+        var decision=this._getDecision();
+        var componentId=this.props.decision.project.componentId;
+        this.props.handleDecisionChange(componentId,decision);
+    },
+
+
 
     render:function(){
         var project= this.props.project;
@@ -60,8 +91,10 @@ var ModefulDecision = React.createClass({
         var selectDecisionStateItems=
             [{id:DecisionStates.PROPOSITION,name:"Proposition"},
                 {id:DecisionStates.RECOMMENDATION,name:"Recommendation"},
-                {id:DecisionStates.DEFINITIVE,name:"Approved decision"},
-                {id:DecisionStates.EXECUTED,name:"Executed decision"},];
+                {id:DecisionStates.APPROVED,name:"Approved decision"},
+                {id:DecisionStates.EXECUTED,name:"Executed decision"},
+                {id:DecisionStates.DISCARDED,name:"Discarded decision"},
+                {id:DecisionStates.ARCHIVED,name:"Archived decision"}];
 
 
         var selectDecisionTypeItems=
@@ -241,6 +274,10 @@ var ModefulDecision = React.createClass({
                 }
             }else if(this.props.mode === ViewModes.DECISION_MODE) {
                 //DECISION MODE
+                var isDisabled=false;
+                if(decision.stateOfDecision === DecisionStates.ARCHIVED) {
+                    isDisabled=true;
+                }
                 motivationBlock = <TextField
                     defaultValue={this.state.motivation}
                     onChange={this._handleMotivationChange}
@@ -248,41 +285,57 @@ var ModefulDecision = React.createClass({
                     floatingLabelText="Decision motivation:"
                     fullWidth={true}
                     multiLine={true}
+                    disabled={isDisabled}
                     />;
+
             }
             //ASIDE BLOCK
             var buttonsBlock;
             if(this.props.mode === ViewModes.DECISION_MODE) {
-                var saveBtn;
                 var recommendBtn;
                 var approveBtn;
                 var executeBtn;
                 var discardBtn;
+                var archiveBtn;
+                var saveBtn;
 
-                if(this.state.motivation !== this.props.decision.motivation) {
-                    saveBtn = (<FlatButton label={"Save"}
-                                           style={{width:"100%", marginBottom:5}}
-                                           primary={true} onClick={this._handleSave}/>);
-                }
-                if(true) {
+
+                if(decision.stateOfDecision === DecisionStates.PROPOSITION) {
                     recommendBtn = (<RaisedButton label={"Recommend"}
                                                   style={{width:"100%", marginBottom:5}}
-                                                  primary={true} onClick={this._handleApprove} />);
+                                                  primary={true} onClick={this._handleRecommend} />);
                 }
-                if(true) {
+                if(decision.stateOfDecision === DecisionStates.PROPOSITION ||
+                    decision.stateOfDecision === DecisionStates.RECOMMENDATION) {
                     approveBtn = (<RaisedButton label={"Approve"}
                                                 style={{width:"100%", marginBottom:5}}
                                                 primary={true} onClick={this._handleApprove} />);
                 }
-                if(true) {
+                if(decision.stateOfDecision === DecisionStates.PROPOSITION ||
+                    decision.stateOfDecision === DecisionStates.RECOMMENDATION ||
+                    decision.stateOfDecision === DecisionStates.APPROVED) {
                     executeBtn = (<RaisedButton label={"Execute"}
                                                 style={{width:"100%", marginBottom:5}}
-                                                primary={true} onClick={this._handleApprove} />);
+                                                primary={true} onClick={this._handleExecute} />);
                 }
-                if(true) {
+                if(decision.stateOfDecision === DecisionStates.PROPOSITION ||
+                    decision.stateOfDecision === DecisionStates.RECOMMENDATION ||
+                    decision.stateOfDecision === DecisionStates.APPROVED) {
                     discardBtn = (<FlatButton label={"Discard"}
                                               style={{width:"100%", marginBottom:5}}
                                               secondary={true} onClick={this._handleDiscard} />);
+                }
+                if ((decision.stateOfDecision === DecisionStates.EXECUTED ||
+                    decision.stateOfDecision === DecisionStates.DISCARDED) &&
+                    decision.stateOfDecision !== DecisionStates.ARCHIVED){
+                    archiveBtn = (<FlatButton label={"Archive"}
+                                              style={{width:"100%", marginBottom:5}}
+                                              secondary={true} onClick={this._handleArchive} />);
+                }
+                if(this.state.motivation !== this.props.decision.motivation) {
+                    saveBtn = (<FlatButton label={"Save"}
+                                           style={{width:"100%", marginBottom:5}}
+                                           primary={true} onClick={this._handleSave}/>);
                 }
                 buttonsBlock=(
                     <div className="row">
@@ -293,6 +346,7 @@ var ModefulDecision = React.createClass({
                         </div>
                         <div className="col-sm-6">
                             {discardBtn}
+                            {archiveBtn}
                             {saveBtn}
                         </div>
                     </div>
@@ -307,10 +361,10 @@ var ModefulDecision = React.createClass({
                     <div className="col-sm-12">{buttonsBlock}</div>
                     <p className="col-sm-12">Decision ID: <b>{decision.decisionId}</b></p>
                     <p className="col-sm-12">Updated: <b>{decision.lastUpdateDate}</b> {createdByText}</p>
-                    <p className="col-sm-12">Created: <b>{decision.createDate}</b> {createdByText}</p>
+                    <p className="col-sm-12">Proposed: <b>{decision.createDate}</b> {createdByText}</p>
                     <p className="col-sm-12">
-                        {decision.recomendationDate?"Recommended: ":"Not Recommended"}
-                        <b>{decision.recomendationDate}</b> {createdByText}
+                        {decision.recommendationDate?"Recommended: ":"Not Recommended"}
+                        <b>{decision.recommendationDate}</b> {createdByText}
                     </p>
                     <p className="col-sm-12">
                         {decision.approveDate?"Approved: ":"Not Approved"}

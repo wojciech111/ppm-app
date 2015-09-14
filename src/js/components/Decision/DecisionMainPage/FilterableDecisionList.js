@@ -24,6 +24,7 @@ var FilterableDecisionList = React.createClass({
     render:function(){
         var mode = this.props.mode;
         var decisions = this.props.decisions;
+
         var decisionsBlocks=[];
         function sortByKey(array, key) {
             return array.sort(function(a, b) {
@@ -39,7 +40,7 @@ var FilterableDecisionList = React.createClass({
                     key={decisions[i].decisionId}
                     decision={decisions[i]}
                     mode={mode}
-                    handleDecisionChange={this.handleDecisionChange}
+                    handleDecisionChange={this.props.handleDecisionChange}
                     ></ModefulDecision>
             );
 
