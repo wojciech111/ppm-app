@@ -27,6 +27,9 @@ var ModefulDecision = React.createClass({
             project: React.PropTypes.object,
             decision: React.PropTypes.object,
             mode: React.PropTypes.string.isRequired,
+            expanded: React.PropTypes.bool.isRequired,
+            keyOfSort: React.PropTypes.string,
+            nameOfSort: React.PropTypes.string,
             handleDecisionChange: React.PropTypes.func.isRequired
         };
     },
@@ -104,8 +107,9 @@ var ModefulDecision = React.createClass({
 
         var contentBlock="No content";
         var borderColor="gray";
-        var bgColor="gray";
-
+        var stateBgColor="gray";
+        var bgColor="rgba(255,255,255,0.9)";
+        var borderWidth=4;
         if(this.props.mode === ViewModes.CREATION_MODE){
             //CREATION
             var headerBlock;
@@ -190,12 +194,19 @@ var ModefulDecision = React.createClass({
                 borderColor="green";
             }else if(decision.typeOfDecision===DecisionTypes.DELAY){
                 borderColor="yellow";
-                bgColor="rgba(255,255,0,0.6)";
+                stateBgColor="rgba(255,255,0,0.6)";
             }else if(decision.typeOfDecision===DecisionTypes.CANCEL){
                 borderColor="red";
-                bgColor="rgba(255,0,0,0.6)";
+                stateBgColor="rgba(255,0,0,0.6)";
             }
 
+            if(decision.executionDate ||
+                decision.discardDate ) {
+                borderWidth=10;
+            }
+            if(decision.stateOfDecision === DecisionStates.ARCHIVED) {
+                bgColor="rgba(0,0,0,0.2)";
+            }
             //HEADER BLOCK
             var decisionStateName;
             for(var i=0;i<selectDecisionStateItems.length;i++){
@@ -249,7 +260,7 @@ var ModefulDecision = React.createClass({
                     }
                     toStateBlock = (
                         <span style={{ padding:10,
-                            backgroundColor:bgColor}}>
+                            backgroundColor:stateBgColor}}>
                         {toText}
                     </span>
                     );
@@ -375,25 +386,46 @@ var ModefulDecision = React.createClass({
                         <b>{decision.executionDate}</b> {createdByText}
                     </p>
                     <p className="col-sm-12">
-                        {decision.discardDate?"Discarded: ":"Not Discarded"}
+                        {decision.discardDate?"Discarded: ":""}
                         <b>{decision.discardDate}</b> {createdByText}
                     </p>
                 </div>
             );
+            if(decision[this.props.keyOfSort]) {
+                var sortedByDateBlock = (
+                    <h5>{this.props.nameOfSort}: {decision[this.props.keyOfSort]}</h5>
+                );
+            }
             //CONTENT
-            contentBlock=(
-                <div className="row">
-                    <div className="col-sm-8">
-                        {headerBlock}
-                        {bodyBlock}
-                        {motivationBlock}
+            if(this.props.expanded || this.props.mode === ViewModes.EDIT_MODE ||
+                this.props.mode === ViewModes.DECISION_MODE) {
+                contentBlock = (
+                    <div className="row">
+                        <div className="col-sm-8">
+                            {headerBlock}
+                            {bodyBlock}
+                            {motivationBlock}
+                        </div>
+                        <div className="col-sm-4">
+                            {asideBlock}
+                        </div>
                     </div>
-                    <div className="col-sm-4">
-                        {asideBlock}
+                );
+            } else {
+                contentBlock = (
+                    <div className="row">
+                        <div className="col-sm-12">
+                            {headerBlock}
+                        </div>
+                        <div className="col-sm-8" style={{marginBottom:10}}>
+                            {bodyBlock}
+                        </div>
+                        <div className="col-sm-4">
+                            {sortedByDateBlock}
+                        </div>
                     </div>
-                </div>
-            );
-
+                );
+            }
         }
 
         return (
@@ -401,8 +433,8 @@ var ModefulDecision = React.createClass({
             <div className="col-sm-12">
                 <div className="row">
                     <Paper zDepth={2}  className="col-sm-12"
-                           style={{marginBottom:15, backgroundColor:"rgba(255,255,255,0.9)",
-                            borderWidth:4,borderColor:borderColor, borderStyle:"solid"}}>
+                           style={{marginBottom:15, backgroundColor:bgColor,
+                            borderWidth:borderWidth,borderColor:borderColor, borderStyle:"solid"}}>
                         {contentBlock}
                     </Paper>
                 </div>
