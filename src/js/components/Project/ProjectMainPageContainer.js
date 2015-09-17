@@ -1,10 +1,9 @@
 var React = require('react');
 //Router
-var Router = require('react-router');
-var State = Router.State;
-var Link = Router.Link;
+var State = require('react-router').State;
 //routes names
 var routes_names = require('../../config/routes_names');
+
 //Stores
 //var UserStore = require('../../stores/UserStore');
 var PortfolioStore = require('../../stores/PortfolioStore');
@@ -16,56 +15,120 @@ var StoreStatuses = AppConstants.StoreStatuses;
 var ViewModes = AppConstants.ViewModes;
 //Components
 var ModeChanger = require('../Commons/ModeChanger');
-var ProjectDetailsHeader = require('./ProjectDetails/ProjectDetailsHeader');
-var ProjectOverview = require('./ProjectDetails/ProjectOverview');
+var FilterableProjectList = require('./ProjectMainPage/FilterableProjectList');
+
+
 //Material-ui components
 var mui = require('material-ui');
-
-/*
- TODO  Wypisanie listy projektw z linkami do nich
- */
+var Tabs = mui.Tabs;
 
 
-var ProjectMainPageContainer = React.createClass({
-    mixins: [State],
+
+
+var DecisionMainPageContainer = React.createClass({
     getInitialState: function(){
         return {
-            portfolio: PortfolioStore.getProject(this.getParams().portfolioId),
             projects: PortfolioStore.getAllProjects(),
+            mode: ViewModes.VIEW_MODE,
             nrOfChanges: 0,
         }
     },
     /* MANAGE STORE CHANGES*/
     componentDidMount: function(){
         PortfolioStore.addChangeListener(this._onChange);
+        //UserStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function(){
         PortfolioStore.removeChangeListener(this._onChange);
+        //UserStore.removeChangeListener(this._onChange);
     },
     _onChange: function(){
+            this.setState({
+                projects: PortfolioStore.getAllProjects(),
+            })
+    },
+    /* MANAGE STORE CHANGES*/
+
+    /* HANDLE APP STATES CHANGES*/
+
+    _handleProjectUpdate: function(changedProject){
+        ViewActionCreator.updateComponent(changedProject);
+    },
+    /* HANDLE APP STATES CHANGES*/
+    /* VIEW MODE CHANGES*/
+    changeToEditMode: function(){
         this.setState({
-            portfolio: PortfolioStore.getProject(this.getParams().portfolioId),
-            projects: PortfolioStore.getAllProjects()
+            mode: ViewModes.EDIT_MODE
+        });
+    },
+    changeToViewModeWithSave: function(){
+        //TODO handle update project list
+        //this._handleProjectUpdate(this.state.project);
+        this.setState({
+            mode: ViewModes.VIEW_MODE,
+            nrOfChanges: 0
+        });
+    },
+    changeToViewModeWithCancel: function(){
+        this.setState({
+            mode: ViewModes.VIEW_MODE,
+            projects: PortfolioStore.getAllProjects(),
+            nrOfChanges: 0
+        });
+    },
+
+    /* VIEW MODE CHANGES*/
+    /*HELPERS  Passed by props */
+
+    handleProjectChange: function(changedProjects){
+        //this._handleDecisionUpdate(componentId,decision);
+        this.setState({
+            nrOfChanges: this.state.nrOfChanges+1
         })
 
     },
-    /* MANAGE STORE CHANGES*/
+    /*HELPERS  Passed by props */
+
     render:function(){
-        var portfolio=this.state.portfolio;
-        var projects = this.state.projects;
-        var projectsComponents = [];
-        for (var e = 0; e < projects.length; e++) {
-            projectsComponents.push(
-                <div key={projects[e].componentId}><Link to={routes_names.PROJECT_DETAILS} params={{projectId: projects[e].componentId, portfolioId: this.getParams().portfolioId}}>{projects[e].name}</Link></div>
+        var projects= this.state.projects;
+        var mode= this.state.mode;
+        var nrOfChanges= this.state.nrOfChanges;
+        console.log("projects main page");
+
+
+        var viewToShow;
+
+        if(!PortfolioStore.havePortfolio()){
+            viewToShow=(
+                <div>Loading...</div>
+            );
+        } else {
+            //console.log("PROJECT:");
+            //console.log(project);
+            viewToShow = (
+                <div>
+                    <div className="container-fluid">
+                        <ModeChanger
+                            nrOfChanges={nrOfChanges} currentMode={mode}
+                            changeToEdit={this.changeToEditMode}
+                            changeToViewModeWithSave={this.changeToViewModeWithSave}
+                            changeToViewModeWithCancel={this.changeToViewModeWithCancel}
+                            ></ModeChanger>
+                        <FilterableProjectList
+                            projects={projects}
+                            mode={mode}
+                            handleProjectChange={this.handleProjectChange}
+                            ></FilterableProjectList>
+                    </div>
+                </div>
             );
         }
+
         return (
-            <div>
-                <div>To jest strona listy projektow! Dostepne projekty:</div>
-                {projectsComponents}
-            </div>
+            <div>{viewToShow}</div>
         )
     }
+
 });
 
-module.exports = ProjectMainPageContainer
+module.exports = DecisionMainPageContainer;

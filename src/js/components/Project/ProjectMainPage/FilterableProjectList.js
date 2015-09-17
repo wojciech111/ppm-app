@@ -1,11 +1,13 @@
 var React = require('react');
 
+
+
 var AppConstants = require('../../../constants/AppConstants');
 var StatesTypes = AppConstants.StatesTypes;
 var DecisionStates = AppConstants.DecisionStates;
 var ViewModes = AppConstants.ViewModes;
 
-var ModefulDecision = require('./ModefulDecision');
+var ModefulProject = require('./ModefulProject');
 
 var mui = require('material-ui');
 var Paper = mui.Paper;
@@ -24,68 +26,72 @@ var ToolbarSeparator = mui.ToolbarSeparator;
 var Select = require('react-select');
 
 
-
-var FilterableDecisionList = React.createClass({
+var FilterableProjectList = React.createClass({
     propTypes: function () {
         return {
-            decisions: React.PropTypes.object.isRequired,
+            projects: React.PropTypes.object.isRequired,
             mode: React.PropTypes.string.isRequired,
-            handleDecisionChange: React.PropTypes.func.isRequired
+            handleProjectChange: React.PropTypes.func.isRequired
         };
     },
     getInitialState () {
         return {
-            filters: [DecisionStates.PROPOSITION,DecisionStates.RECOMMENDATION,DecisionStates.APPROVED],
+            showedData: ["STATES"],
+            keyOfSort:'updateDate',
+            groupBy: "None",
+            filterStates: ["All"],
+            filterCategories: ["All"],
             expanded: false,
-            keyOfSort:'lastUpdateDate'
         };
     },
-    _handleSortChange:function(e) {
+    /*_handleSortChange:function(e) {
         console.log("clicked sort by: "+e.target.value);
 
         this.setState({
             keyOfSort: e.target.value
         });
-    },
-    _handleFilterChange:function (value, values) {
+    },*/
+    _handleShowedDataChange:function (value, values) {
         console.log('New value:', value, 'Values:', values);
-        this.setState({ filters: value });
+        this.setState({ showedData: value });
     },
-    _handleExpandedClick:function () {
+    /*_handleExpandedClick:function () {
         console.log("this.state.expanded: "+this.state.expanded);
 
+       console.log('New value:', value, 'Values:', values);
         this.setState({ expanded: !this.state.expanded });
-    },
+    },*/
     render:function(){
         var mode = this.props.mode;
-        var decisions = this.props.decisions;
-        var decisionsBlocks=[];
-        var filterOptions = [
-            { label: 'Propositions', value: DecisionStates.PROPOSITION },
-            { label: 'Recommendations', value: DecisionStates.RECOMMENDATION },
-            { label: 'Approved', value: DecisionStates.APPROVED },
-            { label: 'Executed', value: DecisionStates.EXECUTED },
-            { label: 'Discarded', value: DecisionStates.DISCARDED },
-            { label: 'Archived', value: DecisionStates.ARCHIVED }
-        ];
+        var projects = this.props.projects;
 
+        var dataToShowOptions = [
+            { label: 'State', value: "STATES" },
+            { label: 'Dates', value: "DATES" },
+            { label: 'Health', value: "HEALTH" },
+            { label: 'Categories', value: "CATEGORIES" },
+            { label: 'People', value: "PEOPLE" }
+        ];
         var sortOptions = [
-            { payload: 'lastUpdateDate', text: 'Last update' },
-            { payload: 'createDate', text: 'Proposition date' },
-            { payload: 'recommendationDate', text: 'Recommendation date' },
+            { payload: 'startDate', text: 'Start date' },
+            { payload: 'endDate', text: 'Finish date' },
+            { payload: 'deadlineDate', text: 'Last update' },
+            { payload: 'updateDate', text: 'Last update' },
+            { payload: 'creationDate', text: 'Creation date' },
+            { payload: 'overallPriority', text: 'Priority' },
             { payload: 'approveDate', text: 'Approve date' },
             { payload: 'executionDate', text: 'Execution date' },
             { payload: 'discardDate', text: 'Discard date' }
         ];
 
         //FILTER
-        var filters=this.state.filters;
-        decisions=decisions.filter(function (d) {
+        /*var filters=this.state.filters;
+        projects=projects.filter(function (d) {
             if(filters.indexOf(d.stateOfDecision) > -1){
                 return true;
             }
             return false;
-        });
+        });*/
 
         //SORT
         function sortByKey(array, key) {
@@ -101,40 +107,42 @@ var FilterableDecisionList = React.createClass({
                 return ((x > y) ? -1 : ((x < y) ? 1 : 0));
             });
         }
-        if(this.state.keyOfSort !== 'lastUpdateDate'){
-            sortByKey(decisions,'lastUpdateDate');
+        if(this.state.keyOfSort !== 'updateDate'){
+            sortByKey(projects,'updateDate');
         }
-        sortByKey(decisions,this.state.keyOfSort);
+        sortByKey(projects,this.state.keyOfSort);
 
 
-        var expandBtn;
-        if(this.props.mode === ViewModes.VIEW_MODE){
-            var expandBtnLabel;
-            if(this.state.expanded){
-                expandBtnLabel="Collapse";
-            }else{
-                expandBtnLabel="Expand";
-            }
-            expandBtn = (
-                <FlatButton style={{float:"right"}} label={expandBtnLabel} secondary={true}
-                        onClick={this._handleExpandedClick} />
-            );
-        }
+        //RENDER TOOLBAR
+        var dataBlock;
+        var sortByBlock;
+        var groupByBlock;
+        var FilterStatesBlock;
+        var FilterCategoriesBlock;
+
+
+        dataBlock=(
+            <div className="row" >
+                <div className="col-sm-12">
+                    <h6>Show info about:</h6>
+                </div>
+                <div className="col-sm-12">
+                    <Select multi={true}
+                            value={this.state.showedData}
+                            placeholder="Choose data"
+                            options={dataToShowOptions}
+                            onChange={this._handleShowedDataChange} />
+                </div>
+            </div>
+        );
 
         var toolbar=(
             <div className="row" >
                 <div className="col-sm-12" style={{marginTop:10,marginBottom:15, paddingTop:10,
                 backgroundColor:"rgb(226,226,226)"}}>
                     <div className="row" >
-                        <div className="col-sm-1" style={{marginTop:10, textAlign:"right"}}  >
-                            <h5>Filter:</h5>
-                        </div>
-                        <div className="col-sm-6" style={{marginTop:5}} >
-                            <Select multi={true}
-                                    value={this.state.filters}
-                                    placeholder="Filter states"
-                                    options={filterOptions}
-                                    onChange={this._handleFilterChange} />
+                        <div className="col-sm-3" style={{marginTop:10, marginBottom:10}}  >
+                            {dataBlock}
                         </div>
                         <div className="col-sm-1" style={{marginTop:10, textAlign:"right"}}  >
                             <h5>Sort by:</h5>
@@ -145,7 +153,7 @@ var FilterableDecisionList = React.createClass({
                         </div>
 
                         <div className="col-sm-2" style={{marginTop:5}} >
-                            {expandBtn}
+
                         </div>
                     </div>
                 </div>
@@ -158,29 +166,32 @@ var FilterableDecisionList = React.createClass({
             }
             return false;
         });
-        nameOfSort=nameOfSort[0].text;
+        nameOfSort=nameOfSort[0];
 
-        for(var i=0;i<decisions.length;i++){
-            decisionsBlocks.push(
-                <ModefulDecision
-                    key={decisions[i].decisionId}
-                    decision={decisions[i]}
+
+        var projectsBlocks=[];
+
+        for(var i=0;i<projects.length;i++){
+            projectsBlocks.push(
+                <ModefulProject
+                    key={projects[i].componentId}
+                    project={projects[i]}
                     mode={mode}
-                    expanded={this.state.expanded}
                     keyOfSort={this.state.keyOfSort}
                     nameOfSort={nameOfSort}
-                    handleDecisionChange={this.props.handleDecisionChange}
-                    ></ModefulDecision>
+                    showedData={this.state.showedData}
+                    handleProjectChange={this.props.handleProjectChange}
+                    ></ModefulProject>
             );
 
         };
         return (
             <div>
                 <div className="row">
-                    <h1 className="col-sm-12">Decisions</h1>
+                    <h1 className="col-sm-12">Projects</h1>
                     <div className="col-sm-12">{toolbar}</div>
                     <div className="col-sm-12">
-                            {decisionsBlocks}
+                        {projectsBlocks}
                     </div>
                 </div>
             </div>
@@ -189,4 +200,4 @@ var FilterableDecisionList = React.createClass({
 
 });
 
-module.exports = FilterableDecisionList;
+module.exports = FilterableProjectList;
