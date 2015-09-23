@@ -37,10 +37,10 @@ var FilterableProjectList = React.createClass({
     getInitialState () {
         return {
             showedData: ["STATES"],
-            keyOfSort:'updateDate',
-            groupBy: "None",
-            filterStates: ["All"],
-            filterCategories: ["All"],
+            keyOfSort:'overallPriority',
+            groupBy: null,
+            filterStates: [],
+            filterCategories: [],
             expanded: false,
         };
     },
@@ -55,6 +55,23 @@ var FilterableProjectList = React.createClass({
         console.log('New value:', value, 'Values:', values);
         this.setState({ showedData: value });
     },
+    _handleSortByChange:function (value, values) {
+        console.log('New value:', value, 'Values:', values);
+        this.setState({ keyOfSort: value });
+    },
+    _handleGroupByChange:function (value, values) {
+        console.log('New value:', value, 'Values:', values);
+        this.setState({ groupBy: value });
+    },
+    _handleFilterStatesChange:function (value, values) {
+        console.log('New value:', value, 'Values:', values);
+        this.setState({ filterStates: value });
+    },
+    _handleFilterCategoriesChange:function (value, values) {
+        console.log('New value:', value, 'Values:', values);
+        this.setState({ filterCategories: value });
+    },
+
     /*_handleExpandedClick:function () {
         console.log("this.state.expanded: "+this.state.expanded);
 
@@ -73,17 +90,31 @@ var FilterableProjectList = React.createClass({
             { label: 'People', value: "PEOPLE" }
         ];
         var sortOptions = [
-            { payload: 'startDate', text: 'Start date' },
-            { payload: 'endDate', text: 'Finish date' },
-            { payload: 'deadlineDate', text: 'Last update' },
-            { payload: 'updateDate', text: 'Last update' },
-            { payload: 'creationDate', text: 'Creation date' },
-            { payload: 'overallPriority', text: 'Priority' },
-            { payload: 'approveDate', text: 'Approve date' },
-            { payload: 'executionDate', text: 'Execution date' },
-            { payload: 'discardDate', text: 'Discard date' }
+            { value: 'overallPriority', label: 'Priority' },
+            { value: 'startDate', label: 'Start date' },
+            { value: 'endDate', label: 'Finish date' },
+            { value: 'deadlineDate', label: 'Deadline date' },
+            { value: 'updateDate', label: 'Last update' },
+            { value: 'creationDate', label: 'Creation date' }
         ];
-
+        var groupByOptions = [
+            { label: 'States', value: "STATES" },
+            { label: 'Categories', value: "CATEGORIES" }
+        ];
+        var filterStatesOptions = [
+            { label: 'State', value: "STATES" },
+            { label: 'Dates', value: "DATES" },
+            { label: 'Health', value: "HEALTH" },
+            { label: 'Categories', value: "CATEGORIES" },
+            { label: 'People', value: "PEOPLE" }
+        ];
+        var filterCategoriesOptions = [
+            { label: 'State', value: "STATES" },
+            { label: 'Dates', value: "DATES" },
+            { label: 'Health', value: "HEALTH" },
+            { label: 'Categories', value: "CATEGORIES" },
+            { label: 'People', value: "PEOPLE" }
+        ];
         //FILTER
         /*var filters=this.state.filters;
         projects=projects.filter(function (d) {
@@ -104,11 +135,11 @@ var FilterableProjectList = React.createClass({
                 if(!y){
                     return -1;
                 }
-                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                return ((x > y) ? 1 : ((x < y) ? -1 : 0));
             });
         }
-        if(this.state.keyOfSort !== 'updateDate'){
-            sortByKey(projects,'updateDate');
+        if(this.state.keyOfSort !== 'overallPriority'){
+            sortByKey(projects,'overallPriority');
         }
         sortByKey(projects,this.state.keyOfSort);
 
@@ -117,8 +148,8 @@ var FilterableProjectList = React.createClass({
         var dataBlock;
         var sortByBlock;
         var groupByBlock;
-        var FilterStatesBlock;
-        var FilterCategoriesBlock;
+        var filterStatesBlock;
+        var filterCategoriesBlock;
 
 
         dataBlock=(
@@ -129,31 +160,87 @@ var FilterableProjectList = React.createClass({
                 <div className="col-sm-12">
                     <Select multi={true}
                             value={this.state.showedData}
-                            placeholder="Choose data"
+                            placeholder="Visible data"
                             options={dataToShowOptions}
                             onChange={this._handleShowedDataChange} />
                 </div>
             </div>
         );
-
+        sortByBlock=(
+            <div className="row" >
+                <div className="col-sm-12">
+                    <h6>Sort by:</h6>
+                </div>
+                <div className="col-sm-12">
+                    <Select multi={false}
+                            value={this.state.keyOfSort}
+                            placeholder="Sorting"
+                            options={sortOptions}
+                            onChange={this._handleSortByChange} />
+                </div>
+            </div>
+        );
+        groupByBlock=(
+            <div className="row" >
+                <div className="col-sm-12">
+                    <h6>Group by:</h6>
+                </div>
+                <div className="col-sm-12">
+                    <Select multi={false}
+                            value={this.state.groupBy}
+                            placeholder="Grouping"
+                            options={groupByOptions}
+                            onChange={this._handleGroupByChange} />
+                </div>
+            </div>
+        );
+        filterStatesBlock=(
+            <div className="row" >
+                <div className="col-sm-12">
+                    <h6>Visible states:</h6>
+                </div>
+                <div className="col-sm-12">
+                    <Select multi={true}
+                            value={this.state.filterStates}
+                            placeholder="States"
+                            options={filterStatesOptions}
+                            onChange={this._handleFilterStatesChange} />
+                </div>
+            </div>
+        );
+        filterCategoriesBlock=(
+            <div className="row" >
+                <div className="col-sm-12">
+                    <h6>Visible categories:</h6>
+                </div>
+                <div className="col-sm-12">
+                    <Select multi={true}
+                            value={this.state.filterCategories}
+                            placeholder="Categories"
+                            options={filterCategoriesOptions}
+                            onChange={this._handleFilterCategoriesChange} />
+                </div>
+            </div>
+        );
         var toolbar=(
             <div className="row" >
                 <div className="col-sm-12" style={{marginTop:10,marginBottom:15, paddingTop:10,
                 backgroundColor:"rgb(226,226,226)"}}>
                     <div className="row" >
-                        <div className="col-sm-3" style={{marginTop:10, marginBottom:10}}  >
+                        <div className="col-sm-3" style={{ marginBottom:10}}  >
                             {dataBlock}
                         </div>
-                        <div className="col-sm-1" style={{marginTop:10, textAlign:"right"}}  >
-                            <h5>Sort by:</h5>
+                        <div className="col-sm-2" style={{marginBottom:10}}  >
+                            {sortByBlock}
                         </div>
-                        <div className="col-sm-2" >
-                            <DropDownMenu menuItems={sortOptions}
-                                          onChange={this._handleSortChange}/>
+                        <div className="col-sm-2" style={{marginBottom:10}}  >
+                            {groupByBlock}
                         </div>
-
-                        <div className="col-sm-2" style={{marginTop:5}} >
-
+                        <div className="col-sm-2" style={{marginBottom:10}}  >
+                            {filterStatesBlock}
+                        </div>
+                        <div className="col-sm-3" style={{marginBottom:10}}  >
+                            {filterCategoriesBlock}
                         </div>
                     </div>
                 </div>
@@ -161,7 +248,7 @@ var FilterableProjectList = React.createClass({
         );
         var keyOfSort=this.state.keyOfSort;
         var nameOfSort =sortOptions.filter(function (o) {
-            if(o.payload === keyOfSort){
+            if(o.value === keyOfSort){
                 return true;
             }
             return false;
