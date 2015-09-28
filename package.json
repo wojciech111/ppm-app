@@ -9,6 +9,7 @@
     "gulp": "^3.9.0",
     "react": "^0.13.3",
     "react-async": "^2.1.0",
+    "react-data-grid": "^0.13.8",
     "react-input-autosize": "^0.5.3",
     "react-select": "^0.6.7",
     "reactify": "^1.1.1",
