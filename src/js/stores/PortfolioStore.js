@@ -298,6 +298,47 @@ var PortfolioStore = objectAssign({}, EventEmitter.prototype, {
         //console.log(projects);
         return projects;
     },
+    getAllPrograms: function() {
+        var programs = [];
+        //var portfolio = this.state.portfolio;
+        if(_canServeData()) {
+            //console.log(_store.portfolio);
+            //console.log(_store.portfolio.children.length);
+            for (var i = 0; i<_store.portfolio.children.length; i++) {
+                var portfolioChild = _store.portfolio.children[i];
+                ////console.log(_store.portfolio.children[i].componentId+" "+_store.portfolio.children[i].componentType);
+                //console.log("portfolioChild.componentType="+portfolioChild.componentType);
+                if (portfolioChild.componentType === "PROGRAM") {
+                    programs.push(portfolioChild);
+                    for (var j = 0; j<portfolioChild.children.length; j++) {
+                        var programChild = portfolioChild.children[j];
+                        //console.log("programChild.componentType="+programChild.componentType);
+
+                        if (programChild.componentType === "PROGRAM") {
+                            programs.push(portfolioChild);
+                            //console.log(programChild);
+                            //console.log(programChild.children);
+
+                            for (var k = 0; k<programChild.children.length; k++) {
+                                //console.log("k:"+k);
+                                //console.log(programChild.children[k]);
+
+                                var subbprogramChild = programChild.children[k];
+                                //console.log("subbprogramChild:"+subbprogramChild);
+                                //console.log("subbprogramChild.componentType="+subbprogramChild.componentType);
+                                if (subbprogramChild.componentType === "PROGRAM") {
+                                    //console.log("projects.push(subbprogramChild)"+subbprogramChild.componentId );
+                                    programs.push(portfolioChild);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //console.log(projects);
+        return programs;
+    },
     getAllProcesses:function(){
         return _store.portfolio.processes;
     },

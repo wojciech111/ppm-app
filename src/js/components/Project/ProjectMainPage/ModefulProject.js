@@ -285,15 +285,14 @@ var ModefulProject = React.createClass({
                     </div>
                 </div>
             );
-
             //CONTENT
             contentBlock = (
                 <div className="row">
                     {nameBlock}
-                    {stateBlock}
-                    {datesBlock}
-                    {healthBlock}
-                    {categoriesBlock}
+                    {this.props.showedData.indexOf("STATES") !== -1?stateBlock:""}
+                    {this.props.showedData.indexOf("DATES") !== -1?datesBlock:""}
+                    {this.props.showedData.indexOf("HEALTH") !== -1?healthBlock:""}
+                    {this.props.showedData.indexOf("CATEGORIES") !== -1?categoriesBlock:""}
                 </div>
             );
 

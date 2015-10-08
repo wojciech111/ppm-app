@@ -148,7 +148,7 @@ var CategoryDataGrid = React.createClass({
             for (var i = 0; i < categoryEvaluations.length; i++) {
                 actualOverallScore=actualOverallScore+rows[j][categoryEvaluations[i].categoryEvaluationPK.scoringCriterionId+"_rank"]*categoryEvaluations[i].weight/100;
             }
-            rows[j].actualOverallScore=Math.round(actualOverallScore * 1000) / 1000;
+            rows[j].actualOverallScore=Math.round((actualOverallScore *100/sumOfWeights )* 1000) / 1000;
         }
         //add actual rank
         sortByKey(rows,"actualOverallScore","ASC");
@@ -172,12 +172,40 @@ var CategoryDataGrid = React.createClass({
         //header of table
         var columnBlocks = columns.map(function(column){
             return (
-                <th>{column.weight?column.weight+"%":""} {column.name} {column.bestIs}</th>
+                <th>{column.name}</th>
             );
         });
         var headerRowBlock=(
             <tr>
                 {columnBlocks}
+            </tr>
+        );
+        //weights of scoring criteria
+        var weightsBlocks = columns.map(function(column){
+            return (
+                <td>{column.weight?column.weight+"%":""}</td>
+            );
+        });
+        weightsBlocks[0]=(
+            <th>Weights</th>
+        );
+        var weightsRowBlock=(
+            <tr>
+                {weightsBlocks}
+            </tr>
+        );
+        //best is of scoring criteria
+        var bestIsBlocks = columns.map(function(column){
+            return (
+                <td>{column.bestIs}</td>
+            );
+        });
+        bestIsBlocks[0]=(
+            <th>Best is</th>
+        );
+        var bestIsRowBlock=(
+            <tr>
+                {bestIsBlocks}
             </tr>
         );
         //content of table
@@ -203,6 +231,8 @@ var CategoryDataGrid = React.createClass({
 
         var categoryTableBlock=(
             <table className="table">
+                {weightsRowBlock}
+                {bestIsRowBlock}
                 {headerRowBlock}
                 {rowsBlocks}
             </table>
